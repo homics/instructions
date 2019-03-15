@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>exercise 2 - Gateway - HOMicS</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../..">HOMicS</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="../..">Home</a>
+                            </li>
+                            <li >
+                                <a href="../../setup/">Setup</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exercises <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../monolith/">exercise 0 - Monolith</a>
+</li>
+                                    
+<li >
+    <a href="../user-activity/">exercise 1 - User Activity</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">exercise 2 - Gateway</a>
+</li>
+                                    
+<li >
+    <a href="../stats/">exercise 3 - Stats</a>
+</li>
+                                    
+<li >
+    <a href="../kafka/">exercise 4 - Stats with Kafka</a>
+</li>
+                                    
+<li >
+    <a href="../stock/">exercise 5 - Stock</a>
+</li>
+                                </ul>
+                            </li>
+                            <li >
+                                <a href="../../about/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../user-activity/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../stats/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#exercise-2-gateway">Exercise 2 : Gateway</a></li>
+            <li><a href="#context">Context</a></li>
+            <li><a href="#goal">Goal</a></li>
+            <li><a href="#at-your-keyboard">At your keyboard</a></li>
+            <li><a href="#monolith-database">Monolith database</a></li>
+            <li><a href="#verification">Verification</a></li>
+            <li><a href="#whats-next-exercise-3-stats">What's next ? Exercise 3: Stats</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="exercise-2-gateway">Exercise 2 : Gateway</h1>
+<p>Previously on HOMicS -&gt; <a href="../user-activity/">Exercise 1: User Activity</a></p>
+<h2 id="context">Context</h2>
+<p>In the previous schema, you might realize that there is a flaw. We don't have any authentication for the micro-service.</p>
+<blockquote>
+<p><img alt="question" src="../../img/question.png" /> What happens if you connect directly to the user-activity microservice ?</p>
+</blockquote>
+<p>You can go directly to <a href="http://localhost:9001/user/userActivity">user-activity</a>. The login page is skipped and the data
+is accessible! Oopsy, not great at all.</p>
+<p>We could duplicate all the security code in the new microservice. But imagine if we have 20 microservices, it's going
+to be a mess if we need to add the security in each of them. The services won't be loosely coupled. It's where the
+gateway becomes handy.</p>
+<p>A gateway is a service that provides a single-entry point for certain groups of microservices. Any requests to our
+application will go through the gateway.</p>
+<h2 id="goal">Goal</h2>
+<p>Create the <strong>Gateway</strong> microservice responsible for all authentication and redirection. It's going to handle the
+authentication and redirect to the <strong>monolith</strong> or the <strong>user-activity</strong> microservice.</p>
+<p><img alt="gateway" src="../../img/gateway.png" /></p>
+<p>Everything has been implemented in other microservices. You only need to edit the gateway.</p>
+<h2 id="at-your-keyboard">At your keyboard</h2>
+<ol>
+<li>
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-2
+</code></pre>
+<p>There is a new folder for the gateway microservice. You are not going to start from scratch but you will need
+to implement some part of it.</p>
+<p>Start the gateway:</p>
+<pre><code>mvn spring-boot:run -pl gateway
+</code></pre>
+<p>Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.</p>
+</li>
+<li>
+<p>Application.yaml</p>
+<p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
+<p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix that is an edge service that provides dynamic
+routing, monitoring, resiliency, security, and more. Spring integrated it in <strong>Spring Cloud</strong>.</p>
+<pre><code>&lt;!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-zuul --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
+    &lt;version&gt;2.1.1.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>You will need to set it up in your <code>application.yaml</code>.</p>
+<blockquote>
+<p><img alt="tip" src="../../img/success.png" /> zuul documentation is available 
+<a href="https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html">here</a></p>
+</blockquote>
+</li>
+<li>
+<p>Enable Zuul</p>
+<p>Checkout the second <em>TODO</em> to enable the Zuul Routing.</p>
+</li>
+<li>
+<p>Logged user information</p>
+<p>Last but not least, you need to add the logged user to the headers so all micro services will be able to retrieve the
+connected user.</p>
+<p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
+</li>
+</ol>
+<blockquote>
+<p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, the port for the monolith has been changed to 8090. </p>
+</blockquote>
+<h2 id="monolith-database">Monolith database</h2>
+<p>You can access the <strong>monolith</strong> database console via the following <a href="http://localhost:8090/console">url</a>.</p>
+<h2 id="verification">Verification</h2>
+<p>To verify that gateway is well implemented, launch all the applications:</p>
+<pre><code class="bash"># Run monolith project
+mvn spring-boot:run -pl monolith
+
+# Run user-activity project
+mvn spring-boot:run -pl user-activity
+
+# Run Gateway project
+mvn spring-boot:run -pl gateway
+</code></pre>
+
+<p>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should be on the gateway. After logging, you should be
+directly redirect to the monolith and you can notify that the port is still 8080. You should be able to access as well
+the user-activity microservice on the <em>User Activity micro</em> tab.</p>
+<p><img alt="gateway-micro" src="../../img/gateway-micro.gif" /></p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> You can still access the other services directly on each port 8090 and 9001.
+In practice, you will block those ports from the outside via a firewall.</p>
+</blockquote>
+<p>Well done. Let's continue on to the next step.</p>
+<h2 id="whats-next-exercise-3-stats">What's next ? <a href="../stats/">Exercise 3: Stats</a></h2></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

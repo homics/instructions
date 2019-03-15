@@ -1,0 +1,13 @@
+site_name: HOMicS
+theme: cosmo
+nav:
+  - Home: index.md
+  - Setup: setup.md
+  - Exercises:
+      - 'exercise 0 - Monolith': user-guide/monolith.md
+      - 'exercise 1 - User Activity': user-guide/user-activity.md
+      - 'exercise 2 - Gateway': user-guide/gateway.md
+      - 'exercise 3 - Stats': user-guide/stats.md
+      - 'exercise 4 - Stats with Kafka': user-guide/kafka.md
+      - 'exercise 5 - Stock': user-guide/stock.md
+  - About: about.md

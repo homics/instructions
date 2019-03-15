@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>exercise 5 - Stock - HOMicS</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../..">HOMicS</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="../..">Home</a>
+                            </li>
+                            <li >
+                                <a href="../../setup/">Setup</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exercises <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../monolith/">exercise 0 - Monolith</a>
+</li>
+                                    
+<li >
+    <a href="../user-activity/">exercise 1 - User Activity</a>
+</li>
+                                    
+<li >
+    <a href="../gateway/">exercise 2 - Gateway</a>
+</li>
+                                    
+<li >
+    <a href="../stats/">exercise 3 - Stats</a>
+</li>
+                                    
+<li >
+    <a href="../kafka/">exercise 4 - Stats with Kafka</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">exercise 5 - Stock</a>
+</li>
+                                </ul>
+                            </li>
+                            <li >
+                                <a href="../../about/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../kafka/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../../about/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#exercise-5-stock">Exercise 5 : Stock</a></li>
+            <li><a href="#context">Context</a></li>
+            <li><a href="#goal">Goal</a></li>
+            <li><a href="#at-your-keyboard">At your keyboard</a></li>
+            <li><a href="#good-to-know">Good to know</a></li>
+            <li><a href="#whats-next">What's next ?</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="exercise-5-stock">Exercise 5 : Stock</h1>
+<p>Previously on HOMicS -&gt; <a href="../kafka/">Exercise 4: Stats with Kafka</a></p>
+<h2 id="context">Context</h2>
+<p>Often when splitting microservice, the question of transactions arises.
+Let's try to discover why through the extraction of the <strong>stock</strong> microservice.</p>
+<h3 id="about-the-stock-micro-service">About the stock micro-service</h3>
+<p>Stock modifications are often spread around a marketplace application. It could be modified from cart, refunds, or inventory.
+The stock microservice will store and update the stock for each article. </p>
+<h3 id="the-existing">The existing</h3>
+<p>Before the migration when we pay an order, we were executing the following steps:</p>
+<ol>
+<li>
+<p>Open transaction</p>
+</li>
+<li>
+<p>Check the stock</p>
+</li>
+<li>
+<p>Impact the stock</p>
+</li>
+<li>
+<p>Update the order status</p>
+</li>
+<li>
+<p>Close the transaction</p>
+</li>
+</ol>
+<h3 id="extract-it-into-a-microservice">Extract it into a microservice</h3>
+<p>If we extract the stock service in a microservice like we did before, the steps become :</p>
+<ol>
+<li>
+<p>Open transaction</p>
+</li>
+<li>
+<p>Ask the micro service to impact the stock</p>
+</li>
+<li>
+<p>Wait for the response</p>
+</li>
+<li>
+<p>Update the order status</p>
+</li>
+<li>
+<p>Close the transaction</p>
+</li>
+</ol>
+<p>With this plan, you can see in step 3 that the monolith is waiting for the microservice response.</p>
+<blockquote>
+<p><img alt="warning" src="../../img/warning.png" /> It's pretty bad! </p>
+</blockquote>
+<p>Imagine that the call to impact stock times out... </p>
+<p>Your payment method is going to wait the whole time and so is your user.</p>
+<blockquote>
+<p><img alt="tip" src="../../img/success.png" /> We need to change to asynchronous.</p>
+</blockquote>
+<h3 id="going-async">Going async</h3>
+<ol>
+<li>
+<p>Open transaction</p>
+</li>
+<li>
+<p>Ask the micro service to impact the stock</p>
+</li>
+<li>
+<p>Close the transaction</p>
+</li>
+</ol>
+<p>Then, we listen to the microservice event.</p>
+<ol>
+<li>
+<p>The microservice call the monolith when the stock is impacted</p>
+</li>
+<li>
+<p>Open transaction</p>
+</li>
+<li>
+<p>Update the order status</p>
+</li>
+<li>
+<p>Close the transaction</p>
+</li>
+</ol>
+<blockquote>
+<p><img alt="question" src="../../img/question.png" /> What happens if the result of the microservice is "not enough stock" ?</p>
+</blockquote>
+<p>We save the order as cancelled.</p>
+<h2 id="goal">Goal</h2>
+<p>Extract the stock micro service using kafka.</p>
+<p>The workflow becomes:</p>
+<ol>
+<li>
+<p>An ImpactStockMessage is send to kafka</p>
+</li>
+<li>
+<p>The stock micro-service verifies and then impacts the article stock</p>
+</li>
+<li>
+<p>A StockAcknowledgmentMessage is send with a status succeed or not</p>
+</li>
+<li>
+<p>The monolith consumes the message and change the order status accordingly</p>
+</li>
+</ol>
+<p><img alt="stock" src="../../img/stock.png" /></p>
+<h2 id="at-your-keyboard">At your keyboard</h2>
+<ol>
+<li>
+<p>Remove the stock column in the monolith</p>
+</li>
+<li>
+<p>Implement the payment workflow previously describe in <code>OrderService</code>.
+    (Topics and messages are already setup in the common-messaging lib)</p>
+</li>
+<li>
+<p>Implement the payment workflow on the micro service side in <code>StockController</code></p>
+</li>
+</ol>
+<h2 id="good-to-know">Good to know</h2>
+<p>When working with kafka, we can set the configuration to have either:</p>
+<ol>
+<li>
+<p>All messages received but with possible duplicates.</p>
+</li>
+<li>
+<p>No duplicate but you can miss some messages.</p>
+</li>
+</ol>
+<p>We are working with the first choice. It constrains us to have idempotent messages.</p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> Idempotent means that an action always gives the same result even if you played several times.</p>
+</blockquote>
+<p>In our case, the same message can be read multiple times and will give the same result. For example, in the stats microservice,
+the second message only updates the data since the orderId is unique.</p>
+<p>It explains why we keep the <code>table StockOperation</code>.</p>
+<h2 id="whats-next">What's next ?</h2>
+<p>Come see us at our stand and let us know what you though about the Hands On.</p>
+<p>Please your feedback means a lot to us. If you have 5 mins to spare, could you fill this
+<a href="https://docs.google.com/forms/d/1VAbfBPXvYej24ciUkATdY9dSuQVxMxfBG3psfe4mQoo/edit">survey</a></p>
+<p>Thank you. </p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

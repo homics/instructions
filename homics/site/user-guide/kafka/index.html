@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>exercise 4 - Stats with Kafka - HOMicS</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../..">HOMicS</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="../..">Home</a>
+                            </li>
+                            <li >
+                                <a href="../../setup/">Setup</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exercises <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../monolith/">exercise 0 - Monolith</a>
+</li>
+                                    
+<li >
+    <a href="../user-activity/">exercise 1 - User Activity</a>
+</li>
+                                    
+<li >
+    <a href="../gateway/">exercise 2 - Gateway</a>
+</li>
+                                    
+<li >
+    <a href="../stats/">exercise 3 - Stats</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">exercise 4 - Stats with Kafka</a>
+</li>
+                                    
+<li >
+    <a href="../stock/">exercise 5 - Stock</a>
+</li>
+                                </ul>
+                            </li>
+                            <li >
+                                <a href="../../about/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../stats/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../stock/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#exercise-4-stats-with-kafka">Exercise 4 : Stats with Kafka</a></li>
+            <li><a href="#context">Context</a></li>
+            <li><a href="#a-word-on-kafka">A word on KAFKA</a></li>
+            <li><a href="#goal">Goal</a></li>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#at-your-keyboard">At your keyboard</a></li>
+            <li><a href="#verification">Verification</a></li>
+            <li><a href="#whats-next-exercise-5-stock">What's next ? Exercise 5: Stock</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="exercise-4-stats-with-kafka">Exercise 4 : Stats with Kafka</h1>
+<p>Previously on HOMicS -&gt; <a href="../stats/">Exercise 3: Stats</a></p>
+<h2 id="context">Context</h2>
+<blockquote>
+<p><img alt="question" src="../../img/question.png" /> Do you remember what we said at the beginning about getting the monolith thinner?</p>
+</blockquote>
+<p>The previous solution has a considerable drawback. We had to add logic in the monolith and it's not really scalable. </p>
+<h2 id="a-word-on-kafka">A word on KAFKA</h2>
+<p><a href="https://kafka.apache.org/">Apache Kafka</a> is an event streaming platform capable of handling trillions of events a day.</p>
+<p>Initially conceived as a messaging queue by LinkedIn, Kafka is based on an abstraction of a distributed commit log.</p>
+<p>The main advantages of kafka are :</p>
+<ul>
+<li>High-throughput</li>
+<li>Low Latency</li>
+<li>Fault-Tolerant</li>
+<li>Scalability</li>
+<li>Distributed</li>
+</ul>
+<p>Keep in mind, adding kafka comes with a cost. It's a library with a learning curve and advance concepts.  </p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> We are using Kafka to produce, consume and store messages.</p>
+</blockquote>
+<h2 id="goal">Goal</h2>
+<p>We will change the exercise 3 but this time using kafka. No need for table and crawler anymore.</p>
+<p>When an order is payed, an event is sent.</p>
+<p>Kafka stores it until a consumer reads it.</p>
+<p>It's very convenient: our monolith doesn't have to battle with acknowledgment anymore.</p>
+<p>It's the stats microservice which consumes the message.</p>
+<p><img alt="stats-kafka" src="../../img/stats-kafka.png" /></p>
+<h2 id="setup">Setup</h2>
+<ol>
+<li>
+<p>Before implementing anything, for this exercise, we need to have a running instance of kafka. The easiest way is to launch
+it via docker. We can then easily restart or reset it. You will find a docker-compose file already present.</p>
+<p>So first of all, download docker and start docker. Go back to the <a href="../../setup/">Setup</a> page if needed.</p>
+<p>We are using Spring for Apache Kafka. All the configuration for serializing, topic creation is done in the 
+common-messaging lib. If you want to check it out, go on github in the HOMicS project.</p>
+</li>
+<li>
+<p>Run kafka</p>
+<p>In <code>/tools/docker/kafka/</code>, the docker-compose file will launch an instance of <strong>zookeeper</strong> and <strong>kafka</strong>.
+To start kafka simply run :</p>
+<pre><code>cd commons-messaging &amp;&amp; docker compose up
+</code></pre>
+<p>To stop </p>
+<pre><code>cd commons-messaging &amp;&amp; docker compose stop
+</code></pre>
+</li>
+</ol>
+<h2 id="at-your-keyboard">At your keyboard</h2>
+<p>You can start by checking out the branch for the fourth exercise: <code>git checkout exercise-4</code>. This exercise is split in
+two parts.</p>
+<p>First, you will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
+<p>Secondly, you will consume messaging on the <strong>Stats</strong> microservices.</p>
+<h3 id="producing-kafka-messaging-with-the-monolith">Producing kafka messaging with the Monolith</h3>
+<ol>
+<li>
+<p>Send a kafka message</p>
+<p>Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.</p>
+<p>To send a message with kafka :</p>
+<pre><code>private KafkaTemplate&lt;String, OrderPayedMessage&gt; kafkaTemplate;
+
+Message&lt;OrderPayedMessage&gt; message = MessageBuilder
+                .withPayload(new OrderPayedMessage(1,1,"user"))
+                .setHeader(KafkaHeaders.TOPIC, TOPIC_STATS)
+                .build();
+
+kafkaTemplate.send(message);
+</code></pre>
+</li>
+<li>
+<p>Verify that you sent a kafka message</p>
+<p>You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
+to run the following command:</p>
+<pre><code>docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STATS --from-beginning
+</code></pre>
+<p>You should see the previous carts you payed.  </p>
+</li>
+</ol>
+<h3 id="consuming-kafka-messaging-with-the-stats-microservice">Consuming kafka messaging with the Stats microservice</h3>
+<ol>
+<li>
+<p>In the microservice, retrieve the message with kafka :</p>
+<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
+public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
+        ...
+}
+</code></pre>
+</li>
+<li>
+<p>Save this message into the database</p>
+</li>
+</ol>
+<h2 id="verification">Verification</h2>
+<p>To verify that <strong>stats</strong> is well implemented, launch the gateway, and the monolith applications:</p>
+<pre><code class="bash"># Run gateway project
+mvn spring-boot:run -pl gateway
+
+# Run monolith project
+mvn spring-boot:run -pl monolith
+</code></pre>
+
+<p>Login to the application on the <a href="http://localhost:8080/login">login page</a>. Create two carts and pay for them.</p>
+<p>You see a 404 page on the <em>Stats Micro</em> tab. The <strong>stats</strong> microservice isn't up and running at that point. This behaviour
+makes sense.</p>
+<p>Now, start the microservice <strong>Stats</strong>:</p>
+<pre><code class="bash"># Run stats project
+mvn spring-boot:run -pl stats
+</code></pre>
+
+<p>Navigate to the <em>Stats Micro</em> tab. You should see the same page than before with the stats from the previous two orders.
+All the stats should be retrieved. If you don't see them, refresh few times to let the monolith discuss with the microservice </p>
+<p>It's exactly the same actions than exercise 3.</p>
+<p><img alt="stats" src="../../img/stats-micro.gif" /></p>
+<h2 id="whats-next-exercise-5-stock">What's next ? <a href="../stock/">Exercise 5: Stock</a></h2></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
