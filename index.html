@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>HOMicS</title>
+        <link href="css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="js/jquery-1.10.2.min.js" defer></script>
+        <script src="js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body class="homepage">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href=".">HOMicS</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href=".">Home</a>
+                            </li>
+                            <li >
+                                <a href="setup/">Setup</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exercises <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="user-guide/monolith/">exercise 0 - Monolith</a>
+</li>
+                                    
+<li >
+    <a href="user-guide/user-activity/">exercise 1 - User Activity</a>
+</li>
+                                    
+<li >
+    <a href="user-guide/gateway/">exercise 2 - Gateway</a>
+</li>
+                                    
+<li >
+    <a href="user-guide/stats/">exercise 3 - Stats</a>
+</li>
+                                    
+<li >
+    <a href="user-guide/kafka/">exercise 4 - Stats with Kafka</a>
+</li>
+                                    
+<li >
+    <a href="user-guide/stock/">exercise 5 - Stock</a>
+</li>
+                                </ul>
+                            </li>
+                            <li >
+                                <a href="about/">About</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="disabled">
+                                <a rel="next" >
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="setup/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#welcome-to-latelier-des-chefs-du-monolith-aux-micro-services">Welcome to L'Atelier des Chefs: du monolith aux micro-services</a></li>
+            <li><a href="#subject">Subject</a></li>
+            <li><a href="#presentation">Presentation</a></li>
+            <li><a href="#what-does-microservice-mean">What does microservice mean?</a></li>
+            <li><a href="#why-microservice">Why microservice?</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="welcome-to-latelier-des-chefs-du-monolith-aux-micro-services">Welcome to <strong>L'Atelier des Chefs: du monolith aux micro-services</strong></h1>
+<p>Homics -&gt; Hands On Micro Service</p>
+<h2 id="subject">Subject</h2>
+<p>Ingredient:</p>
+<ul>
+<li>A fucking big monolith</li>
+<li>A heterogeneous stress on the application</li>
+<li>An exponential entropy</li>
+</ul>
+<p>The usual recipe :</p>
+<ul>
+<li>Take the way pasted monolith</li>
+<li>Cut it equally in height parts</li>
+<li>Heat it at 200 transactions per seconds</li>
+<li>Remove your performant microservices from the oven</li>
+</ul>
+<p>In a kitchen, this recipe seems pretty simple. In our developer world, we learn pretty fast that it's not usually the
+case. When do you split a monolith? How do you extract relevant functionality? What are the difficulties we are going to
+encounter? How do the microservices communicate? </p>
+<p>There isn't one recipe to split a monolith. This HandsOn will introduce our discovery and experience on the matter.
+Join us on this journey to migrate a MarketPlace monolith into microservices.</p>
+<h2 id="presentation">Presentation</h2>
+<p><strong>Mirakl</strong>, the leading provider of Marketplace Solutions, started the migration of their huge application toward
+microservices. Those last few years, the different teams have been facing a lot of problems. After some reflexion on 
+this adventure, we realized that it's important to clarify this important and amazing process.</p>
+<p>On one hand, we have learned at our expenses that microservices are not the solution for all the problems. On the other
+hand, they are very interesting in the evolution of an application.</p>
+<p>The goal of this HandsOn is to retrace our story through different exercises. The class will treat of the following
+subjects:</p>
+<ul>
+<li>How do you split a monolith</li>
+<li>How do you communicate between microservices ? (HTTP, events, etc ...)</li>
+<li>Transaction with microservices</li>
+<li>Resilience in micro-service (peak load, network latency, outage ...)</li>
+</ul>
+<p>This HandsOn is the work of three developers:</p>
+<ul>
+<li>Nicolas Favier <a href="https://www.takima.fr/"><strong>@Takima</strong></a></li>
+<li>Eric Ndouakulu Kiaku Mbuta <a href="https://www.mirakl.com/"><strong>@Mirakl</strong></a></li>
+<li>Benjamin Yvernault <a href="https://www.takima.fr/"><strong>@Takima</strong></a></li>
+</ul>
+<p>You can find all the code on <a href="https://github.com/homics">Homics Github</a>.</p>
+<h2 id="what-does-microservice-mean">What does microservice mean?</h2>
+<p>Microservice is an architectural style in application development where you decide to separate your application
+into a set of loosely couple services. It's a difficult process with a lot of questions you need to ask yourself.</p>
+<blockquote>
+<p><img alt="question" src="img/question.png" /> But why does someone decide to start this journey?</p>
+</blockquote>
+<h2 id="why-microservice">Why microservice?</h2>
+<p>It's a long trip to extract microservices from your monolith. You will need to migrate a lot of your architecture and 
+create new pipelines for your CI but there are a lot of benefits of doing this:</p>
+<ul>
+<li>Highly maintainable and testable</li>
+<li>Loosely coupled</li>
+<li>Independently deployable</li>
+<li>Organized around business capabilities</li>
+</ul>
+<p>What those points mean is that it makes the application easier to understand, develop, test, and become more resilient 
+to architecture erosion. The management of your service can be done by a single team that does not need to know the 
+application as a whole. It also enables an organization to evolve its technology stack. </p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js" defer></script>
+        <script src="search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.0.4
+Build Date UTC : 2019-03-17 16:08:26
+-->
