@@ -145,11 +145,11 @@ will call this micro-service via API to notify on a success login or success log
 <ol>
 <li>
 <p>Setup the projects</p>
-<p>We are going to go back and forth between two projects: <strong>monolith</strong> and <strong>user-activity</strong>. First of all, clone the
-existing <strong>user-activity</strong> project from github via this command:</p>
+<p>We are going back and forth between two projects: <strong>monolith</strong> and <strong>user-activity</strong>. First of all, clone the
+existing <strong>user-activity</strong> project from github where we set up the first exercise:</p>
 <pre><code>git clone https://github.com/homics/user-activity.git
 </code></pre>
-<p><em>TODO</em> are left in the code that you will need to fill.</p>
+<p><em>TODO</em> are left in the code that you need to be filled.</p>
 <p>Change the branch on the monolith to <code>exo1-user</code>:</p>
 <pre><code>monolith $ git checkout exo1-user
 </code></pre>
@@ -162,19 +162,20 @@ front especially if you use an IDE. </p>
 <p>Edit user-activity application.yaml</p>
 <p>You need to configure the <code>application.yaml</code> so the microservice has a database, and run on port 9001.</p>
 <p>Check the <code>application.yaml</code> in the monolith to learn how to specify your database. Name the database <code>dbuser</code>.</p>
-<p>For the port, google is your friend.</p>
+<blockquote>
+<p><img alt="tip" src="../../img/success.png" /> For the port, check out
+<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html">this</a>.</p>
+</blockquote>
 </li>
 <li>
-<p><code>UserActivityApiController</code> &amp; <code>UserActivityInternalController</code></p>
-<p>Complete the <em>TODO</em> in the two controller classes.</p>
+<p>Complete <code>UserActivityApiController</code> &amp; <code>UserActivityInternalController</code></p>
 <p>For <code>UserActivityInternalController</code>, you need to add a post API to register the activity sent by the monolith.</p>
 <blockquote>
 <p><img alt="tip" src="../../img/success.png" /> The DTO is already implemented: <code>UserActivityDto</code>. Use it.</p>
 </blockquote>
 </li>
 <li>
-<p><code>UserActivityService</code></p>
-<p>Complete the <em>TODO</em> in <code>UserActivityService</code>.</p>
+<p>Complete <code>UserActivityService</code></p>
 <p>You are asked to save and fetch user activities coming down from your controllers. Nothing fancy...</p>
 </li>
 <li>
@@ -183,12 +184,12 @@ front especially if you use an IDE. </p>
 <blockquote>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
 </blockquote>
-<p>Yeah, the monolith is started to get thinner. But it's not over since the monolith does not speak with 
-<strong>user-activity</strong> yet.</p>
-<p>On the monolith, you need to call the microservice on each login and logout success. Edit the file 
-<code>CustomizeAuthenticationSuccessHandler</code> and <code>CustomizedLogoutSuccessHandler</code>.</p>
+<p>Yeah, the monolith is already thinner. But it's not over since the monolith does not speak with 
+<strong>user-activity</strong>.</p>
+<p>On the monolith, edit <code>CustomizeAuthenticationSuccessHandler</code> and <code>CustomizedLogoutSuccessHandler</code> so the monolith
+call the microservice on each login and logout success.</p>
 <blockquote>
-<p><img alt="tip" src="../../img/success.png" /> You should use this syntax :</p>
+<p><img alt="tip" src="../../img/success.png" /> You should use:</p>
 <pre><code>  restTemplate.postForEntity(USER_ACTIVITY_URL, userActivity, Void.class);
 </code></pre>
 </blockquote>
