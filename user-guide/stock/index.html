@@ -114,6 +114,7 @@
             <li><a href="#context">Context</a></li>
             <li><a href="#goal">Goal</a></li>
             <li><a href="#steps">Steps</a></li>
+            <li><a href="#good-to-know">Good to know</a></li>
             <li><a href="#whats-next">What's next ?</a></li>
     </ul>
 </div></div>
@@ -122,8 +123,40 @@
 <h1 id="exercise-5-stock">Exercise 5 : Stock</h1>
 <p>Previously on HOMicS -&gt; <a href="../kafka/">Exercise 4: Stats with Kafka</a></p>
 <h2 id="context">Context</h2>
+<p>Often when splitting micro-service we face difficulties when there are transactions. For exemple here we want to extract the stock module.
+The module we keep a record of the stock. For example it could be call by un inventory micro-service and the cart micro-service.
+For now the payment work like this :
+1. open transaction
+2. check the stock
+3. impact the stock
+4. update the order status</p>
+<p>Our code is not synchronized so it's possible that tow threads have already pass the stock check and both update the stock.
+Here we assure the stock is positive by using a constraint @min in our table. The result is an ValidationException. 
+Spring catch the exception and rollback everything.</p>
+<p>Now with micro-service we are asynchronous and we can't use @transactional.
+Most of the case in such situation we change the workflow. Let's try it there.</p>
 <h2 id="goal">Goal</h2>
+<p>Extract the stock micro service using kafka.
+When a order confirmation is done :
+1. The order is save in PENDING
+2. A ImpactStockMessage is send to kafka
+3. The stock micro-service verify and the impact the article stock
+4. A StockAcknowledgmentMessage is send with a status succeed or not.
+5. The monolith consume this message and change the order status, then impact the stats</p>
 <h2 id="steps">Steps</h2>
+<ol>
+<li>Remove the stock column in the monolith</li>
+<li>Implement the payment workflow previously describe in <code>OrderService</code>. (Topics and messages are already setup in the common-messaging lib)</li>
+<li>Implement the payment workflow on the micro service side in StockController`</li>
+</ol>
+<h2 id="good-to-know">Good to know</h2>
+<p>When working with kafka we can choose the configuration to have either:
+1. all message receive but with possible duplicate
+2. No duplicate but you can miss somme message.
+Here we work with the first one. To do so all our message are idempotent. 
+It means that the same message can be read multiple times and will give the same result. 
+For example in the stats as the orderId is unique the second message only update the data.
+We need to do the same here it's why we keep the <code>table StockOperation</code></p>
 <h2 id="whats-next">What's next ?</h2>
 <p>Come see us at our stand and let us know what you though about the Hands On TODO: link to googleform .</p>
 <p>Thank you. </p></div>
