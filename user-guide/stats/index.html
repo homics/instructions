@@ -113,8 +113,9 @@
         <li class="main active"><a href="#exercise-3-stats">Exercise 3 : Stats</a></li>
             <li><a href="#context">Context</a></li>
             <li><a href="#goal">Goal</a></li>
-            <li><a href="#steps">Steps</a></li>
-            <li><a href="#result">Result</a></li>
+            <li><a href="#at-your-keyboard">At your keyboard</a></li>
+            <li><a href="#database">Database</a></li>
+            <li><a href="#verification">Verification</a></li>
             <li><a href="#whats-next-exercise-4-stats-with-kafka">What's next ? Exercise 4: Stats with Kafka</a></li>
     </ul>
 </div></div>
@@ -123,20 +124,74 @@
 <h1 id="exercise-3-stats">Exercise 3 : Stats</h1>
 <p>Previously on HOMicS -&gt; <a href="../gateway/">Exercise 2: Gateway</a></p>
 <h2 id="context">Context</h2>
-<p>The stats are long to count and does not impact the payment workflow. We are going to extract it in a micro service.
-But this time we want to be sure that the stats are corrects and no data are lost.
-For example what happens if the stat micro-service is down ?
- -&gt; All data sent during the down time is lost.</p>
-<p>A simple way to fix this issue is to work with acknowledgment. Let's do it.</p>
+<p>In real life, the stats take some time to compute and do not impact the payment workflow. We are going to extract it into
+a microservice.</p>
+<blockquote>
+<p><img alt="question" src="../../img/question.png" /> What happens if the microservice is down ?</p>
+</blockquote>
+<p>All data sent during the down time will be lost.</p>
+<p>A simple way to fix this issue is to work with acknowledgment. Let's implement it.</p>
 <h2 id="goal">Goal</h2>
-<p>The monolith will save in a new table all orders stats thats need to be send. A schedule task fetch this table and send its content to the stat micro-service. If the data is sent (200), we remove it from the table, else it will be resent at the next iteration.</p>
-<h2 id="steps">Steps</h2>
-<ul>
-<li>Fetch the stat repository.</li>
-<li>In the monolith create a <code>StatsTask</code>. The task crawl the <code>OrderStat</code> table and send the stats to the microservice using : "http://localhost:9002/stats/api/orders". On success (200) the orderStat is remove from the table.</li>
-</ul>
-<h2 id="result">Result</h2>
-<p>Stop your stat micro-service, make some orders. Start your stat micro-service, all the stats are retrieved.</p>
+<p>The monolith will save all the stats in a new table. Those stats will be hosted on a new microservice
+called <strong>stats</strong>. A schedule task fetch this table and send its content to the microservice. </p>
+<p>In case of error such as the downtime of the micro-service, the stats will be sent again at the next iteration.</p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> We are providing the microservice directly on github. You don't need to edit it.</p>
+</blockquote>
+<p>In terms of architecture:</p>
+<p><img alt="stats" src="../../img/stats.png" /></p>
+<h2 id="at-your-keyboard">At your keyboard</h2>
+<ol>
+<li>
+<p>Setup</p>
+<p>Clone the stat repository.</p>
+<pre><code>git clone https://github.com/homics/stats.git
+</code></pre>
+<p>On the monolith checkout exo3-stat</p>
+<pre><code>git checkout exo3-stat
+</code></pre>
+</li>
+<li>
+<p>Complete the  <code>StatsTask</code>:</p>
+<p>Every 10 seconds, the statsService should send the stats. You can use the following annotation:</p>
+<pre><code>    @Scheduled(fixedRate = 10000)
+</code></pre>
+</li>
+<li>
+<p>Fill all <em>TODOs</em> in StatsService:</p>
+<p>The <code>addOrderStat()</code> saves the orderStat in H2.</p>
+<p>The <code>sendStats()</code> fetches all orderStats in database, then sends them to the microservice using the <code>restTemplate</code>.
+You already worked with this template in exercise 1. If you are lost, check it out again.</p>
+<p>This request will be a <em>POST</em> action on the API : <code>http://localhost:9002/stats/api/orders</code></p>
+<p>For the payload, create a class OrderPayedDto, it should match the one in <strong>stats</strong> microservice.</p>
+<p>A response status is <code>HttpStatus.OK</code> means the microservice received the information. Then, we remove it from the
+database.</p>
+</li>
+<li>
+<p>Clean the stats implementation that is not required anymore in the monolith.</p>
+</li>
+</ol>
+<h2 id="database">Database</h2>
+<p>You can access the database console via the following <a href="http://localhost:9002/console">url</a>.</p>
+<h2 id="verification">Verification</h2>
+<p>To verify that <strong>stats</strong> is well implemented, launch the gateway, and the monolith applications:</p>
+<pre><code class="bash"># Run monolith project
+monolith$ mvn spring-boot:run
+
+# Run gateway project
+gateway$ mvn spring-boot:run
+</code></pre>
+
+<p>Access and login to the <a href="http://localhost:8080/mono/login">monolith</a>. Execute two carts and pay them.</p>
+<p>The <strong>stats</strong> microservice isn't up and running at that point.</p>
+<p>Start the microservice:</p>
+<pre><code class="bash"># Run stats project
+stats$ mvn spring-boot:run
+</code></pre>
+
+<p>Navigate to the <em>Stats Micro</em> tab and you should see the same table than before with the stats from the previous two orders.
+All the stats should be retrieved.</p>
+<p><img alt="stats" src="../../img/stats-micro.gif" /></p>
 <h2 id="whats-next-exercise-4-stats-with-kafka">What's next ? <a href="../kafka/">Exercise 4: Stats with Kafka</a></h2></div>
         </div>
 
