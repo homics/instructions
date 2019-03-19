@@ -112,8 +112,10 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#exercise-4-stats-with-kafka">Exercise 4 : Stats with Kafka</a></li>
             <li><a href="#context">Context</a></li>
+            <li><a href="#a-word-on-kafka">A word on KAFKA</a></li>
             <li><a href="#goal">Goal</a></li>
-            <li><a href="#steps">Steps</a></li>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#at-your-keyboard">At your keyboard</a></li>
             <li><a href="#verification">Verification</a></li>
             <li><a href="#whats-next-exercise-5-stock">What's next ? Exercise 5: Stock</a></li>
     </ul>
@@ -122,49 +124,105 @@
 
 <h1 id="exercise-4-stats-with-kafka">Exercise 4 : Stats with Kafka</h1>
 <p>Previously on HOMicS -&gt; <a href="../stats/">Exercise 3: Stats</a></p>
-<h3 id="context">Context</h3>
-<p>The previous solution has a considerable drawback, we have to add logic in the monolith and it's not really scallable.</p>
-<h3 id="goal">Goal</h3>
-<p>Replace this manual approch by using kafka. All the kafka config is already done for you. it's contained in the module <code>common-messaging</code>. </p>
-<p>common-lib -&gt; config kafka</p>
-<p>add the dependency to your pom:</p>
-<pre><code class="pom">&lt;!--All dependencies for kafka and messaging--&gt;
+<h2 id="context">Context</h2>
+<blockquote>
+<p><img alt="question" src="../../img/question.png" /> Do you remember what we said at the beginning about getting the monolith thinner?</p>
+</blockquote>
+<p>The previous solution has a considerable drawback. We had to add logic in the monolith and it's not really scalable. </p>
+<h2 id="a-word-on-kafka">A word on KAFKA</h2>
+<p><a href="https://kafka.apache.org/">Apache Kafka</a> is an event streaming platform capable of handling trillions of events a day.</p>
+<p>Initially conceived as a messaging queue by LinkedIn, Kafka is based on an abstraction of a distributed commit log.</p>
+<p>The main advantages of kafka are :</p>
+<ul>
+<li>High-throughput</li>
+<li>Low Latency</li>
+<li>Fault-Tolerant</li>
+<li>Scalability</li>
+<li>Distributed</li>
+</ul>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> We are using Kafka to produce, consume and store messages.</p>
+</blockquote>
+<h2 id="goal">Goal</h2>
+<p>We will change the exercise 3 but this time using kafka. No need for table and crawler anymore.</p>
+<p>When an order is payed, an event is sent.</p>
+<p>Kafka stores it until a consumer reads it.</p>
+<p>It's very convenient: our monolith doesn't have to battle with acknowledgment anymore.</p>
+<p>It's the stats microservice which will consume the message.</p>
+<h2 id="setup">Setup</h2>
+<ol>
+<li>
+<p>Install Docker et Docker-compose</p>
+<p>For this exercise we need to have a running instance of kafka. The easiest way is to launch it via docker. We can 
+then easily restart or reset it. You will find a docker-compose file already present.</p>
+<p>So first of all, download docker and start docker. Go back to the <a href="../user-guide/setup.md">Setup</a> page if needed.</p>
+</li>
+<li>
+<p>Clone the common-messaging project :</p>
+<pre><code>git clone https://github.com/homics/commons-messaging.git
+</code></pre>
+<p>This repository contains the kafka configuration for our project with the docker-compose file to launch it.</p>
+<p>We are using Spring for Apache Kafka. All the configuration for serializing, topic creation is done in the 
+common-messaging lib.</p>
+</li>
+<li>
+<p>Run kafka</p>
+<p>In <code>/tools/docker/kafka/</code>, the docker-compose file will launch an instance of <strong>zookeeper</strong> and <strong>kafka</strong>.
+To start kafka simply run :</p>
+<pre><code>cd /tools/docker/kafka/
+docker compose up
+</code></pre>
+<p>To stop </p>
+<pre><code>docker compose stop
+</code></pre>
+</li>
+</ol>
+<h2 id="at-your-keyboard">At your keyboard</h2>
+<ol>
+<li>
+<p>Add the common-messaging dependency to each project poms (<strong>monolith</strong> and <strong>stats</strong>):</p>
+<pre><code>&lt;!--All dependencies for kafka and messaging--&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;com.homics.commons-messaging&lt;/groupId&gt;
     &lt;artifactId&gt;commons-messaging&lt;/artifactId&gt;
     &lt;version&gt;1.0.0&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
-
+</li>
+<li>
+<p>Send a kafka message</p>
+<p>Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.</p>
 <p>To send a message with kafka :</p>
 <pre><code>  private KafkaTemplate&lt;String, OrderPayedMessage&gt; kafkaTemplate;
 
   Message&lt;OrderPayedMessage&gt; message = MessageBuilder
-                .withPayload(new OrderPayedMessage(1,1,&quot;user&quot;))
+                .withPayload(new OrderPayedMessage(1,1,"user"))
                 .setHeader(KafkaHeaders.TOPIC, TOPIC_STATS)
                 .build();
 
-        kafkaTemplate.send(message);
+  kafkaTemplate.send(message);
 </code></pre>
-
-<p>To retrive a message with kafka :</p>
-<pre><code>   @KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = &quot;statsMessageFactory&quot;)
+</li>
+<li>
+<p>In the microservice, retrieve the message with kafka :</p>
+<p>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
    public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
-
-    }
-</code></pre>
-
-<h3 id="steps">Steps</h3>
-<ol>
-<li>Checkout on exo4-kafka  on the stat repository.</li>
-<li>Listen to kafka and retrieve OrderPayedMessages.</li>
-<li>Save this message on the database</li>
-<li>On the monolith send OrderPayedMessages.</li>
-<li>Remove <code>StatsTask</code> and <code>OrderStat</code> table and the related code.</li>
+      ...
+   }</p>
+</li>
+<li>
+<p>Save this message into the database</p>
+</li>
+<li>
+<p>Back to the monolith, remove <code>StatsTask</code> and <code>OrderStat</code> table and the related code.</p>
+</li>
 </ol>
 <h2 id="verification">Verification</h2>
-<p>To verify that stat-activity is well implemented, launch th monolith, pass some orders.
-Then start the micro service and verify that the stats are here.</p>
+<p>To verify that <strong>stats with kafka</strong> is well implemented,
+- launch the monolith
+- pass some orders
+- start the microservice <strong>stats</strong>
+- verify that the stats are present and computed.</p>
 <h2 id="whats-next-exercise-5-stock">What's next ? <a href="../stock/">Exercise 5: Stock</a></h2></div>
         </div>
 
