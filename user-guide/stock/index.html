@@ -9,20 +9,20 @@
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
         <title>exercise 5 - Stock - HOMicS</title>
-    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
-    <link href="../../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../../css/base.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
-    <script src="../../js/jquery-1.10.2.min.js" defer></script>
-    <script src="../../js/bootstrap-3.3.7.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script> 
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
@@ -123,13 +123,13 @@
 <h1 id="exercise-5-stock">Exercise 5 : Stock</h1>
 <p>Previously on HOMicS -&gt; <a href="../kafka/">Exercise 4: Stats with Kafka</a></p>
 <h2 id="context">Context</h2>
-<p>Often when splitting microservice the question of transactions arises.
+<p>Often when splitting microservice, the question of transactions arises.
 Let's try to discover why through the extraction of the <strong>stock</strong> microservice.</p>
 <h3 id="about-the-stock-micro-service">About the stock micro-service</h3>
 <p>Stock modifications are often spread around a marketplace application. It could be modified from cart, refunds, or inventory.
 The stock microservice will store and update the stock for each article. </p>
 <h3 id="the-existing">The existing</h3>
-<p>Before the migration when we pay an order we follow these steps:</p>
+<p>Before the migration when we pay an order, we were executing the following steps:</p>
 <ol>
 <li>
 <p>Open transaction</p>
@@ -147,8 +147,8 @@ The stock microservice will store and update the stock for each article. </p>
 <p>Close the transaction</p>
 </li>
 </ol>
-<h3 id="classic-extraction">Classic extraction</h3>
-<p>Now if we extract the stock service, the steps become :</p>
+<h3 id="extract-it-into-a-microservice">Extract it into a microservice</h3>
+<p>If we extract the stock service in a microservice like we did before, the steps become :</p>
 <ol>
 <li>
 <p>Open transaction</p>
@@ -157,7 +157,7 @@ The stock microservice will store and update the stock for each article. </p>
 <p>Ask the micro service to impact the stock</p>
 </li>
 <li>
-<p>Wait the response</p>
+<p>Wait for the response</p>
 </li>
 <li>
 <p>Update the order status</p>
@@ -166,8 +166,10 @@ The stock microservice will store and update the stock for each article. </p>
 <p>Close the transaction</p>
 </li>
 </ol>
-<p>In this solution we wait for the microservice response.
-And it's bad! </p>
+<p>With this plan, you can see in step 3 that wait for the microservice response.</p>
+<blockquote>
+<p><img alt="warning" src="../../img/warning.png" /> It's pretty bad! </p>
+</blockquote>
 <p>We avoid this solution because you don't want our server to wait on other microservices.
 For example if the call to impact stock time out, your payment method just wait the whole time and so is your user. 
 So we change for asynchronous work.</p>
