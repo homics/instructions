@@ -166,13 +166,15 @@ The stock microservice will store and update the stock for each article. </p>
 <p>Close the transaction</p>
 </li>
 </ol>
-<p>With this plan, you can see in step 3 that wait for the microservice response.</p>
+<p>With this plan, you can see in step 3 that the monolith is waiting for the microservice response.</p>
 <blockquote>
 <p><img alt="warning" src="../../img/warning.png" /> It's pretty bad! </p>
 </blockquote>
-<p>We avoid this solution because you don't want our server to wait on other microservices.
-For example if the call to impact stock time out, your payment method just wait the whole time and so is your user. 
-So we change for asynchronous work.</p>
+<p>Imagine that the call to impact stock times out... </p>
+<p>Your payment method is going to wait the whole time and so is your user.</p>
+<blockquote>
+<p><img alt="tip" src="../../img/success.png" /> We need to change to asynchronous.</p>
+</blockquote>
 <h3 id="going-async">Going async</h3>
 <ol>
 <li>
@@ -184,6 +186,9 @@ So we change for asynchronous work.</p>
 <li>
 <p>Close the transaction</p>
 </li>
+</ol>
+<p>Then, we listen to the microservice event.</p>
+<ol>
 <li>
 <p>The microservice call the monolith when the stock is impacted</p>
 </li>
@@ -197,23 +202,25 @@ So we change for asynchronous work.</p>
 <p>Close the transaction</p>
 </li>
 </ol>
-<p>But what happens if the result of the microservice is "not enough stock" ?</p>
+<blockquote>
+<p><img alt="question" src="../../img/question.png" /> What happens if the result of the microservice is "not enough stock" ?</p>
+</blockquote>
 <p>We save the order as cancelled.</p>
 <h2 id="goal">Goal</h2>
-<p>Extract the stock micro service using kafka.
-So the workflow becomes:</p>
+<p>Extract the stock micro service using kafka.</p>
+<p>The workflow becomes:</p>
 <ol>
 <li>
 <p>An ImpactStockMessage is send to kafka</p>
 </li>
 <li>
-<p>The stock micro-service verify and then impact the article stock</p>
+<p>The stock micro-service verifies and then impacts the article stock</p>
 </li>
 <li>
 <p>A StockAcknowledgmentMessage is send with a status succeed or not</p>
 </li>
 <li>
-<p>The monolith consume this message and change the order status accordingly</p>
+<p>The monolith consumes the message and change the order status accordingly</p>
 </li>
 </ol>
 <h2 id="at-your-keyboard">At your keyboard</h2>
@@ -222,14 +229,15 @@ So the workflow becomes:</p>
 <p>Remove the stock column in the monolith</p>
 </li>
 <li>
-<p>Implement the payment workflow previously describe in <code>OrderService</code>. (Topics and messages are already setup in the common-messaging lib)</p>
+<p>Implement the payment workflow previously describe in <code>OrderService</code>.
+    (Topics and messages are already setup in the common-messaging lib)</p>
 </li>
 <li>
 <p>Implement the payment workflow on the micro service side in <code>StockController</code></p>
 </li>
 </ol>
 <h2 id="good-to-know">Good to know</h2>
-<p>When working with kafka we can choose the configuration to have either:</p>
+<p>When working with kafka, we can set the configuration to have either:</p>
 <ol>
 <li>
 <p>All messages received but with possible duplicates.</p>
@@ -238,10 +246,13 @@ So the workflow becomes:</p>
 <p>No duplicate but you can miss some messages.</p>
 </li>
 </ol>
-<p>Here we work with the first one. To do so all our messages are idempotent. 
-It means that the same message can be read multiple times and will give the same result. 
-For example in the stats as the orderId is unique the second message only update the data.</p>
-<p>We need to do the same here it's why we keep the <code>table StockOperation</code>.</p>
+<p>We are working with the first choice. It constrains us to have idempotent messages.</p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> Idempotent means that an action always gives the same result even if you played several times.</p>
+</blockquote>
+<p>In our case, the same message can be read multiple times and will give the same result. For example, in the stats microservice,
+the second message only updates the data since the orderId is unique.</p>
+<p>It explains why we keep the <code>table StockOperation</code>.</p>
 <h2 id="whats-next">What's next ?</h2>
 <p>Come see us at our stand and let us know what you though about the Hands On.</p>
 <p>Please your feedback means a lot to us. If you have 5 mins to spare, could you fill this
