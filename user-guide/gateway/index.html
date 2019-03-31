@@ -139,41 +139,30 @@ application will go through the gateway.</p>
 <p>Create the <strong>Gateway</strong> microservice responsible for all authentication and redirection. It's going to handle the
 authentication and redirect to the <strong>monolith</strong> or the <strong>user-activity</strong> microservice.</p>
 <p><img alt="gateway" src="../../img/gateway.png" /></p>
+<p>Everything has been implemented in other microservices. You only need to edit the gateway.</p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
 <ol>
 <li>
-<p>Use the final version for <strong>user-activity</strong></p>
-<pre><code># Checkout the branch final
-user-activity$ git checkout final
-# Compile the front and back
-user-activity$ mvn clean install
-# Run the user-activity microservice
-user-activity$ mvn spring-boot:run
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-2
 </code></pre>
-<p>You won't need to change anything on user. You can leave it running on the side.</p>
-</li>
-<li>
-<p>Setup the projects ... again</p>
-<p>Let's change the branch for the <strong>monolith</strong>.</p>
-<pre><code>monolith $ git checkout exo2-gateway
+<p>There is a new folder for the gateway microservice. You are not going to start from scratch but you will need
+to implement some part of it.</p>
+<p>Start the gateway:</p>
+<pre><code>mvn spring-boot:run -pl gateway
 </code></pre>
-<p>You can clone the repository for the gateway.</p>
-<pre><code>git clone https://github.com/homics/gateway.git
-</code></pre>
-<p>Same as before, some <em>TODO</em> are left in the code that you will need to fill.</p>
-<blockquote>
-<p><img alt="warning" src="../../img/warning.png" /> I think you remember this but let's do it again: <code>mvn clean install</code> to compile the
-front especially if you use an IDE. </p>
-</blockquote>
+<p>Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.</p>
 </li>
 <li>
 <p>Application.yaml</p>
 <p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
 <p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix that is an edge service that provides dynamic
 routing, monitoring, resiliency, security, and more. Spring integrated it in <strong>Spring Cloud</strong>.</p>
-<pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-  &lt;artifactId&gt;spring-cloud-starter-zuul&lt;/artifactId&gt;
+<pre><code>&lt;!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-zuul --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
+    &lt;version&gt;2.1.1.RELEASE&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
 <p>You will need to set it up in your <code>application.yaml</code>.</p>
@@ -183,20 +172,8 @@ routing, monitoring, resiliency, security, and more. Spring integrated it in <st
 </blockquote>
 </li>
 <li>
-<p>Update the <code>WebSecurityConfig</code></p>
-<p>Check the configuration from the monolith. It should be quite identical. You might have to remove some <code>/mono</code>.</p>
-</li>
-<li>
-<p>Move authentication</p>
-<blockquote>
-<p><img alt="question" src="../../img/question.png" /> You remember what the Gateway is all about?</p>
-</blockquote>
-<p>Security and authentication, yes!</p>
-<p>You already worked on the security when you updated the <code>WebSecurityConfig</code>.</p>
-<p>Let's take care of the authentication. Don't be afraid, you basically need to move your files from the monolith to
-your gateway. Not too difficult.</p>
-<p>Now, your <strong>Gateway</strong> is going to take care of the login and will send an event to <strong>user-activity</strong> when there is a successful
-login or logout.</p>
+<p>Enable Zuul</p>
+<p>Checkout the second <em>TODO</em> to enable the Zuul Routing.</p>
 </li>
 <li>
 <p>Logged user information</p>
@@ -204,25 +181,22 @@ login or logout.</p>
 connected user.</p>
 <p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
 </li>
-<li>
-<p>Edit the <code>UserFilter</code> to retrieve this information in the <strong>monolith</strong>.</p>
-</li>
 </ol>
 <blockquote>
-<p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, you need to change the port for the monolith to 8090. </p>
+<p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, the port for the monolith has been changed to 8090. </p>
 </blockquote>
 <h2 id="monolith-database">Monolith database</h2>
 <p>You can access the <strong>monolith</strong> database console via the following <a href="http://localhost:8090/console">url</a>.</p>
 <h2 id="verification">Verification</h2>
 <p>To verify that gateway is well implemented, launch all the applications:</p>
 <pre><code class="bash"># Run monolith project
-monolith$ mvn spring-boot:run
+mvn spring-boot:run -pl monolith
 
 # Run user-activity project
-user-activity$ mvn spring-boot:run
+mvn spring-boot:run -pl user-activity
 
 # Run Gateway project
-gateway$ mvn spring-boot:run
+mvn spring-boot:run -pl gateway
 </code></pre>
 
 <p>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should be on the gateway. After logging, you should be

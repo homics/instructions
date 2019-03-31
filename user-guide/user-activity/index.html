@@ -114,6 +114,7 @@
             <li><a href="#context">Context</a></li>
             <li><a href="#goal">Goal</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
+        <li class="main "><a href="#12-connect-the-monolith">1.2 - Connect the monolith:</a></li>
             <li><a href="#database">Database</a></li>
             <li><a href="#verification">Verification</a></li>
             <li><a href="#troubleshooting">Troubleshooting</a></li>
@@ -127,8 +128,8 @@
 <h2 id="context">Context</h2>
 <p>In our application, we track user activity on log in and log out. This functionality is already implemented in the 
 monolith codebase. </p>
-<p>In <code>WebSecurityConfig</code>, you can find two classes <code>CustomizeAuthenticationSuccessHandler</code> and 
-<code>CustomizedLogoutSuccessHandler</code>. Those classes implement some <strong>Spring Security</strong> interfaces to define a strategy used to 
+<p>In <code>WebSecurityConfig</code>, you can find two classes <code>CustomAuthenticationSuccessHandler</code> and 
+<code>CustomLogoutSuccessHandler</code>. Those classes implement some <strong>Spring Security</strong> interfaces to define a strategy used to 
 handle a successful user authentication or logout. In our case, they call the <code>UserActivityService</code> which save the event
 in database through it <code>UserActivityRepository</code>.</p>
 <blockquote>
@@ -138,45 +139,75 @@ in database through it <code>UserActivityRepository</code>.</p>
 <p>The front fetches those events for display through an internal API in <code>UserActivityInternalController</code>.</p>
 <h2 id="goal">Goal</h2>
 <p>We are going to create a new service in charge of user activities. Let's be inventive and call it: user-activity.
-It will store all users activities in its own database and display the information on a dedicated page. The monolith
+It will store every user activities in its own database and display the information on a dedicated page. The monolith
 will call this micro-service via API to notify on a success login or success logout.</p>
 <p><img alt="user-activity" src="../../img/user-activity.png" /></p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
+<h3 id="11-user-microservice">1.1 - User microservice:</h3>
 <ol>
 <li>
-<p>Setup the projects</p>
-<p>We are going back and forth between two projects: <strong>monolith</strong> and <strong>user-activity</strong>. First of all, clone the
-existing <strong>user-activity</strong> project from github where we set up the first exercise:</p>
-<pre><code>git clone https://github.com/homics/user-activity.git
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-1
 </code></pre>
-<p><em>TODO</em> are left in the code that you need to be filled.</p>
-<p>Change the branch on the monolith to <code>exo1-user</code>:</p>
-<pre><code>monolith $ git checkout exo1-user
+<p>There is a new folder for the user-activity microservice. You are not going to start from scratch but you will need
+to implement some of the API.</p>
+</li>
+<li>
+<p>In your favorite IDE, open the file <code>UserActivityApiController</code> to complete the first <em>TODO</em></p>
+<p>You need to register any activity send via the new API <code>/user/api/activity</code>.</p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> You will need to use <code>@PostMapping</code> with <code>@RequestBody</code> to extract the right DTO.</p>
+<p><img alt="warning" src="../../img/warning.png" /> The <code>@RequestMapping</code> already specified the <code>/user/api</code></p>
+</blockquote>
+</li>
+<li>
+<p>Run the user-activity project via the following command to access the microservice via <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a>:</p>
+<pre><code>mvn spring-boot:run -pl user-activity
 </code></pre>
-<blockquote>
-<p><img alt="warning" src="../../img/warning.png" /> Do not forget to recompile the full project via <code>mvn clean install</code> to compile the 
-front especially if you use an IDE. </p>
-</blockquote>
+<p>You should see your microservice up. The <strong>User Activity micro</strong> tab works but any other tabs return a 404. It's logic
+since the monolith is the one providing those pages but it isn't up.</p>
 </li>
 <li>
-<p>Edit user-activity application.yaml</p>
-<p>You need to configure the <code>application.yaml</code> so the microservice has a database, and run on port 9001.</p>
-<p>Check the <code>application.yaml</code> in the monolith to learn how to specify your database. Name the database <code>dbuser</code>.</p>
-<blockquote>
-<p><img alt="tip" src="../../img/success.png" /> For the port, check out
-<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html">this</a>.</p>
-</blockquote>
+<p>Call the api via the following command to set an activity:</p>
+<pre><code>curl -d '{"username":"admin", "activityType":"LOGIN", "activityDate":"20190101"}' -X POST http://localhost:9001/user/api/activity
+</code></pre>
+<p>A COMPLETER ET TESTER</p>
 </li>
 <li>
-<p>Complete <code>UserActivityApiController</code> &amp; <code>UserActivityInternalController</code></p>
-<p>For <code>UserActivityInternalController</code>, you need to add a post API to register the activity sent by the monolith.</p>
+<p>Start the monolith:</p>
+<pre><code>mvn spring-boot:run -pl monolith
+</code></pre>
+<p>You realize that you have an error like the following :</p>
+<pre><code>2019-03-31 18:20:56.600 ERROR 10837 --- [  restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   :
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The Tomcat connector configured to listen on port 8080 failed to start. The port may already be in use or the connector may be misconfigured.
+
+Action:
+
+Verify the connector's configuration, identify and stop any process that's listening on port 8080, or configure this application to listen on another port.
+</code></pre>
+<p>Since the two services are started on the same port, it makes sense. Let's change the port for user-activity</p>
+<p>Open the file application.yaml and complete the TODO 1.1.4 to change the server port to 9001</p>
+<p>Restart your app and everything is in order except that login and logout from the monolith doesn't add anything to
+your microservice. Oo </p>
 <blockquote>
-<p><img alt="tip" src="../../img/success.png" /> The DTO is already implemented: <code>UserActivityDto</code>. Use it.</p>
+<p><img alt="question" src="../../img/question.png" /> How does the monolith discuss with the User microservice?</p>
 </blockquote>
 </li>
+</ol>
+<h1 id="12-connect-the-monolith">1.2 - Connect the monolith:</h1>
+<ol>
 <li>
-<p>Complete <code>UserActivityService</code></p>
-<p>You are asked to save and fetch user activities coming down from your controllers. Nothing fancy...</p>
+<p>Complete the first <em>TODO</em> by editing the <code>post()</code> method to execute a <strong>restTemplate</strong> call.</p>
+</li>
+<li>
+<p>Change the two methods called by the monolith to send the data. </p>
 </li>
 <li>
 <p>Clean monolith:</p>
@@ -184,15 +215,7 @@ front especially if you use an IDE. </p>
 <blockquote>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
 </blockquote>
-<p>Yeah, the monolith is already thinner. But it's not over since the monolith does not speak with 
-<strong>user-activity</strong>.</p>
-<p>On the monolith, edit <code>CustomizeAuthenticationSuccessHandler</code> and <code>CustomizedLogoutSuccessHandler</code> so the monolith
-call the microservice on each login and logout success.</p>
-<blockquote>
-<p><img alt="tip" src="../../img/success.png" /> You should use:</p>
-<pre><code>  restTemplate.postForEntity(USER_ACTIVITY_URL, userActivity, Void.class);
-</code></pre>
-</blockquote>
+<p>Follow the 1.2.3 <em>TODO</em>.</p>
 </li>
 </ol>
 <p>Great, you just created your first microservice and connected it to your monolith. Not too bad.</p>
@@ -201,10 +224,10 @@ call the microservice on each login and logout success.</p>
 <h2 id="verification">Verification</h2>
 <p>To verify that user-activity is well implemented, launch both applications:</p>
 <pre><code class="bash"># Run monolith project
-monolith$ mvn spring-boot:run
+mvn spring-boot:run -pl monolith
 
 # Run user-activity project
-user-activity$ mvn spring-boot:run
+mvn spring-boot:run -pl user-activity
 </code></pre>
 
 <p>Access and login to the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
