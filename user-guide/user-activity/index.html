@@ -169,9 +169,8 @@ since the monolith is the one providing those pages but it isn't up.</p>
 </li>
 <li>
 <p>Call the api via the following command to set an activity:</p>
-<pre><code>curl -d '{"username":"admin", "activityType":"LOGIN", "activityDate":"20190101"}' -X POST http://localhost:9001/user/api/activity
+<pre><code>curl -d '{"username":"admin", "activityType":"LOGIN", "activityDate":"2019-04-18T15:00:00.000Z"}' -H "content-type: application/json" -X POST http://localhost:9001/user/api/activity
 </code></pre>
-<p>A COMPLETER ET TESTER</p>
 </li>
 <li>
 <p>Start the monolith:</p>
