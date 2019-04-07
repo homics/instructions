@@ -149,14 +149,13 @@
 <p>When an order is payed, an event is sent.</p>
 <p>Kafka stores it until a consumer reads it.</p>
 <p>It's very convenient: our monolith doesn't have to battle with acknowledgment anymore.</p>
-<p>It's the stats microservice which will consume the message.</p>
+<p>It's the stats microservice which consumes the message.</p>
 <p><img alt="stats-kafka" src="../../img/stats-kafka.png" /></p>
 <h2 id="setup">Setup</h2>
 <ol>
 <li>
-<p>Install Docker et Docker-compose</p>
-<p>For this exercise we need to have a running instance of kafka. The easiest way is to launch it via docker. We can 
-then easily restart or reset it. You will find a docker-compose file already present.</p>
+<p>Before implementing anything, for this exercise, we need to have a running instance of kafka. The easiest way is to launch
+it via docker. We can then easily restart or reset it. You will find a docker-compose file already present.</p>
 <p>So first of all, download docker and start docker. Go back to the <a href="../../setup/">Setup</a> page if needed.</p>
 </li>
 <li>
@@ -180,17 +179,12 @@ docker compose up
 </li>
 </ol>
 <h2 id="at-your-keyboard">At your keyboard</h2>
+<p>You can start by checking out the branch for the fourth exercise: <code>git checkout exercise-4</code>. This exercise is split in
+two parts.</p>
+<p>First, you will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
+<p>Secondly, you will consume messaging on the <strong>Stats</strong> microservices.</p>
+<h3 id="producing-kafka-messaging-with-the-monolith">Producing kafka messaging with the Monolith</h3>
 <ol>
-<li>
-<p>Add the common-messaging dependency to each project poms (<strong>monolith</strong> and <strong>stats</strong>):</p>
-<pre><code>&lt;!--All dependencies for kafka and messaging--&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;com.homics.commons-messaging&lt;/groupId&gt;
-    &lt;artifactId&gt;commons-messaging&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-</li>
 <li>
 <p>Send a kafka message</p>
 <p>Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.</p>
@@ -206,6 +200,17 @@ docker compose up
 </code></pre>
 </li>
 <li>
+<p>Verify that you sent a kafka message</p>
+<p>You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
+to run the following command:</p>
+<pre><code>docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STATS --from-beginning
+</code></pre>
+<p>You should see the previous carts you payed.  </p>
+</li>
+</ol>
+<h3 id="consuming-kafka-messaging-with-the-stats-microservice">Consuming kafka messaging with the Stats microservice</h3>
+<ol>
+<li>
 <p>In the microservice, retrieve the message with kafka :</p>
 <p>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
    public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
@@ -215,16 +220,27 @@ docker compose up
 <li>
 <p>Save this message into the database</p>
 </li>
-<li>
-<p>Back to the monolith, remove <code>StatsTask</code> and <code>OrderStat</code> table and the related code.</p>
-</li>
 </ol>
 <h2 id="verification">Verification</h2>
-<p>To verify that <strong>stats with kafka</strong> is well implemented,
-- launch the monolith
-- pass some orders
-- start the microservice <strong>stats</strong>
-- verify that the stats are present and computed.</p>
+<p>To verify that <strong>stats</strong> is well implemented, launch the gateway, and the monolith applications:</p>
+<pre><code class="bash"># Run gateway project
+mvn spring-boot:run -pl gateway
+
+# Run monolith project
+mvn spring-boot:run -pl monolith
+</code></pre>
+
+<p>Login to the application on the <a href="http://localhost:8080/login">login page</a>. Create two carts and pay for them.</p>
+<p>You see a 404 page on the <em>Stats Micro</em> tab. The <strong>stats</strong> microservice isn't up and running at that point. This behaviour
+makes sense.</p>
+<p>Now, start the microservice <strong>Stats</strong>:</p>
+<pre><code class="bash"># Run stats project
+mvn spring-boot:run -pl stats
+</code></pre>
+
+<p>Navigate to the <em>Stats Micro</em> tab. You should see the same page than before with the stats from the previous two orders.
+All the stats should be retrieved. If you don't see them, refresh few times to let the monolith discuss with the microservice </p>
+<p>It's exactly the same actions than exercise 3.</p>
 <p><img alt="stats" src="../../img/stats-micro.gif" /></p>
 <h2 id="whats-next-exercise-5-stock">What's next ? <a href="../stock/">Exercise 5: Stock</a></h2></div>
         </div>
