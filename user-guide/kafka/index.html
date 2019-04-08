@@ -206,10 +206,10 @@ to run the following command:</p>
 <ol>
 <li>
 <p>In the microservice, retrieve the message with kafka :</p>
-<pre><code>    @KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
-    public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
+<pre><code>  @KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
+  public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
           ...
-    }
+  }
 </code></pre>
 </li>
 <li>
