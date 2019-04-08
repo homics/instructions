@@ -157,11 +157,9 @@
 <p>Before implementing anything, for this exercise, we need to have a running instance of kafka. The easiest way is to launch
 it via docker. We can then easily restart or reset it. You will find a docker-compose file already present.</p>
 <p>So first of all, download docker and start docker. Go back to the <a href="../../setup/">Setup</a> page if needed.</p>
-</li>
-</ol>
 <p>We are using Spring for Apache Kafka. All the configuration for serializing, topic creation is done in the 
-common-messaging lib.</p>
-<ol>
+common-messaging lib. If you want to check it out, go on github in the HOMicS project.</p>
+</li>
 <li>
 <p>Run kafka</p>
 <p>In <code>/tools/docker/kafka/</code>, the docker-compose file will launch an instance of <strong>zookeeper</strong> and <strong>kafka</strong>.
@@ -208,10 +206,11 @@ to run the following command:</p>
 <ol>
 <li>
 <p>In the microservice, retrieve the message with kafka :</p>
-<p>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
-   public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
+<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
+public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
       ...
-   }</p>
+}
+</code></pre>
 </li>
 <li>
 <p>Save this message into the database</p>
