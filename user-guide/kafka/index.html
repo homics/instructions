@@ -158,24 +158,20 @@
 it via docker. We can then easily restart or reset it. You will find a docker-compose file already present.</p>
 <p>So first of all, download docker and start docker. Go back to the <a href="../../setup/">Setup</a> page if needed.</p>
 </li>
-<li>
-<p>Clone the common-messaging project :</p>
-<pre><code>git clone https://github.com/homics/commons-messaging.git
-</code></pre>
-<p>This repository contains the kafka configuration for our project with the docker-compose file to launch it.</p>
+</ol>
 <p>We are using Spring for Apache Kafka. All the configuration for serializing, topic creation is done in the 
 common-messaging lib.</p>
-</li>
+<ol>
 <li>
 <p>Run kafka</p>
 <p>In <code>/tools/docker/kafka/</code>, the docker-compose file will launch an instance of <strong>zookeeper</strong> and <strong>kafka</strong>.
 To start kafka simply run :</p>
-<pre><code>cd /tools/docker/kafka/
+<pre><code>cd commons-messaging
 docker compose up
 </code></pre>
-<p>To stop </p>
-<pre><code>docker compose stop
-</code></pre>
+<p>To stop 
+    cd commons-messaging
+    docker compose stop</p>
 </li>
 </ol>
 <h2 id="at-your-keyboard">At your keyboard</h2>
