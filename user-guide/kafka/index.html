@@ -183,12 +183,15 @@ two parts.</p>
 <p>Send a kafka message</p>
 <p>Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.</p>
 <p>To send a message with kafka :</p>
-<p>private KafkaTemplate<String, OrderPayedMessage> kafkaTemplate;</p>
-<p>Message<OrderPayedMessage> message = MessageBuilder
-                    .withPayload(new OrderPayedMessage(1,1,"user"))
-                    .setHeader(KafkaHeaders.TOPIC, TOPIC_STATS)
-                    .build();</p>
-<p>kafkaTemplate.send(message);</p>
+<pre><code>private KafkaTemplate&lt;String, OrderPayedMessage&gt; kafkaTemplate;
+
+Message&lt;OrderPayedMessage&gt; message = MessageBuilder
+                .withPayload(new OrderPayedMessage(1,1,"user"))
+                .setHeader(KafkaHeaders.TOPIC, TOPIC_STATS)
+                .build();
+
+kafkaTemplate.send(message);
+</code></pre>
 </li>
 <li>
 <p>Verify that you sent a kafka message</p>
@@ -203,10 +206,11 @@ to run the following command:</p>
 <ol>
 <li>
 <p>In the microservice, retrieve the message with kafka :</p>
-<p>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
-  public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
-              ...
-  }</p>
+<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
+public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
+          ...
+}
+</code></pre>
 </li>
 <li>
 <p>Save this message into the database</p>
