@@ -131,11 +131,7 @@ the monolith architecture and what composed it.</p>
 <p>The application is using <strong>SpringBoot</strong> with <strong>Spring Data JPA</strong> and <strong>Spring Security</strong> for the back. The database is 
 a <strong>h2</strong> and the front is implemented in <strong>React</strong>.</p>
 <p>You won't need to interact with the front. It's already implemented for each exercise in this HandsOn. You will only play
-with the back. Keep in mind that you will need to recompile the front everytime you fetch a new exercise via the following
-command but no worries, we will put some reminders:</p>
-<pre><code class="bash">mvn clean install
-</code></pre>
-
+with the back.</p>
 <h2 id="steps">Steps:</h2>
 <ol>
 <li>
@@ -143,10 +139,6 @@ command but no worries, we will put some reminders:</p>
 <p>To run your monolith, clone the repository via the following command:</p>
 <pre><code>git clone https://github.com/homics/handson.git
 </code></pre>
-<p>Build your project:</p>
-<pre><code>mvn clean install
-</code></pre>
-<p>This will compute your front and back into a single application.</p>
 <p>Start your application (if you are using an IDE such as IntelliJ, you can run the application through it) :</p>
 <pre><code>mvn spring-boot:run -pl monolith
 </code></pre>

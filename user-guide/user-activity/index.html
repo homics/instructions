@@ -117,7 +117,6 @@
         <li class="main "><a href="#12-connect-the-monolith">1.2 - Connect the monolith:</a></li>
             <li><a href="#database">Database</a></li>
             <li><a href="#verification">Verification</a></li>
-            <li><a href="#troubleshooting">Troubleshooting</a></li>
             <li><a href="#whats-next-exercise-2-gateway">What's next ? Exercise 2: Gateway</a></li>
     </ul>
 </div></div>
@@ -179,7 +178,9 @@ since the monolith is the one providing those pages but it isn't up.</p>
 <p>Start the monolith:</p>
 <pre><code>mvn spring-boot:run -pl monolith
 </code></pre>
-<p>You realize that you have an error like the following :</p>
+<blockquote>
+<p><img alt="error" src="../../img/error.png" /> You realize that you have an error like the following :</p>
+</blockquote>
 <pre><code>2019-03-31 18:20:56.600 ERROR 10837 --- [  restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   :
 
 ***************************
@@ -235,11 +236,6 @@ mvn spring-boot:run -pl user-activity
 <p>Access and login to the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
 should see the same table than before.</p>
 <p><img alt="user-activity" src="../../img/user-activity-micro.png" /></p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<blockquote>
-<p><img alt="troubleshooting" src="../../img/error.png" /> If you have a 404 error, your front might not be compiled on your microservice.
-You remember our reminder on compiling it. Let's do it again here and run <code>mvn clean install</code>.</p>
-</blockquote>
 <h2 id="whats-next-exercise-2-gateway">What's next ? <a href="../gateway/">Exercise 2: Gateway</a></h2></div>
         </div>
 
