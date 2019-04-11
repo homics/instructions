@@ -4,6 +4,8 @@
 
 All the code for this HandsOn is hosted on github under the [homics](https://github.com/homics) project. 
 
+You will need to install the `git` command line to checkout the code base and follow the HandsOn.
+
 ## **Java** & **Maven**
 
 ![java](img/java.png) ![maven](img/maven.png)
