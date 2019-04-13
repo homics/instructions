@@ -16,29 +16,29 @@ The stock microservice will store and update the stock for each article.
 
 Before the migration when we pay an order, we were executing the following steps:
 
-1. Open transaction
+* Open transaction
 
-2. Check the stock
+* Check the stock
 
-3. Impact the stock
+* Impact the stock
 
-4. Update the order status
+* Update the order status
 
-5. Close the transaction
+* Close the transaction
 
 ### Extract it into a microservice
 
 If we extract the stock service in a microservice like we did before, the steps become :
 
-1. Open transaction
+* Open transaction
 
-2. Ask the micro service to impact the stock
+* Ask the micro service to impact the stock
 
-3. Wait for the response
+* Wait for the response
 
-4. Update the order status
+* Update the order status
 
-5. Close the transaction
+* Close the transaction
 
 With this plan, you can see in step 3 that the monolith is waiting for the microservice response.
 
@@ -52,22 +52,21 @@ Your payment method is going to wait the whole time and so is your user.
 
 ### Going async
 
+* Open transaction
 
-1. Open transaction
+* Ask the micro service to impact the stock
 
-2. Ask the micro service to impact the stock
-
-3. Close the transaction
+* Close the transaction
 
 Then, we listen to the microservice event.
 
-1. The microservice call the monolith when the stock is impacted
+* The microservice call the monolith when the stock is impacted
 
-2. Open transaction
+* Open transaction
 
-3. Update the order status
+* Update the order status
 
-4. Close the transaction
+* Close the transaction
 
 
 > ![question](../img/question.png) What happens if the result of the microservice is "not enough stock" ?
@@ -80,25 +79,75 @@ Extract the stock micro service using kafka.
 
 The workflow becomes:
 
-1. An ImpactStockMessage is send to kafka
+* An ImpactStockMessage is send to kafka
+ 
+* The stock micro-service verifies and then impacts the article stock
 
-2. The stock micro-service verifies and then impacts the article stock
+* A StockAcknowledgmentMessage is send with a status succeed or not
 
-3. A StockAcknowledgmentMessage is send with a status succeed or not
-
-4. The monolith consumes the message and change the order status accordingly
+* The monolith consumes the message and change the order status accordingly
 
 ![stock](../img/stock.png)
 
 ## At your keyboard
 
-1. Remove the stock column in the monolith
+Checkout the branch: 
+        
+    git checkout exercise-5
 
-2. Implement the payment workflow previously describe in `OrderService`.
-    (Topics and messages are already setup in the common-messaging lib)
+This exercise is split in three parts.
 
-3. Implement the payment workflow on the micro service side in `StockController`
+1. You will edit the **Monolith** to remove the stock and send a message when paying the order to decrease the stock.
 
+2. You will consume the messages in the **Stock** microservice to decrease the stock and answer with a new message for
+acknowledgement.
+
+3. Go back to the **Monolith** and consume the answer from **Stock** and perform the stats if success.
+
+### 5.1 - Monolith
+
+1. Remove the stock column in the Article entity.
+
+2. Remove the stock validation and call the StockService.
+
+3. Implement the method to send a kafka message to the **Stock** microservice
+
+### 5.2 - Stock
+
+1. Consume the message and call the stock service.
+
+2. Verify that the operation wasn't already process to keep an idempotent process.
+
+3. Notify by calling the right method to acknowledge the changes on stock.
+
+4. Notify by sending a message to kafka that stock could NOT be modified.
+
+5. Save the operation as processed so it won't be process several times.
+
+6. Notify by sending a message to kafka that stock was modified successfully.
+
+### 5.3 - Monolith
+
+1. Depending on the message sent by **Stock** for acknowledgement, set the status for the order (_PAYED_
+or _CANCEL_)
+
+2. In case of success, update the stats and notify the stats microservice.
+
+## List of _TODOs_
+
+5.1.1 - file com.homics.monolith.model.Article
+
+5.1.2 - file com.homics.monolith.service.OrderService
+
+5.1.3 - file com.homics.monolith.service.StockService
+
+5.2.1 - file com.homics.stock.service.ImpactStockConsumer
+
+5.2.(2/3/4/5) - file com.homics.stock.service.StockService
+
+5.2.6 - file com.homics.stock.service.StockAcknowledgmentProducer
+
+5.3.(1/2) - file com.homics.monolith.service.OrderService
 
 ## Good to know
 
@@ -116,12 +165,17 @@ In our case, the same message can be read multiple times and will give the same 
 the second message only updates the data since the orderId is unique.
 
 It explains why we keep the `table StockOperation`.
-  
+
+## Congratulations
+
+You finish this Hands On in time. We want to thank you for coming and hopefully, you learnt a lot and are happy with the
+content of this Hands On.
+
 ## What's next ?
 
 Come see us at our stand and let us know what you though about the Hands On.
 
-Please your feedback means a lot to us. If you have 5 mins to spare, could you fill this
+Please your feedback means a lot to us. If you have 5 minutes to spare, could you fill this.
 [survey](https://docs.google.com/forms/d/1VAbfBPXvYej24ciUkATdY9dSuQVxMxfBG3psfe4mQoo/edit)
 
 Thank you. 

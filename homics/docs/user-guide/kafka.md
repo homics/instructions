@@ -55,22 +55,27 @@ it via docker. We can then easily restart or reset it. You will find a docker-co
     In `/tools/docker/kafka/`, the docker-compose file will launch an instance of **zookeeper** and **kafka**.
     To start kafka simply run :
 
-        cd commons-messaging && docker compose up
+        cd commons-messaging
+        docker-compose up
     
     To stop 
     
-        cd commons-messaging && docker compose stop
+        cd commons-messaging
+        docker-compose stop
 
 ## At your keyboard
 
-You can start by checking out the branch for the fourth exercise: `git checkout exercise-4`. This exercise is split in
-two parts.
+Checkout the branch: 
+        
+    git checkout exercise-4
 
-First, you will edit the **Monolith** to send a message to kafka when an order is payed.
+This exercise is split in two parts.
 
-Secondly, you will consume messaging on the **Stats** microservices.
+1. You will edit the **Monolith** to send a message to kafka when an order is payed.
 
-### Producing kafka messaging with the Monolith
+2. You will consume the messages in the **Stats** microservice.
+
+### 4.1 - Monolith
 
 1. Send a kafka message
 
@@ -87,16 +92,18 @@ Secondly, you will consume messaging on the **Stats** microservices.
         
         kafkaTemplate.send(message);
 
-2. Verify that you sent a kafka message
+    **Checklist** 
+    
+    1. Verify that you sent a kafka message
 
-    You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
-    to run the following command:
+        You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
+        to run the following command:
+    
+            docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STATS --from-beginning
+    
+        You should see the previous carts you payed.  
 
-        docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STATS --from-beginning
-
-    You should see the previous carts you payed.  
-
-### Consuming kafka messaging with the Stats microservice
+### 4.2 - Stats
 
 1. In the microservice, retrieve the message with kafka :
 
@@ -107,7 +114,13 @@ Secondly, you will consume messaging on the **Stats** microservices.
 
 2. Save this message into the database
 
-## Verification
+## List of _TODOs_
+
+4.1.1 - file com.homics.monolith.service.StatsService
+
+4.2.(1/2) - file com.homics.stats.service.OrderStatsService
+
+## Verification and results
 
 To verify that **stats** is well implemented, launch the gateway, and the monolith applications:
 

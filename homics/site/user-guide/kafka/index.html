@@ -82,6 +82,9 @@
                                 </ul>
                             </li>
                             <li >
+                                <a href="../../troubleshooting/">Troubleshooting</a>
+                            </li>
+                            <li >
                                 <a href="../../about/">About</a>
                             </li>
                         </ul>
@@ -116,7 +119,8 @@
             <li><a href="#goal">Goal</a></li>
             <li><a href="#setup">Setup</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
-            <li><a href="#verification">Verification</a></li>
+            <li><a href="#list-of-todos">List of TODOs</a></li>
+            <li><a href="#verification-and-results">Verification and results</a></li>
             <li><a href="#whats-next-exercise-5-stock">What's next ? Exercise 5: Stock</a></li>
     </ul>
 </div></div>
@@ -164,19 +168,29 @@ common-messaging lib. If you want to check it out, go on github in the HOMicS pr
 <p>Run kafka</p>
 <p>In <code>/tools/docker/kafka/</code>, the docker-compose file will launch an instance of <strong>zookeeper</strong> and <strong>kafka</strong>.
 To start kafka simply run :</p>
-<pre><code>cd commons-messaging &amp;&amp; docker compose up
+<pre><code>cd commons-messaging
+docker-compose up
 </code></pre>
 <p>To stop </p>
-<pre><code>cd commons-messaging &amp;&amp; docker compose stop
+<pre><code>cd commons-messaging
+docker-compose stop
 </code></pre>
 </li>
 </ol>
 <h2 id="at-your-keyboard">At your keyboard</h2>
-<p>You can start by checking out the branch for the fourth exercise: <code>git checkout exercise-4</code>. This exercise is split in
-two parts.</p>
-<p>First, you will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
-<p>Secondly, you will consume messaging on the <strong>Stats</strong> microservices.</p>
-<h3 id="producing-kafka-messaging-with-the-monolith">Producing kafka messaging with the Monolith</h3>
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-4
+</code></pre>
+<p>This exercise is split in two parts.</p>
+<ol>
+<li>
+<p>You will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
+</li>
+<li>
+<p>You will consume the messages in the <strong>Stats</strong> microservice.</p>
+</li>
+</ol>
+<h3 id="41-monolith">4.1 - Monolith</h3>
 <ol>
 <li>
 <p>Send a kafka message</p>
@@ -191,7 +205,8 @@ Message&lt;OrderPayedMessage&gt; message = MessageBuilder
 
 kafkaTemplate.send(message);
 </code></pre>
-</li>
+<p><strong>Checklist</strong> </p>
+<ol>
 <li>
 <p>Verify that you sent a kafka message</p>
 <p>You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
@@ -201,7 +216,9 @@ to run the following command:</p>
 <p>You should see the previous carts you payed.  </p>
 </li>
 </ol>
-<h3 id="consuming-kafka-messaging-with-the-stats-microservice">Consuming kafka messaging with the Stats microservice</h3>
+</li>
+</ol>
+<h3 id="42-stats">4.2 - Stats</h3>
 <ol>
 <li>
 <p>In the microservice, retrieve the message with kafka :</p>
@@ -215,7 +232,10 @@ public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) 
 <p>Save this message into the database</p>
 </li>
 </ol>
-<h2 id="verification">Verification</h2>
+<h2 id="list-of-todos">List of <em>TODOs</em></h2>
+<p>4.1.1 - file com.homics.monolith.service.StatsService</p>
+<p>4.2.(1/2) - file com.homics.stats.service.OrderStatsService</p>
+<h2 id="verification-and-results">Verification and results</h2>
 <p>To verify that <strong>stats</strong> is well implemented, launch the gateway, and the monolith applications:</p>
 <pre><code class="bash"># Run gateway project
 mvn spring-boot:run -pl gateway

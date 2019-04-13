@@ -31,7 +31,18 @@ In terms of architecture:
 Checkout the branch
 
     git checkout exercise-3
-        
+
+Start the gateway and the two services stats and user-activity:
+
+    # gateway
+    mvn spring-boot:run -pl gateway
+    # stats
+    mvn spring-boot:run -pl stats
+    # user-activity
+    mvn spring-boot:run -pl user-activity
+
+### 3 - Monolith
+
 1. Open the `StatsService` and complete the first _TODO_:
     
     You need to save an `orderPayMessage` in the database.
@@ -48,7 +59,7 @@ Checkout the branch
 
 3. Come back to `StatsService`:
 
-    The last implemtation on your part is to complete the two methods `sendStats` and `sendStat`.
+    The last implementation on your part is to complete the two methods `sendStats` and `sendStat`.
     
     The `sendStats()` fetches all orderStats in database, then sends them to the microservice using the `restTemplate`.
     You already worked with this template in exercise 1. If you are lost, check it out again.
@@ -62,11 +73,24 @@ Checkout the branch
 
 4. Clean the stats implementation that is not required anymore in the monolith.
 
+## List of _TODOs_
+
+3.1 - file com.homics.monolith.service.StatsService
+
+3.2 - file com.homics.monolith.task.StatsTask
+
+3.3 - file com.homics.monolith.service.StatsService
+
+3.4 - 
+
+* file com.homics.monolith.service.OrderService
+* file com.homics.monolith.controller.dto.OrderStatsDto
+
 ## Database
 
 You can access the database console via the following [url](http://localhost:9002/console).
 
-## Verification
+## Verification and results
 
 To verify that **stats** is well implemented, launch the gateway, and the monolith applications:
 

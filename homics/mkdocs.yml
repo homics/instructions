@@ -10,4 +10,5 @@ nav:
       - 'exercise 3 - Stats': user-guide/stats.md
       - 'exercise 4 - Stats with Kafka': user-guide/kafka.md
       - 'exercise 5 - Stock': user-guide/stock.md
+  - Troubleshooting: troubleshooting.md
   - About: about.md
