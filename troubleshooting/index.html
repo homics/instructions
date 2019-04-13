@@ -7,11 +7,11 @@
         
         
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>exercise 0 - Monolith - HOMicS</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Troubleshooting - HOMicS</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/purebasic.min.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">HOMicS</a>
+                    <a class="navbar-brand" href="..">HOMicS</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -47,45 +47,45 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li >
-                                <a href="../..">Home</a>
+                                <a href="..">Home</a>
                             </li>
                             <li >
-                                <a href="../../setup/">Setup</a>
+                                <a href="../setup/">Setup</a>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exercises <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
-<li class="active">
-    <a href="./">exercise 0 - Monolith</a>
+<li >
+    <a href="../user-guide/monolith/">exercise 0 - Monolith</a>
 </li>
                                     
 <li >
-    <a href="../user-activity/">exercise 1 - User Activity</a>
+    <a href="../user-guide/user-activity/">exercise 1 - User Activity</a>
 </li>
                                     
 <li >
-    <a href="../gateway/">exercise 2 - Gateway</a>
+    <a href="../user-guide/gateway/">exercise 2 - Gateway</a>
 </li>
                                     
 <li >
-    <a href="../stats/">exercise 3 - Stats</a>
+    <a href="../user-guide/stats/">exercise 3 - Stats</a>
 </li>
                                     
 <li >
-    <a href="../kafka/">exercise 4 - Stats with Kafka</a>
+    <a href="../user-guide/kafka/">exercise 4 - Stats with Kafka</a>
 </li>
                                     
 <li >
-    <a href="../stock/">exercise 5 - Stock</a>
+    <a href="../user-guide/stock/">exercise 5 - Stock</a>
 </li>
                                 </ul>
                             </li>
-                            <li >
-                                <a href="../../troubleshooting/">Troubleshooting</a>
+                            <li class="active">
+                                <a href="./">Troubleshooting</a>
                             </li>
                             <li >
-                                <a href="../../about/">About</a>
+                                <a href="../about/">About</a>
                             </li>
                         </ul>
 
@@ -96,12 +96,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../../setup/">
+                                <a rel="next" href="../user-guide/stock/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../user-activity/">
+                                <a rel="prev" href="../about/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -113,50 +113,18 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#exercise-0-the-monolith">Exercise 0 : The Monolith</a></li>
-            <li><a href="#fruit-market-place">Fruit Market Place</a></li>
-            <li><a href="#architecture">Architecture</a></li>
-            <li><a href="#steps">Steps:</a></li>
-            <li><a href="#whats-next-exercise-1-user-activity">What's next ? Exercise 1: User Activity</a></li>
+        <li class="main active"><a href="#troubleshooting">Troubleshooting</a></li>
+            <li><a href="#blank-page-when-accessing-the-page">Blank page when accessing the page</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="exercise-0-the-monolith">Exercise 0 : The Monolith</h1>
-<h2 id="fruit-market-place">Fruit Market Place</h2>
-<p>Our application is a fruit market place. You can select any items from a list of ten fruits and put them in your cart.
-You can access your cart and pay for your order. Some stats are computed to let you know what is the average prize of 
-your cart. We implemented a tracking service for your user: we are saving the login and logout action of any users.</p>
-<h2 id="architecture">Architecture</h2>
-<p>The monolith is pretty simple. We want to avoid any confusion with a complicated application. The schema below explains
-the monolith architecture and what composed it.</p>
-<p><img alt="monolith" src="../../img/monolith.png" /></p>
-<p>The application is using <strong>SpringBoot</strong> with <strong>Spring Data JPA</strong> and <strong>Spring Security</strong> for the back. The database is 
-a <strong>h2</strong> and the front is implemented in <strong>React</strong>.</p>
-<p>You won't need to interact with the front. It's already implemented for each exercise in this HandsOn. You will only play
-with the back.</p>
-<h2 id="steps">Steps:</h2>
-<ol>
-<li>
-<p>Start the monolith</p>
-<p>To run your monolith, clone the repository via the following command:</p>
-<pre><code>git clone https://github.com/homics/handson.git
-</code></pre>
-<p>Start your application (if you are using an IDE such as IntelliJ, you can run the application through it) :</p>
-<pre><code>mvn spring-boot:run -pl monolith
-</code></pre>
-</li>
-<li>
-<p>Access the application</p>
-<p>Go to <a href="http://localhost:8080">localhost:8080</a> and log with <em>admin/admin</em>. You should be able to navigate on the
-application:</p>
-<p><img alt="homics-gif" src="../../img/homics.gif" /></p>
-<p>To access the <code>h2</code> console, after logging as admin, go to :
-<a href="http://localhost:8080/console">localhost:8080/console</a> and use the credentials: <em>admin/admin</em>.</p>
-<p><img alt="console-gif" src="../../img/console.gif" /></p>
-</li>
-</ol>
-<h2 id="whats-next-exercise-1-user-activity">What's next ? <a href="../user-activity/">Exercise 1: User Activity</a></h2></div>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<h2 id="blank-page-when-accessing-the-page">Blank page when accessing the page</h2>
+<blockquote>
+<p><img alt="troubleshooting" src="../img/error.png" /> If you have a 404 error, your front might not be compiled on your microservice.
+You need to recompile it via the following command: <code>mvn clean install -P compile-front -pl $MICROSERVICE_NAME</code>.</p>
+</blockquote></div>
         </div>
 
         <footer class="col-md-12">
@@ -164,11 +132,11 @@ application:</p>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = "../..",
+            var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
     <div class="modal-dialog">

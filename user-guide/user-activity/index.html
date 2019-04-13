@@ -82,6 +82,9 @@
                                 </ul>
                             </li>
                             <li >
+                                <a href="../../troubleshooting/">Troubleshooting</a>
+                            </li>
+                            <li >
                                 <a href="../../about/">About</a>
                             </li>
                         </ul>
@@ -114,9 +117,9 @@
             <li><a href="#context">Context</a></li>
             <li><a href="#goal">Goal</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
-        <li class="main "><a href="#12-connect-the-monolith">1.2 - Connect the monolith:</a></li>
+            <li><a href="#list-of-todos">List of TODOs</a></li>
             <li><a href="#database">Database</a></li>
-            <li><a href="#verification">Verification</a></li>
+            <li><a href="#results">Results</a></li>
             <li><a href="#whats-next-exercise-2-gateway">What's next ? Exercise 2: Gateway</a></li>
     </ul>
 </div></div>
@@ -142,30 +145,28 @@ It will store every user activities in its own database and display the informat
 will call this micro-service via API to notify on a success login or success logout.</p>
 <p><img alt="user-activity" src="../../img/user-activity.png" /></p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
-<h3 id="11-user-microservice">1.1 - User microservice:</h3>
-<ol>
-<li>
 <p>Checkout the branch: </p>
-<pre><code>git checkout exercise-1
-</code></pre>
+<p><code>git checkout exercise-1</code></p>
 <p>There is a new folder for the user-activity microservice. You are not going to start from scratch but you will need
 to implement some of the API.</p>
-</li>
+<h3 id="11-user-activity">1.1 - User Activity</h3>
+<ol>
 <li>
-<p>In your favorite IDE, open the file <code>UserActivityApiController</code> to complete the first <em>TODO</em></p>
+<p>In your favorite IDE, open the file <code>UserActivityApiController</code> to complete the first <em>TODO</em>.</p>
 <p>You need to register any activity send via the new API <code>/user/api/activity</code>.</p>
 <blockquote>
 <p><img alt="info" src="../../img/info.png" /> You will need to use <code>@PostMapping</code> with <code>@RequestBody</code> to extract the right DTO.</p>
-<p><img alt="warning" src="../../img/warning.png" /> The <code>@RequestMapping</code> already specified the <code>/user/api</code></p>
+<p><img alt="warning" src="../../img/warning.png" /> The <code>@RequestMapping</code> already specified the <code>/user/api</code>.</p>
 </blockquote>
-</li>
-<li>
-<p>Run the user-activity project via the following command to access the microservice via <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a>:</p>
-<pre><code>mvn spring-boot:run -pl user-activity
+<p><strong>Checklist</strong> :</p>
+<ol>
+<li>Run the user-activity project via the following command to access the microservice via <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a>:<pre><code>mvn spring-boot:run -pl user-activity
 </code></pre>
+</li>
+</ol>
 <p>You should see your microservice up. The <strong>User Activity micro</strong> tab works but any other tabs return a 404. It's logic
 since the monolith is the one providing those pages but it isn't up.</p>
-</li>
+<ol>
 <li>
 <p>Call the api via the following command to set an activity:</p>
 <pre><code>curl -d '{"username":"Jean Bonbeurre", "activityType":"LOGIN", "activityDate":"2019-04-18T15:00:00.000Z"}' -H "content-type: application/json" -X POST http://localhost:8080/user/api/activity
@@ -173,6 +174,8 @@ since the monolith is the one providing those pages but it isn't up.</p>
 </li>
 <li>
 <p>Check on the <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a> that you can see the new activity that you just sent.</p>
+</li>
+</ol>
 </li>
 <li>
 <p>Start the monolith:</p>
@@ -196,21 +199,47 @@ Action:
 Verify the connector's configuration, identify and stop any process that's listening on port 8080, or configure this application to listen on another port.
 </code></pre>
 <p>Since the two services are started on the same port, it makes sense. Let's change the port for user-activity</p>
-<p>Open the file application.yaml and complete the TODO 1.1.4 to change the server port to 9001</p>
-<p>Restart your app and everything is in order except that login and logout from the monolith doesn't add anything to
-your microservice. Oo </p>
+<p>Open the file application.yaml and complete the <em>TODO</em> 1.1.4 to change the server port to 9001</p>
+<p><strong>Checklist</strong> :</p>
+<ol>
+<li>
+<p>Restart your two apps :</p>
+<p># monolith
+   mvn spring-boot:run -pl monolith
+   # user-activity
+   mvn spring-boot:run -pl user-activity</p>
+</li>
+<li>
+<p>Log in on to the app <a href="http://localhost:8080/mono/login">localhost:8080/mono/login</a> and go to User Activity micro tab.
+You can see the table for the user activities but it's empty. Weird right, since you just logged in.</p>
+</li>
+</ol>
+</li>
+</ol>
 <blockquote>
 <p><img alt="question" src="../../img/question.png" /> How does the monolith discuss with the User microservice?</p>
 </blockquote>
-</li>
-</ol>
-<h1 id="12-connect-the-monolith">1.2 - Connect the monolith:</h1>
+<h3 id="12-monolith">1.2 - Monolith</h3>
 <ol>
 <li>
 <p>Complete the first <em>TODO</em> by editing the <code>post()</code> method to execute a <strong>restTemplate</strong> call.</p>
 </li>
 <li>
 <p>Change the two methods called by the monolith to send the data. </p>
+<p><strong>Checklist</strong> :</p>
+<ol>
+<li>
+<p>Restart your two apps :</p>
+<p># monolith
+   mvn spring-boot:run -pl monolith
+   # user-activity
+   mvn spring-boot:run -pl user-activity</p>
+</li>
+<li>
+<p>Log on the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
+   should see the same table than before with your activities.</p>
+</li>
+</ol>
 </li>
 <li>
 <p>Clean monolith:</p>
@@ -218,24 +247,31 @@ your microservice. Oo </p>
 <blockquote>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
 </blockquote>
-<p>Follow the 1.2.3 <em>TODO</em>.</p>
 </li>
 </ol>
 <p>Great, you just created your first microservice and connected it to your monolith. Not too bad.</p>
+<h2 id="list-of-todos">List of <em>TODOs</em></h2>
+<p>1.1.1 - file com.homics.useractivity.controller.UserActivityApiController</p>
+<p>1.1.2 - file application.yaml for user-activity</p>
+<p>1.2.1 - file com.homics.monolith.service.UserActivityService</p>
+<p>1.2.2 - file com.homics.monolith.service.UserActivityService</p>
+<p>1.2.3 - below
+<em> file com.homics.monolith.service.UserActivityService
+</em> file com.homics.monolith.controller.UserActivityInternalController
+* file com.homics.monolith.model.UserActivity</p>
 <h2 id="database">Database</h2>
 <p>You can access the database console via the following <a href="http://localhost:9001/console">url</a>.</p>
-<h2 id="verification">Verification</h2>
-<p>To verify that user-activity is well implemented, launch both applications:</p>
-<pre><code class="bash"># Run monolith project
-mvn spring-boot:run -pl monolith
-
-# Run user-activity project
-mvn spring-boot:run -pl user-activity
-</code></pre>
-
-<p>Access and login to the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
-should see the same table than before.</p>
+<h2 id="results">Results</h2>
+<p>You should see the following screen.</p>
 <p><img alt="user-activity" src="../../img/user-activity-micro.png" /></p>
+<blockquote>
+<p><img alt="question" src="../../img/question.png" /> Did you notice the port after localhost? </p>
+<p><img alt="question" src="../../img/question.png" /> Did you realize that you can access the User microservice on port 9001 without
+authentication?</p>
+</blockquote>
+<p>It makes sense since our microservice User is on port 9001 but it also means that the user see that we are switching 
+between two ports/applications. Let's see in the next exercise how to centralize the authentication and to have a single
+entry point in our application.</p>
 <h2 id="whats-next-exercise-2-gateway">What's next ? <a href="../gateway/">Exercise 2: Gateway</a></h2></div>
         </div>
 
