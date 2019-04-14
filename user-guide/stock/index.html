@@ -119,6 +119,7 @@
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
             <li><a href="#list-of-todos">List of TODOs</a></li>
             <li><a href="#good-to-know">Good to know</a></li>
+            <li><a href="#congratulations">Congratulations</a></li>
             <li><a href="#whats-next">What's next ?</a></li>
     </ul>
 </div></div>
@@ -134,7 +135,7 @@ Let's try to discover why through the extraction of the <strong>stock</strong> m
 The stock microservice will store and update the stock for each article. </p>
 <h3 id="the-existing">The existing</h3>
 <p>Before the migration when we pay an order, we were executing the following steps:</p>
-<ol>
+<ul>
 <li>
 <p>Open transaction</p>
 </li>
@@ -150,10 +151,10 @@ The stock microservice will store and update the stock for each article. </p>
 <li>
 <p>Close the transaction</p>
 </li>
-</ol>
+</ul>
 <h3 id="extract-it-into-a-microservice">Extract it into a microservice</h3>
 <p>If we extract the stock service in a microservice like we did before, the steps become :</p>
-<ol>
+<ul>
 <li>
 <p>Open transaction</p>
 </li>
@@ -169,7 +170,7 @@ The stock microservice will store and update the stock for each article. </p>
 <li>
 <p>Close the transaction</p>
 </li>
-</ol>
+</ul>
 <p>With this plan, you can see in step 3 that the monolith is waiting for the microservice response.</p>
 <blockquote>
 <p><img alt="warning" src="../../img/warning.png" /> It's pretty bad! </p>
@@ -180,7 +181,7 @@ The stock microservice will store and update the stock for each article. </p>
 <p><img alt="tip" src="../../img/success.png" /> We need to change to asynchronous.</p>
 </blockquote>
 <h3 id="going-async">Going async</h3>
-<ol>
+<ul>
 <li>
 <p>Open transaction</p>
 </li>
@@ -190,9 +191,9 @@ The stock microservice will store and update the stock for each article. </p>
 <li>
 <p>Close the transaction</p>
 </li>
-</ol>
+</ul>
 <p>Then, we listen to the microservice event.</p>
-<ol>
+<ul>
 <li>
 <p>The microservice call the monolith when the stock is impacted</p>
 </li>
@@ -205,7 +206,7 @@ The stock microservice will store and update the stock for each article. </p>
 <li>
 <p>Close the transaction</p>
 </li>
-</ol>
+</ul>
 <blockquote>
 <p><img alt="question" src="../../img/question.png" /> What happens if the result of the microservice is "not enough stock" ?</p>
 </blockquote>
@@ -213,7 +214,7 @@ The stock microservice will store and update the stock for each article. </p>
 <h2 id="goal">Goal</h2>
 <p>Extract the stock micro service using kafka.</p>
 <p>The workflow becomes:</p>
-<ol>
+<ul>
 <li>
 <p>An ImpactStockMessage is send to kafka</p>
 </li>
@@ -226,25 +227,76 @@ The stock microservice will store and update the stock for each article. </p>
 <li>
 <p>The monolith consumes the message and change the order status accordingly</p>
 </li>
-</ol>
+</ul>
 <p><img alt="stock" src="../../img/stock.png" /></p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-5
+</code></pre>
+<p>This exercise is split in three parts.</p>
 <ol>
 <li>
-<p>Remove the stock column in the monolith</p>
+<p>You will edit the <strong>Monolith</strong> to remove the stock and send a message when paying the order to decrease the stock.</p>
 </li>
 <li>
-<p>Implement the payment workflow previously describe in <code>OrderService</code>.
-    (Topics and messages are already setup in the common-messaging lib)</p>
+<p>You will consume the messages in the <strong>Stock</strong> microservice to decrease the stock and answer with a new message for
+acknowledgement.</p>
 </li>
 <li>
-<p>Implement the payment workflow on the micro service side in <code>StockController</code></p>
+<p>Go back to the <strong>Monolith</strong> and consume the answer from <strong>Stock</strong> and perform the stats if success.</p>
+</li>
+</ol>
+<h3 id="51-monolith">5.1 - Monolith</h3>
+<ol>
+<li>
+<p>Remove the stock column in the Article entity.</p>
+</li>
+<li>
+<p>Remove the stock validation and call the StockService.</p>
+</li>
+<li>
+<p>Implement the method to send a kafka message to the <strong>Stock</strong> microservice</p>
+</li>
+</ol>
+<h3 id="52-stock">5.2 - Stock</h3>
+<ol>
+<li>
+<p>Consume the message and call the stock service.</p>
+</li>
+<li>
+<p>Verify that the operation wasn't already process to keep an idempotent process.</p>
+</li>
+<li>
+<p>Notify by calling the right method to acknowledge the changes on stock.</p>
+</li>
+<li>
+<p>Notify by sending a message to kafka that stock could NOT be modified.</p>
+</li>
+<li>
+<p>Save the operation as processed so it won't be process several times.</p>
+</li>
+<li>
+<p>Notify by sending a message to kafka that stock was modified successfully.</p>
+</li>
+</ol>
+<h3 id="53-monolith">5.3 - Monolith</h3>
+<ol>
+<li>
+<p>Depending on the message sent by <strong>Stock</strong> for acknowledgement, set the status for the order (<em>PAYED</em>
+or <em>CANCEL</em>)</p>
+</li>
+<li>
+<p>In case of success, update the stats and notify the stats microservice.</p>
 </li>
 </ol>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
-<p>2.1 - file application.yaml for gateway</p>
-<p>2.2 - file com.homics.gateway.GatewayApplication</p>
-<p>2.3 - file com.homics.gateway.config.filter.AddUserFilter</p>
+<p>5.1.1 - file com.homics.monolith.model.Article</p>
+<p>5.1.2 - file com.homics.monolith.service.OrderService</p>
+<p>5.1.3 - file com.homics.monolith.service.StockService</p>
+<p>5.2.1 - file com.homics.stock.service.ImpactStockConsumer</p>
+<p>5.2.(2/3/4/5) - file com.homics.stock.service.StockService</p>
+<p>5.2.6 - file com.homics.stock.service.StockAcknowledgmentProducer</p>
+<p>5.3.(1/2) - file com.homics.monolith.service.OrderService</p>
 <h2 id="good-to-know">Good to know</h2>
 <p>When working with kafka, we can set the configuration to have either:</p>
 <ol>
@@ -262,6 +314,9 @@ The stock microservice will store and update the stock for each article. </p>
 <p>In our case, the same message can be read multiple times and will give the same result. For example, in the stats microservice,
 the second message only updates the data since the orderId is unique.</p>
 <p>It explains why we keep the <code>table StockOperation</code>.</p>
+<h2 id="congratulations">Congratulations</h2>
+<p>You finish this HandsOn in time. We want to thank you for coming and hopefully, you learnt a lot and are happy with the
+content of this HandsOn.</p>
 <h2 id="whats-next">What's next ?</h2>
 <p>Come see us at our stand and let us know what you though about the Hands On.</p>
 <p>Please your feedback means a lot to us. If you have 5 mins to spare, could you fill this

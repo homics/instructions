@@ -169,19 +169,27 @@ common-messaging lib. If you want to check it out, go on github in the HOMicS pr
 <p>In <code>/tools/docker/kafka/</code>, the docker-compose file will launch an instance of <strong>zookeeper</strong> and <strong>kafka</strong>.
 To start kafka simply run :</p>
 <pre><code>cd commons-messaging
-docker compose up
+docker-compose up
 </code></pre>
 <p>To stop </p>
 <pre><code>cd commons-messaging
-docker compose stop
+docker-compose stop
 </code></pre>
 </li>
 </ol>
 <h2 id="at-your-keyboard">At your keyboard</h2>
-<p>You can start by checking out the branch for the fourth exercise: <code>git checkout exercise-4</code>. This exercise is split in
-two parts.</p>
-<p>First, you will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
-<p>Secondly, you will consume messaging on the <strong>Stats</strong> microservices.</p>
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-4
+</code></pre>
+<p>This exercise is split in two parts.</p>
+<ol>
+<li>
+<p>You will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
+</li>
+<li>
+<p>You will consume the messages in the <strong>Stats</strong> microservice.</p>
+</li>
+</ol>
 <h3 id="41-monolith">4.1 - Monolith</h3>
 <ol>
 <li>
@@ -226,8 +234,7 @@ public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) 
 </ol>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <p>4.1.1 - file com.homics.monolith.service.StatsService</p>
-<p>4.2.1 - file com.homics.stats.service.OrderStatsService</p>
-<p>4.2.2 - file com.homics.stats.service.OrderStatsService</p>
+<p>4.2.(1/2) - file com.homics.stats.service.OrderStatsService</p>
 <h2 id="verification-and-results">Verification and results</h2>
 <p>To verify that <strong>stats</strong> is well implemented, launch the gateway, and the monolith applications:</p>
 <pre><code class="bash"># Run gateway project
