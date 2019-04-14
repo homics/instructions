@@ -119,7 +119,8 @@
             <li><a href="#goal">Goal</a></li>
             <li><a href="#setup">Setup</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
-            <li><a href="#verification">Verification</a></li>
+            <li><a href="#list-of-todos">List of TODOs</a></li>
+            <li><a href="#verification-and-results">Verification and results</a></li>
             <li><a href="#whats-next-exercise-5-stock">What's next ? Exercise 5: Stock</a></li>
     </ul>
 </div></div>
@@ -179,7 +180,7 @@ To start kafka simply run :</p>
 two parts.</p>
 <p>First, you will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
 <p>Secondly, you will consume messaging on the <strong>Stats</strong> microservices.</p>
-<h3 id="producing-kafka-messaging-with-the-monolith">Producing kafka messaging with the Monolith</h3>
+<h3 id="41-monolith">4.1 - Monolith</h3>
 <ol>
 <li>
 <p>Send a kafka message</p>
@@ -207,7 +208,7 @@ to run the following command:</p>
 </ol>
 </li>
 </ol>
-<h3 id="consuming-kafka-messaging-with-the-stats-microservice">Consuming kafka messaging with the Stats microservice</h3>
+<h3 id="42-stats">4.2 - Stats</h3>
 <ol>
 <li>
 <p>In the microservice, retrieve the message with kafka :</p>
@@ -221,7 +222,11 @@ public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) 
 <p>Save this message into the database</p>
 </li>
 </ol>
-<h2 id="verification">Verification</h2>
+<h2 id="list-of-todos">List of <em>TODOs</em></h2>
+<p>4.1.1 - file com.homics.monolith.service.StatsService</p>
+<p>4.2.1 - file com.homics.stats.service.OrderStatsService</p>
+<p>4.2.2 - file com.homics.stats.service.OrderStatsService</p>
+<h2 id="verification-and-results">Verification and results</h2>
 <p>To verify that <strong>stats</strong> is well implemented, launch the gateway, and the monolith applications:</p>
 <pre><code class="bash"># Run gateway project
 mvn spring-boot:run -pl gateway

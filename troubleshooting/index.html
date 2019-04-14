@@ -115,6 +115,8 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#troubleshooting">Troubleshooting</a></li>
             <li><a href="#blank-page-when-accessing-the-page">Blank page when accessing the page</a></li>
+            <li><a href="#inconsistency-in-the-database">Inconsistency in the database</a></li>
+            <li><a href="#issue-with-running-the-docker-command">Issue with running the docker command</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -124,6 +126,16 @@
 <blockquote>
 <p><img alt="troubleshooting" src="../img/error.png" /> If you have a 404 error, your front might not be compiled on your microservice.
 You need to recompile it via the following command: <code>mvn clean install -P compile-front -pl $MICROSERVICE_NAME</code>.</p>
+</blockquote>
+<h2 id="inconsistency-in-the-database">Inconsistency in the database</h2>
+<blockquote>
+<p><img alt="troubleshooting" src="../img/error.png" /> If you have an error saying that you have an inconsistency in the database, and something
+about hibernate and a result set at 2, you probably need to stop and restart your microservise.</p>
+</blockquote>
+<h2 id="issue-with-running-the-docker-command">Issue with running the docker command</h2>
+<blockquote>
+<p><img alt="troubleshooting" src="../img/error.png" /> If you see a permission issue when running the command docker to check if you properly
+sent the kafka message, you might need to run the command with <strong>sudo</strong>. (the two commands...)</p>
 </blockquote></div>
         </div>
 
