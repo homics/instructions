@@ -194,7 +194,8 @@ Message&lt;OrderPayedMessage&gt; message = MessageBuilder
 
 kafkaTemplate.send(message);
 </code></pre>
-</li>
+<p><strong>Checklist</strong> </p>
+<ol>
 <li>
 <p>Verify that you sent a kafka message</p>
 <p>You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
@@ -202,6 +203,8 @@ to run the following command:</p>
 <pre><code>docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STATS --from-beginning
 </code></pre>
 <p>You should see the previous carts you payed.  </p>
+</li>
+</ol>
 </li>
 </ol>
 <h3 id="consuming-kafka-messaging-with-the-stats-microservice">Consuming kafka messaging with the Stats microservice</h3>
