@@ -193,12 +193,13 @@ routing, monitoring, resiliency, security, and more. Spring integrated it in <st
 <ol>
 <li>
 <p>Since the routing is done and should be working, start your three apps if they aren't already up:</p>
-<p># gateway
-   mvn spring-boot:run -pl gateway
-   # monolith
-   mvn spring-boot:run -pl monolith
-   # user-activity
-   mvn spring-boot:run -pl user-activity</p>
+<pre><code># gateway
+mvn spring-boot:run -pl gateway
+# monolith
+mvn spring-boot:run -pl monolith
+# user-activity
+mvn spring-boot:run -pl user-activity
+</code></pre>
 </li>
 <li>
 <p>Verify that if you log in, you see your articles and all the pages under the same port: 8080.</p>
