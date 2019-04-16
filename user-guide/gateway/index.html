@@ -129,9 +129,7 @@
 <p>Previously on HOMicS -&gt; <a href="../user-activity/">Exercise 1: User Activity</a></p>
 <h2 id="context">Context</h2>
 <p>In the previous schema, you might realize that there is a flaw. We don't have any authentication for the micro-service.</p>
-<blockquote>
 <p><img alt="question" src="../../img/question.png" /> What happens if you connect directly to the user-activity microservice ?</p>
-</blockquote>
 <p>You can go directly to <a href="http://localhost:9001/user/userActivity">user-activity</a>. The login page is skipped and the data
 is accessible! Oopsy, not great at all.</p>
 <p>We could duplicate all the security code in the new microservice. But imagine if we have twenty microservices, it's going
@@ -160,9 +158,7 @@ mvn spring-boot:run -pl user-activity
 </code></pre>
 <p>Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.</p>
 <h3 id="2-gateway">2 - Gateway</h3>
-<ol>
-<li>
-<p>Application.yaml</p>
+<p><em>TODO</em> 1.1: Application.yaml</p>
 <p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
 <p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix that is an edge service that provides dynamic
 routing, monitoring, resiliency, security, and more. Spring integrated it in <strong>Spring Cloud</strong>.</p>
@@ -174,10 +170,7 @@ routing, monitoring, resiliency, security, and more. Spring integrated it in <st
 &lt;/dependency&gt;
 </code></pre>
 <p>You will need to set it up in your <code>application.yaml</code>.</p>
-<blockquote>
-<p><img alt="tip" src="../../img/success.png" /> zuul documentation is available 
-<a href="https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html">here</a></p>
-</blockquote>
+<p><img alt="tip" src="../../img/success.png" /> zuul documentation is available <a href="https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html">here</a></p>
 <p>To help you with the configuration in your yml file, here is an example:</p>
 <pre><code>zuul:
   routes:
@@ -185,9 +178,7 @@ routing, monitoring, resiliency, security, and more. Spring integrated it in <st
       path: /test/**
       url: http://example.com/test/
 </code></pre>
-</li>
-<li>
-<p>Enable Zuul</p>
+<p><em>TODO</em> 1.2: Enable Zuul</p>
 <p>Checkout the second <em>TODO</em> to enable the Zuul Routing.</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
@@ -205,13 +196,9 @@ mvn spring-boot:run -pl user-activity
 <p>Verify that if you log in, you see your articles and all the pages under the same port: 8080.</p>
 </li>
 </ol>
-<blockquote>
 <p><img alt="question" src="../../img/question.png" /> What happens if you try to pay for a cart? </p>
-</blockquote>
 <p>It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.</p>
-</li>
-<li>
-<p>Logged user information</p>
+<p><em>TODO</em> 1.3: Logged user information</p>
 <p>Last but not least, you need to add the logged user to the headers so all micro services will be able to retrieve the
 connected user.</p>
 <p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
@@ -235,11 +222,7 @@ directly redirect to the monolith and you can notify that the port is still 8080
 the user-activity microservice on the <em>User Activity micro</em> tab.</p>
 </li>
 </ol>
-</li>
-</ol>
-<blockquote>
 <p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, the port for the monolith has been changed to 8090. </p>
-</blockquote>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <p>2.1 - file application.yaml for gateway</p>
 <p>2.2 - file com.homics.gateway.GatewayApplication</p>
@@ -248,10 +231,8 @@ the user-activity microservice on the <em>User Activity micro</em> tab.</p>
 <p>You can access the <strong>monolith</strong> database console via the following <a href="http://localhost:8090/console">url</a>.</p>
 <h2 id="results">Results</h2>
 <p><img alt="gateway-micro" src="../../img/gateway-micro.gif" /></p>
-<blockquote>
 <p><img alt="info" src="../../img/info.png" /> You can still access the other services directly on each port 8090 and 9001.
 In practice, you will block those ports from the outside via a firewall.</p>
-</blockquote>
 <p>Well done. Let's continue on to the next step and our new microservices.</p>
 <h2 id="whats-next-exercise-3-stats">What's next ? <a href="../stats/">Exercise 3: Stats</a></h2></div>
         </div>

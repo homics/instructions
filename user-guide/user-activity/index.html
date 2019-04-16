@@ -134,10 +134,8 @@ monolith codebase. </p>
 <code>CustomLogoutSuccessHandler</code>. Those classes implement some <strong>Spring Security</strong> interfaces to define a strategy used to 
 handle a successful user authentication or logout. In our case, they call the <code>UserActivityService</code> which save the event
 in database through it <code>UserActivityRepository</code>.</p>
-<blockquote>
 <p><img alt="tip" src="../../img/success.png" /> you can read more about spring security <code>AuthenticationSuccessHandler</code> documentation
 <a href="https://docs.spring.io/spring-security/site/docs/4.2.11.RELEASE/apidocs/org/springframework/security/web/authentication/AuthenticationSuccessHandler.html">here</a> </p>
-</blockquote>
 <p>The front fetches those events for display through an internal API in <code>UserActivityInternalController</code>.</p>
 <h2 id="goal">Goal</h2>
 <p>We are going to create a new service in charge of user activities. Let's be inventive and call it: user-activity.
@@ -210,8 +208,8 @@ You can see the table for the user activities but it's empty. Weird right, since
 <p><img alt="question" src="../../img/question.png" /> How does the monolith discuss with the User microservice?</p>
 </blockquote>
 <h3 id="12-monolith">1.2 - Monolith</h3>
-<p><em>TODO</em> 1.2.1: Complete the first <em>TODO</em> by editing the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
-<p><em>TODO</em> 1.2.2: Change the two methods called by the monolith to send the data. </p>
+<p><em>TODO</em> 1.2.1: Edit the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
+<p><em>TODO</em> 1.2.2: Use the previous method to send the data instead of saving it in the database. </p>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>Restart your two apps :</li>
@@ -241,11 +239,9 @@ mvn spring-boot:run -pl user-activity
 <h2 id="results">Results</h2>
 <p>You should see the following screen.</p>
 <p><img alt="user-activity" src="../../img/user-activity-micro.png" /></p>
-<blockquote>
 <p><img alt="question" src="../../img/question.png" /> Did you notice the port after localhost? </p>
 <p><img alt="question" src="../../img/question.png" /> Did you realize that you can access the User microservice on port 9001 without
 authentication?</p>
-</blockquote>
 <p>The user navigating on the application can see that we are switching between two ports/applications. We did not copy the
 authentication on the new microservice but we could do it.</p>
 <p>Let's see in the next exercise how to centralize the authentication and to have a single entry point in our application.</p>
