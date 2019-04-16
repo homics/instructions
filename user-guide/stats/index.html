@@ -130,18 +130,14 @@
 <h2 id="context">Context</h2>
 <p>In real life, the stats take some time to compute and do not impact the payment workflow. We are going to extract it into
 a microservice.</p>
-<blockquote>
 <p><img alt="question" src="../../img/question.png" /> What happens if the microservice is down ?</p>
-</blockquote>
 <p>All data sent during the down time will be lost.</p>
 <p>A simple way to fix this issue is to work with acknowledgment. Let's implement it.</p>
 <h2 id="goal">Goal</h2>
 <p>The monolith will save all the stats in a new table. These stats will be hosted on a new microservice called <strong>stats</strong>.
 A scheduled task fetches this table and sends its content to the microservice. </p>
 <p>In case of micro-service downtime or errors while processing, the stats will be sent again at the next iteration.</p>
-<blockquote>
 <p><img alt="info" src="../../img/info.png" /> We implemented the stats microservice. You don't need to work on it in this exercise.</p>
-</blockquote>
 <p>In terms of architecture:</p>
 <p><img alt="stats" src="../../img/stats.png" /></p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
@@ -157,20 +153,17 @@ mvn spring-boot:run -pl stats
 mvn spring-boot:run -pl user-activity
 </code></pre>
 <h3 id="3-monolith">3 - Monolith</h3>
+<p><em>TODO</em> 3.2: Open the <code>StatsService</code> and complete the first <em>TODO</em>:</p>
+<pre><code>You need to save an `orderPayMessage` in the database.
+</code></pre>
 <ol>
-<li>
-<p>Open the <code>StatsService</code> and complete the first <em>TODO</em>:</p>
-<p>You need to save an <code>orderPayMessage</code> in the database.</p>
-</li>
 <li>
 <p>Complete the <code>StatsTask</code>:</p>
 <p>Every 10 seconds, the statsService should send the stats. You can use the following annotation:</p>
 <pre><code>@Scheduled(fixedRate = 10000)
 </code></pre>
 <p>This annotation tells spring to execute the method annotated with <code>@scheduled</code> at a fixed rate of 10 seconds.</p>
-<blockquote>
 <p><img alt="info" src="../../img/info.png" /> For more information, visit this <a href="https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/annotation/Scheduled.html">link</a>.</p>
-</blockquote>
 </li>
 <li>
 <p>Come back to <code>StatsService</code>:</p>

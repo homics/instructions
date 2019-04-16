@@ -158,17 +158,10 @@ mvn spring-boot:run -pl user-activity
 </code></pre>
 <p>Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.</p>
 <h3 id="2-gateway">2 - Gateway</h3>
-<p><em>TODO</em> 1.1: Application.yaml</p>
+<p><em>TODO</em> 2.1: Application.yaml</p>
 <p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
 <p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix that is an edge service that provides dynamic
 routing, monitoring, resiliency, security, and more. Spring integrated it in <strong>Spring Cloud</strong>.</p>
-<pre><code>&lt;!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-zuul --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
-    &lt;version&gt;2.1.1.RELEASE&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
 <p>You will need to set it up in your <code>application.yaml</code>.</p>
 <p><img alt="tip" src="../../img/success.png" /> zuul documentation is available <a href="https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html">here</a></p>
 <p>To help you with the configuration in your yml file, here is an example:</p>
@@ -178,7 +171,7 @@ routing, monitoring, resiliency, security, and more. Spring integrated it in <st
       path: /test/**
       url: http://example.com/test/
 </code></pre>
-<p><em>TODO</em> 1.2: Enable Zuul</p>
+<p><em>TODO</em> 2.2: Enable Zuul</p>
 <p>Checkout the second <em>TODO</em> to enable the Zuul Routing.</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
@@ -198,7 +191,7 @@ mvn spring-boot:run -pl user-activity
 </ol>
 <p><img alt="question" src="../../img/question.png" /> What happens if you try to pay for a cart? </p>
 <p>It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.</p>
-<p><em>TODO</em> 1.3: Logged user information</p>
+<p><em>TODO</em> 2.3: Logged user information</p>
 <p>Last but not least, you need to add the logged user to the headers so all micro services will be able to retrieve the
 connected user.</p>
 <p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
