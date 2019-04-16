@@ -130,18 +130,14 @@
 <h2 id="context">Context</h2>
 <p>In real life, the stats take some time to compute and do not impact the payment workflow. We are going to extract it into
 a microservice.</p>
-<blockquote>
 <p><img alt="question" src="../../img/question.png" /> What happens if the microservice is down ?</p>
-</blockquote>
 <p>All data sent during the down time will be lost.</p>
 <p>A simple way to fix this issue is to work with acknowledgment. Let's implement it.</p>
 <h2 id="goal">Goal</h2>
 <p>The monolith will save all the stats in a new table. These stats will be hosted on a new microservice called <strong>stats</strong>.
 A scheduled task fetches this table and sends its content to the microservice. </p>
 <p>In case of micro-service downtime or errors while processing, the stats will be sent again at the next iteration.</p>
-<blockquote>
 <p><img alt="info" src="../../img/info.png" /> We implemented the stats microservice. You don't need to work on it in this exercise.</p>
-</blockquote>
 <p>In terms of architecture:</p>
 <p><img alt="stats" src="../../img/stats.png" /></p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
@@ -157,35 +153,26 @@ mvn spring-boot:run -pl stats
 mvn spring-boot:run -pl user-activity
 </code></pre>
 <h3 id="3-monolith">3 - Monolith</h3>
-<ol>
-<li>
-<p>Open the <code>StatsService</code> and complete the first <em>TODO</em>:</p>
+<h4 id="todo-31-statsservice"><em>TODO</em> 3.1: StatsService</h4>
 <p>You need to save an <code>orderPayMessage</code> in the database.</p>
-</li>
-<li>
-<p>Complete the <code>StatsTask</code>:</p>
+<hr />
+<h4 id="todo-32-statstask"><em>TODO</em> 3.2: StatsTask</h4>
 <p>Every 10 seconds, the statsService should send the stats. You can use the following annotation:</p>
 <pre><code>@Scheduled(fixedRate = 10000)
 </code></pre>
-<p>This annotation tells spring to execute the method annotated with <code>@scheduled</code> at a fixed rate of 10 seconds.</p>
-<blockquote>
 <p><img alt="info" src="../../img/info.png" /> For more information, visit this <a href="https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/annotation/Scheduled.html">link</a>.</p>
-</blockquote>
-</li>
-<li>
-<p>Come back to <code>StatsService</code>:</p>
+<hr />
+<h4 id="todo-33-statsservice"><em>TODO</em> 3.3: StatsService</h4>
 <p>The last implementation on your part is to complete the two methods <code>sendStats</code> and <code>sendStat</code>.</p>
 <p>The <code>sendStats()</code> fetches all orderStats in database, then sends them to the microservice using the <code>restTemplate</code>.
-You already worked with this template in exercise 1. If you are lost, check it out again.</p>
+You already used <code>restTemplate</code> in exercise 1. If you are lost, check it out again.</p>
 <p>This request will be a <em>POST</em> action on the API : <code>http://localhost:9002/stats/api/orders</code></p>
 <p>For the payload, use the class OrderPayedDto.</p>
 <p>A response status <code>HttpStatus.OK</code> means the microservice received the information. Then, we remove it from the
 database.</p>
-</li>
-<li>
-<p>Clean the stats implementation that is not required anymore in the monolith.</p>
-</li>
-</ol>
+<hr />
+<h4 id="todo-34-clean"><em>TODO</em> 3.4: Clean</h4>
+<p>Remove the code related to stats that is not required anymore in the monolith.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <p>3.1 - file com.homics.monolith.service.StatsService</p>
 <p>3.2 - file com.homics.monolith.task.StatsTask</p>

@@ -106,30 +106,68 @@ acknowledgement.
 
 ### 5.1 - Monolith
 
-1. Remove the stock column in the Article entity.
+#### _TODO_ 5.1.1: com.homics.monolith.model.Article
 
-2. Remove the stock validation and call the StockService.
+Remove the stock column in the Article entity.
 
-3. Implement the method to send a kafka message to the **Stock** microservice
+-----
+
+#### _TODO_ 5.1.2: com.homics.monolith.service.OrderService
+
+Remove the stock validation and call the StockService.
+
+-----
+
+#### _TODO_ 5.1.3: com.homics.monolith.service.StockService
+
+Implement the method to send a kafka message to the **Stock** microservice
 
 ### 5.2 - Stock
 
-1. Consume the message and call the stock service.
+#### _TODO_ 5.2.1: com.homics.stock.service.ImpactStockConsumer
 
-2. Verify that the operation wasn't already process to keep an idempotent process.
+Consume the message and call the stock service.
 
-3. Notify by calling the right method to acknowledge the changes on stock.
+-----
 
-4. Notify by sending a message to kafka that stock could NOT be modified.
+#### _TODO_ 5.2.2: com.homics.stock.service.StockService
 
-5. Save the operation as processed so it won't be process several times.
+Verify that the operation wasn't already process to keep an idempotent process.
 
-6. Notify by sending a message to kafka that stock was modified successfully.
+-----
+
+#### _TODO_ 5.2.3: com.homics.stock.service.StockService
+
+Notify by calling the right method to acknowledge the changes on stock.
+
+-----
+
+#### _TODO_ 5.2.4: com.homics.stock.service.StockService
+
+Notify by sending a message to kafka that stock could NOT be modified.
+
+-----
+
+#### _TODO_ 5.2.5: com.homics.stock.service.StockService
+
+Save the operation as processed so it won't be process several times.
+
+-----
+
+#### _TODO_ 5.2.6: com.homics.stock.service.StockAcknowledgmentProducer
+
+Notify by sending a message to kafka that stock was modified successfully.
 
 ### 5.3 - Monolith
 
-1. Depending on the message sent by **Stock** for acknowledgement, set the status for the order (_PAYED_
+#### _TODO_ 5.3.1: com.homics.monolith.service.OrderService
+
+Depending on the message sent by **Stock** for acknowledgement, set the status for the order (_PAYED_
 or _CANCEL_)
+
+-----
+
+#### _TODO_ 5.3.2: com.homics.monolith.service.OrderService
 
 2. In case of success, update the stats and notify the stats microservice.
 

@@ -7,7 +7,7 @@ Previously on HOMicS -> [Exercise 2: Gateway](../user-guide/gateway.md)
 In real life, the stats take some time to compute and do not impact the payment workflow. We are going to extract it into
 a microservice.
 
-> ![question](../img/question.png) What happens if the microservice is down ?
+![question](../img/question.png) What happens if the microservice is down ?
 
 All data sent during the down time will be lost.
  
@@ -20,7 +20,7 @@ A scheduled task fetches this table and sends its content to the microservice.
 
 In case of micro-service downtime or errors while processing, the stats will be sent again at the next iteration.
 
-> ![info](../img/info.png) We implemented the stats microservice. You don't need to work on it in this exercise.
+![info](../img/info.png) We implemented the stats microservice. You don't need to work on it in this exercise.
 
 In terms of architecture:
 
@@ -43,35 +43,41 @@ Start the gateway and the two services stats and user-activity:
 
 ### 3 - Monolith
 
-1. Open the `StatsService` and complete the first _TODO_:
+#### _TODO_ 3.1: StatsService
     
-    You need to save an `orderPayMessage` in the database.
-    
-2. Complete the `StatsTask`:
+You need to save an `orderPayMessage` in the database.
 
-    Every 10 seconds, the statsService should send the stats. You can use the following annotation:
-            
-        @Scheduled(fixedRate = 10000)
+------
+
+#### _TODO_ 3.2: StatsTask
+
+Every 10 seconds, the statsService should send the stats. You can use the following annotation:
         
-    This annotation tells spring to execute the method annotated with `@scheduled` at a fixed rate of 10 seconds.
+    @Scheduled(fixedRate = 10000)
     
-    > ![info](../img/info.png) For more information, visit this [link](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/annotation/Scheduled.html).
+![info](../img/info.png) For more information, visit this [link](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/annotation/Scheduled.html).
 
-3. Come back to `StatsService`:
+------
 
-    The last implementation on your part is to complete the two methods `sendStats` and `sendStat`.
-    
-    The `sendStats()` fetches all orderStats in database, then sends them to the microservice using the `restTemplate`.
-    You already worked with this template in exercise 1. If you are lost, check it out again.
-    
-    This request will be a _POST_ action on the API : `http://localhost:9002/stats/api/orders`
-    
-    For the payload, use the class OrderPayedDto.
-    
-    A response status `HttpStatus.OK` means the microservice received the information. Then, we remove it from the
-    database.
+#### _TODO_ 3.3: StatsService
 
-4. Clean the stats implementation that is not required anymore in the monolith.
+The last implementation on your part is to complete the two methods `sendStats` and `sendStat`.
+
+The `sendStats()` fetches all orderStats in database, then sends them to the microservice using the `restTemplate`.
+You already used `restTemplate` in exercise 1. If you are lost, check it out again.
+
+This request will be a _POST_ action on the API : `http://localhost:9002/stats/api/orders`
+
+For the payload, use the class OrderPayedDto.
+
+A response status `HttpStatus.OK` means the microservice received the information. Then, we remove it from the
+database.
+
+------
+
+#### _TODO_ 3.4: Clean
+
+Remove the code related to stats that is not required anymore in the monolith.
 
 ## List of _TODOs_
 

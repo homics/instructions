@@ -77,42 +77,52 @@ This exercise is split in two parts.
 
 ### 4.1 - Monolith
 
-1. Send a kafka message
+#### _TODO_ 4.1.1: Send a kafka message
 
-    Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.
-    
-    To send a message with kafka :
-        
-        private KafkaTemplate<String, OrderPayedMessage> kafkaTemplate;
-        
-        Message<OrderPayedMessage> message = MessageBuilder
-                        .withPayload(new OrderPayedMessage(1,1,"user"))
-                        .setHeader(KafkaHeaders.TOPIC, TOPIC_STATS)
-                        .build();
-        
-        kafkaTemplate.send(message);
+Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.
 
-    **Checklist** 
-    
-    1. Verify that you sent a kafka message
+To send a message with kafka :
 
-        You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
-        to run the following command:
-    
-            docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STATS --from-beginning
-    
-        You should see the previous carts you payed.  
+```
+private KafkaTemplate<String, OrderPayedMessage> kafkaTemplate;
+
+Message<OrderPayedMessage> message = MessageBuilder
+                .withPayload(new OrderPayedMessage(1,1,"user"))
+                .setHeader(KafkaHeaders.TOPIC, TOPIC_STATS)
+                .build();
+
+kafkaTemplate.send(message);
+```
+
+**Checklist** 
+
+1. Verify that you sent a kafka message
+
+    You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
+    to run the following command:
+
+        docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STATS --from-beginning
+
+    You should see the previous carts you payed.  
 
 ### 4.2 - Stats
 
-1. In the microservice, retrieve the message with kafka :
+#### _TODO_ 4.2.1:
 
-        @KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
-        public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
-                ...
-        }
+In the microservice, retrieve the message with kafka :
 
-2. Save this message into the database
+```
+@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
+public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
+        ...
+}
+```
+
+------
+
+#### _TODO_ 4.2.2: 
+
+Save this message into the database.
 
 ## List of _TODOs_
 
