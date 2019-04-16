@@ -208,8 +208,10 @@ You can see the table for the user activities but it's empty. Weird right, since
 <p><img alt="question" src="../../img/question.png" /> How does the monolith discuss with the User microservice?</p>
 </blockquote>
 <h3 id="12-monolith">1.2 - Monolith</h3>
-<p><em>TODO</em> 1.2.1: Edit the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
-<p><em>TODO</em> 1.2.2: Use the previous method to send the data instead of saving it in the database. </p>
+<h4 id="todo-121"><em>TODO</em> 1.2.1:</h4>
+<p>Edit the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
+<h4 id="todo-122"><em>TODO</em> 1.2.2:</h4>
+<p>Use the previous method to send the data instead of saving it in the database. </p>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>Restart your two apps :</li>
@@ -224,7 +226,8 @@ mvn spring-boot:run -pl user-activity
 <li>Log on the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
    should see the same table than before with your activities.</li>
 </ol>
-<p><em>TODO</em> 1.2.3: As a final step, clean the monolith to remove any code related to the user activity.</p>
+<h4 id="todo-123-clean-the-monolith"><em>TODO</em> 1.2.3: Clean the monolith</h4>
+<p>As a final step, remove any code related to the user activity in the monolith.</p>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
 <p>Great, you just created your first microservice and connected it to your monolith. Not too bad.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
