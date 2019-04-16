@@ -211,22 +211,23 @@ You can see the table for the user activities but it's empty. Weird right, since
 </blockquote>
 <h3 id="12-monolith">1.2 - Monolith</h3>
 <h4 id="todo-121"><em>TODO</em> 1.2.1:</h4>
-<p>Edit the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
+<p>Edit the <code>post()</code> method to call the microservice with restTemplate`.</p>
 <h4 id="todo-122"><em>TODO</em> 1.2.2:</h4>
 <p>Use the previous method to send the data instead of saving it in the database. </p>
 <p><strong>Checklist</strong> :</p>
 <ol>
-<li>Restart your two apps :</li>
-</ol>
+<li>
+<p>Restart your two apps :</p>
 <pre><code># monolith
 mvn spring-boot:run -pl monolith
 # user-activity
 mvn spring-boot:run -pl user-activity
 </code></pre>
-
-<ol>
-<li>Log on the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
-   should see the same table than before with your activities.</li>
+</li>
+<li>
+<p>Log on the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
+   should see the same table than before with your activities.</p>
+</li>
 </ol>
 <h4 id="todo-123-clean-the-monolith"><em>TODO</em> 1.2.3: Clean the monolith</h4>
 <p>As a final step, remove any code related to the user activity in the monolith.</p>
