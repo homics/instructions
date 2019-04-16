@@ -150,8 +150,7 @@ will call this micro-service via API to notify on a success login or success log
 <p>There is a new folder for the user-activity microservice. You are not going to start from scratch but you will need
 to implement some of the API.</p>
 <h3 id="11-user-activity">1.1 - User Activity</h3>
-<h4 id="todo-1">TODO 1:</h4>
-<p>In <code>UserActivityApiController</code>, register any activity send via the new API <code>/user/api/activity</code>.</p>
+<p><em>TODO</em> 1.1.1: In <code>UserActivityApiController</code>, register any activity send via the new API <code>/user/api/activity</code>.</p>
 <p><img alt="info" src="../../img/info.png" /> You will need to use <code>@PostMapping</code> with <code>@RequestBody</code> to extract the right DTO.</p>
 <p><img alt="warning" src="../../img/warning.png" /> The <code>@RequestMapping</code> already specified the <code>/user/api</code>.</p>
 <p><strong>Checklist</strong> :</p>
@@ -172,8 +171,7 @@ since the monolith is the one providing those pages but it isn't up.</p>
 <p>Check on the <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a> that you can see the new activity that you just sent.</p>
 </li>
 </ol>
-<h4 id="todo-2">TODO 2:</h4>
-<p>Start the monolith:</p>
+<p><em>TODO</em> 1.1.2: Start the monolith:</p>
 <pre><code>mvn spring-boot:run -pl monolith
 </code></pre>
 <p><img alt="error" src="../../img/error.png" /> You realize that you have the following error :</p>
@@ -192,7 +190,7 @@ Action:
 Verify the connector's configuration, identify and stop any process that's listening on port 8080, or configure this application to listen on another port.
 </code></pre>
 <p>The reason is that the two services are started on the same port. Let's change the port for user-activity.</p>
-<p>Open the file application.yaml and complete the <em>TODO</em> 1.1.4 to change the server port to 9001</p>
+<p>Open the file application.yaml and complete the <em>TODO</em> 1.1.2 to change the server port to 9001</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>
@@ -212,10 +210,8 @@ You can see the table for the user activities but it's empty. Weird right, since
 <p><img alt="question" src="../../img/question.png" /> How does the monolith discuss with the User microservice?</p>
 </blockquote>
 <h3 id="12-monolith">1.2 - Monolith</h3>
-<h4 id="todo-1_1">TODO 1:</h4>
-<p>Complete the first <em>TODO</em> by editing the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
-<h4 id="todo-2_1">TODO 2:</h4>
-<p>Change the two methods called by the monolith to send the data. </p>
+<p><em>TODO</em> 1.2.1: Complete the first <em>TODO</em> by editing the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
+<p><em>TODO</em> 1.2.2: Change the two methods called by the monolith to send the data. </p>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>Restart your two apps :</li>
@@ -230,8 +226,7 @@ mvn spring-boot:run -pl user-activity
 <li>Log on the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
    should see the same table than before with your activities.</li>
 </ol>
-<h4 id="todo-3">TODO 3:</h4>
-<p>As a final step, you will clean the monolith to remove any code related to the user activity.</p>
+<p><em>TODO</em> 1.2.3: As a final step, clean the monolith to remove any code related to the user activity.</p>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
 <p>Great, you just created your first microservice and connected it to your monolith. Not too bad.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
@@ -251,9 +246,9 @@ mvn spring-boot:run -pl user-activity
 <p><img alt="question" src="../../img/question.png" /> Did you realize that you can access the User microservice on port 9001 without
 authentication?</p>
 </blockquote>
-<p>It makes sense since our microservice User is on port 9001 but it also means that the user see that we are switching 
-between two ports/applications. Let's see in the next exercise how to centralize the authentication and to have a single
-entry point in our application.</p>
+<p>The user navigating on the application can see that we are switching between two ports/applications. We did not copy the
+authentication on the new microservice but we could do it.</p>
+<p>Let's see in the next exercise how to centralize the authentication and to have a single entry point in our application.</p>
 <h2 id="whats-next-exercise-2-gateway">What's next ? <a href="../gateway/">Exercise 2: Gateway</a></h2></div>
         </div>
 
