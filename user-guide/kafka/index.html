@@ -191,20 +191,19 @@ docker-compose stop
 </li>
 </ol>
 <h3 id="41-monolith">4.1 - Monolith</h3>
-<ol>
-<li>
-<p>Send a kafka message</p>
+<h4 id="todo-411-send-a-kafka-message"><em>TODO</em> 4.1.1: Send a kafka message</h4>
 <p>Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.</p>
 <p>To send a message with kafka :</p>
 <pre><code>private KafkaTemplate&lt;String, OrderPayedMessage&gt; kafkaTemplate;
 
 Message&lt;OrderPayedMessage&gt; message = MessageBuilder
-                .withPayload(new OrderPayedMessage(1,1,"user"))
+                .withPayload(new OrderPayedMessage(1,1,&quot;user&quot;))
                 .setHeader(KafkaHeaders.TOPIC, TOPIC_STATS)
                 .build();
 
 kafkaTemplate.send(message);
 </code></pre>
+
 <p><strong>Checklist</strong> </p>
 <ol>
 <li>
@@ -216,22 +215,18 @@ to run the following command:</p>
 <p>You should see the previous carts you payed.  </p>
 </li>
 </ol>
-</li>
-</ol>
 <h3 id="42-stats">4.2 - Stats</h3>
-<ol>
-<li>
+<h4 id="todo-421"><em>TODO</em> 4.2.1:</h4>
 <p>In the microservice, retrieve the message with kafka :</p>
-<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
+<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = &quot;statsMessageFactory&quot;)
 public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
         ...
 }
 </code></pre>
-</li>
-<li>
-<p>Save this message into the database</p>
-</li>
-</ol>
+
+<hr />
+<h4 id="todo-422"><em>TODO</em> 4.2.2:</h4>
+<p>Save this message into the database.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <p>4.1.1 - file com.homics.monolith.service.StatsService</p>
 <p>4.2.(1/2) - file com.homics.stats.service.OrderStatsService</p>
