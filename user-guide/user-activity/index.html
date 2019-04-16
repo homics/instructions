@@ -150,8 +150,7 @@ will call this micro-service via API to notify on a success login or success log
 <p>There is a new folder for the user-activity microservice. You are not going to start from scratch but you will need
 to implement some of the API.</p>
 <h3 id="11-user-activity">1.1 - User Activity</h3>
-<ol>
-<li>
+<h4 id="todo-1">TODO 1:</h4>
 <p>In your favorite IDE, open the file <code>UserActivityApiController</code> to complete the first <em>TODO</em>.</p>
 <p>You need to register any activity send via the new API <code>/user/api/activity</code>.</p>
 <blockquote>
@@ -176,8 +175,7 @@ since the monolith is the one providing those pages but it isn't up.</p>
 <p>Check on the <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a> that you can see the new activity that you just sent.</p>
 </li>
 </ol>
-</li>
-<li>
+<h4 id="todo-2">TODO 2:</h4>
 <p>Start the monolith:</p>
 <pre><code>mvn spring-boot:run -pl monolith
 </code></pre>
@@ -198,7 +196,7 @@ Action:
 
 Verify the connector's configuration, identify and stop any process that's listening on port 8080, or configure this application to listen on another port.
 </code></pre>
-<p>Since the two services are started on the same port, it makes sense. Let's change the port for user-activity</p>
+<p>The reason is that the two services are started on the same port. Let's change the port for user-activity.</p>
 <p>Open the file application.yaml and complete the <em>TODO</em> 1.1.4 to change the server port to 9001</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
@@ -215,49 +213,41 @@ mvn spring-boot:run -pl user-activity
 You can see the table for the user activities but it's empty. Weird right, since you just logged in.</p>
 </li>
 </ol>
-</li>
-</ol>
 <blockquote>
 <p><img alt="question" src="../../img/question.png" /> How does the monolith discuss with the User microservice?</p>
 </blockquote>
 <h3 id="12-monolith">1.2 - Monolith</h3>
-<ol>
-<li>
-<p>Complete the first <em>TODO</em> by editing the <code>post()</code> method to execute a <strong>restTemplate</strong> call.</p>
-</li>
-<li>
+<h4 id="todo-1_1">TODO 1:</h4>
+<p>Complete the first <em>TODO</em> by editing the <code>post()</code> method to call the microservice with <strong>restTemplate</strong>.</p>
+<h4 id="todo-2_1">TODO 2:</h4>
 <p>Change the two methods called by the monolith to send the data. </p>
 <p><strong>Checklist</strong> :</p>
 <ol>
-<li>
-<p>Restart your two apps :</p>
-<p># monolith
-   mvn spring-boot:run -pl monolith
-   # user-activity
-   mvn spring-boot:run -pl user-activity</p>
-</li>
-<li>
-<p>Log on the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
-   should see the same table than before with your activities.</p>
-</li>
+<li>Restart your two apps :</li>
 </ol>
-</li>
-<li>
-<p>Clean monolith:</p>
+<pre><code># monolith
+mvn spring-boot:run -pl monolith
+# user-activity
+mvn spring-boot:run -pl user-activity
+</code></pre>
+
+<ol>
+<li>Log on the <a href="http://localhost:8080/mono/login">monolith</a>. Navigate to the <em>User Activity Micro</em> tab and you
+   should see the same table than before with your activities.</li>
+</ol>
+<h4 id="todo-3">TODO 3:</h4>
 <p>As a final step, you will clean the monolith to remove any code related to the user activity.</p>
 <blockquote>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
 </blockquote>
-</li>
-</ol>
 <p>Great, you just created your first microservice and connected it to your monolith. Not too bad.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <p>1.1.1 - file com.homics.useractivity.controller.UserActivityApiController</p>
 <p>1.1.2 - file application.yaml for user-activity</p>
 <p>1.2.(1/2/3) - file com.homics.monolith.service.UserActivityService</p>
 <p>1.2.3 - below
-<em> file com.homics.monolith.controller.UserActivityInternalController
-</em> file com.homics.monolith.model.UserActivity</p>
+* file com.homics.monolith.controller.UserActivityInternalController
+* file com.homics.monolith.model.UserActivity</p>
 <h2 id="database">Database</h2>
 <p>You can access the database console via the following <a href="http://localhost:9001/console">url</a>.</p>
 <h2 id="results">Results</h2>
