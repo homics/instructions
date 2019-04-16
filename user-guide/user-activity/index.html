@@ -148,7 +148,8 @@ will call this micro-service via API to notify on a success login or success log
 <p>There is a new folder for the user-activity microservice. You are not going to start from scratch but you will need
 to implement some of the API.</p>
 <h3 id="11-user-activity">1.1 - User Activity</h3>
-<p><em>TODO</em> 1.1.1: In <code>UserActivityApiController</code>, register any activity send via the new API <code>/user/api/activity</code>.</p>
+<h4 id="todo-111-save-an-user-activity"><em>TODO</em> 1.1.1: Save an user activity</h4>
+<p>In <code>UserActivityApiController</code>, register any activity send via the new API <code>/user/api/activity</code>.</p>
 <p><img alt="info" src="../../img/info.png" /> You will need to use <code>@PostMapping</code> with <code>@RequestBody</code> to extract the right DTO.</p>
 <p><img alt="warning" src="../../img/warning.png" /> The <code>@RequestMapping</code> already specified the <code>/user/api</code>.</p>
 <p><strong>Checklist</strong> :</p>
@@ -169,7 +170,8 @@ since the monolith is the one providing those pages but it isn't up.</p>
 <p>Check on the <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a> that you can see the new activity that you just sent.</p>
 </li>
 </ol>
-<p><em>TODO</em> 1.1.2: Start the monolith:</p>
+<h4 id="todo-112-problem-with-ports"><em>TODO</em> 1.1.2: Problem with ports</h4>
+<p>Start the monolith</p>
 <pre><code>mvn spring-boot:run -pl monolith
 </code></pre>
 <p><img alt="error" src="../../img/error.png" /> You realize that you have the following error :</p>
