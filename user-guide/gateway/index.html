@@ -171,6 +171,7 @@ routing, monitoring, resiliency, security, and more. Spring integrated it in <st
       path: /test/**
       url: http://example.com/test/
 </code></pre>
+<hr />
 <h4 id="todo-22-enable-zuul"><em>TODO</em> 2.2: Enable Zuul</h4>
 <p>Checkout the second <em>TODO</em> to enable the Zuul Routing.</p>
 <p><strong>Checklist</strong> :</p>
@@ -191,6 +192,7 @@ mvn spring-boot:run -pl user-activity
 </ol>
 <p><img alt="question" src="../../img/question.png" /> What happens if you try to pay for a cart? </p>
 <p>It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.</p>
+<hr />
 <h4 id="todo-23-logged-user-information"><em>TODO</em> 2.3: Logged user information</h4>
 <p>Last but not least, you need to add the logged user to the headers so all micro services will be able to retrieve the
 connected user.</p>
