@@ -158,7 +158,7 @@ mvn spring-boot:run -pl user-activity
 </code></pre>
 <p>Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.</p>
 <h3 id="2-gateway">2 - Gateway</h3>
-<p><em>TODO</em> 2.1: Application.yaml</p>
+<h4 id="todo-21-applicationyaml"><em>TODO</em> 2.1: Application.yaml</h4>
 <p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
 <p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix that is an edge service that provides dynamic
 routing, monitoring, resiliency, security, and more. Spring integrated it in <strong>Spring Cloud</strong>.</p>
@@ -191,7 +191,7 @@ mvn spring-boot:run -pl user-activity
 </ol>
 <p><img alt="question" src="../../img/question.png" /> What happens if you try to pay for a cart? </p>
 <p>It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.</p>
-<p><em>TODO</em> 2.3: Logged user information</p>
+<h4 id="todo-23-logged-user-information"><em>TODO</em> 2.3: Logged user information</h4>
 <p>Last but not least, you need to add the logged user to the headers so all micro services will be able to retrieve the
 connected user.</p>
 <p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
