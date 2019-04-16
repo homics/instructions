@@ -151,12 +151,9 @@ will call this micro-service via API to notify on a success login or success log
 to implement some of the API.</p>
 <h3 id="11-user-activity">1.1 - User Activity</h3>
 <h4 id="todo-1">TODO 1:</h4>
-<p>In your favorite IDE, open the file <code>UserActivityApiController</code> to complete the first <em>TODO</em>.</p>
-<p>You need to register any activity send via the new API <code>/user/api/activity</code>.</p>
-<blockquote>
+<p>In <code>UserActivityApiController</code>, register any activity send via the new API <code>/user/api/activity</code>.</p>
 <p><img alt="info" src="../../img/info.png" /> You will need to use <code>@PostMapping</code> with <code>@RequestBody</code> to extract the right DTO.</p>
 <p><img alt="warning" src="../../img/warning.png" /> The <code>@RequestMapping</code> already specified the <code>/user/api</code>.</p>
-</blockquote>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>
@@ -179,9 +176,7 @@ since the monolith is the one providing those pages but it isn't up.</p>
 <p>Start the monolith:</p>
 <pre><code>mvn spring-boot:run -pl monolith
 </code></pre>
-<blockquote>
 <p><img alt="error" src="../../img/error.png" /> You realize that you have the following error :</p>
-</blockquote>
 <pre><code>2019-03-31 18:20:56.600 ERROR 10837 --- [  restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   :
 
 ***************************
@@ -237,9 +232,7 @@ mvn spring-boot:run -pl user-activity
 </ol>
 <h4 id="todo-3">TODO 3:</h4>
 <p>As a final step, you will clean the monolith to remove any code related to the user activity.</p>
-<blockquote>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
-</blockquote>
 <p>Great, you just created your first microservice and connected it to your monolith. Not too bad.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <p>1.1.1 - file com.homics.useractivity.controller.UserActivityApiController</p>
