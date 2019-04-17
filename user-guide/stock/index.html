@@ -172,14 +172,10 @@ The stock microservice will store and update the stock for each article. </p>
 </li>
 </ul>
 <p>With this plan, you can see in step 3 that the monolith is waiting for the microservice response.</p>
-<blockquote>
 <p><img alt="warning" src="../../img/warning.png" /> It's pretty bad! </p>
-</blockquote>
 <p>Imagine that the call to impact stock times out... </p>
 <p>Your payment method is going to wait the whole time and so is your user.</p>
-<blockquote>
 <p><img alt="tip" src="../../img/success.png" /> We need to change to asynchronous.</p>
-</blockquote>
 <h3 id="going-async">Going async</h3>
 <ul>
 <li>
@@ -207,9 +203,7 @@ The stock microservice will store and update the stock for each article. </p>
 <p>Close the transaction</p>
 </li>
 </ul>
-<blockquote>
 <p><img alt="question" src="../../img/question.png" /> What happens if the result of the microservice is "not enough stock" ?</p>
-</blockquote>
 <p>We save the order as cancelled.</p>
 <h2 id="goal">Goal</h2>
 <p>Extract the stock micro service using kafka.</p>
@@ -279,9 +273,7 @@ acknowledgement.</p>
 or <em>CANCEL</em>)</p>
 <hr />
 <h4 id="todo-532-comhomicsmonolithserviceorderservice"><em>TODO</em> 5.3.2: com.homics.monolith.service.OrderService</h4>
-<ol>
-<li>In case of success, update the stats and notify the stats microservice.</li>
-</ol>
+<p>In case of success, update the stats and notify the stats microservice.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <p>5.1.1 - file com.homics.monolith.model.Article</p>
 <p>5.1.2 - file com.homics.monolith.service.OrderService</p>
@@ -301,9 +293,7 @@ or <em>CANCEL</em>)</p>
 </li>
 </ol>
 <p>We are working with the first choice. It constrains us to have idempotent messages.</p>
-<blockquote>
 <p><img alt="info" src="../../img/info.png" /> Idempotent means that an action always gives the same result even if you played several times.</p>
-</blockquote>
 <p>In our case, the same message can be read multiple times and will give the same result. For example, in the stats microservice,
 the second message only updates the data since the orderId is unique.</p>
 <p>It explains why we keep the <code>table StockOperation</code>.</p>
