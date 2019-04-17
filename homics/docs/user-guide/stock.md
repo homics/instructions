@@ -42,13 +42,13 @@ If we extract the stock service in a microservice like we did before, the steps 
 
 With this plan, you can see in step 3 that the monolith is waiting for the microservice response.
 
-> ![warning](../img/warning.png) It's pretty bad! 
+![warning](../img/warning.png) It's pretty bad! 
 
 Imagine that the call to impact stock times out... 
 
 Your payment method is going to wait the whole time and so is your user.
 
-> ![tip](../img/success.png) We need to change to asynchronous.
+![tip](../img/success.png) We need to change to asynchronous.
 
 ### Going async
 
@@ -69,7 +69,7 @@ Then, we listen to the microservice event.
 * Close the transaction
 
 
-> ![question](../img/question.png) What happens if the result of the microservice is "not enough stock" ?
+![question](../img/question.png) What happens if the result of the microservice is "not enough stock" ?
 
 We save the order as cancelled.
 
@@ -169,7 +169,7 @@ or _CANCEL_)
 
 #### _TODO_ 5.3.2: com.homics.monolith.service.OrderService
 
-2. In case of success, update the stats and notify the stats microservice.
+In case of success, update the stats and notify the stats microservice.
 
 ## List of _TODOs_
 
@@ -197,7 +197,7 @@ When working with kafka, we can set the configuration to have either:
 
 We are working with the first choice. It constrains us to have idempotent messages.
 
-> ![info](../img/info.png) Idempotent means that an action always gives the same result even if you played several times.
+![info](../img/info.png) Idempotent means that an action always gives the same result even if you played several times.
 
 In our case, the same message can be read multiple times and will give the same result. For example, in the stats microservice,
 the second message only updates the data since the orderId is unique.
