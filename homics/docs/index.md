@@ -54,7 +54,7 @@ You can find all the code on [Homics Github](https://github.com/homics).
 Microservice is an architectural style in application development where you decide to separate your application
 into a set of loosely couple services. It's a difficult process with a lot of questions you need to ask yourself.
 
-> ![question](img/question.png) But why does someone decide to start this journey?
+![question](img/question.png) But why does someone decide to start this journey?
 
 ## Why microservice?
 

@@ -129,13 +129,14 @@ You need to recompile it via the following command: <code>mvn clean install -P c
 </blockquote>
 <h2 id="inconsistency-in-the-database">Inconsistency in the database</h2>
 <blockquote>
-<p><img alt="troubleshooting" src="../img/error.png" /> If you have an error saying that you have an inconsistency in the database, and something
-about hibernate and a result set at 2, you probably need to stop and restart your microservise.</p>
+<p><img alt="troubleshooting" src="../img/error.png" /> If you have an inconsistency in the database (something about hibernate and a <em>resultSet</em>
+at 2, you can try to restart your microservice. If it does not work, try to recompile everything with the front and restart
+the service.</p>
 </blockquote>
 <h2 id="issue-with-running-the-docker-command">Issue with running the docker command</h2>
 <blockquote>
 <p><img alt="troubleshooting" src="../img/error.png" /> If you see a permission issue when running the command docker to check if you properly
-sent the kafka message, you might need to run the command with <strong>sudo</strong>. (the two commands...)</p>
+sent the kafka message, you might need to run the command with <strong>sudo</strong>. (Don't forget to add the sudo on both docker commands).</p>
 </blockquote></div>
         </div>
 

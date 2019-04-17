@@ -8,11 +8,12 @@ You need to recompile it via the following command: `mvn clean install -P compil
 
 ## Inconsistency in the database
 
-> ![troubleshooting](img/error.png) If you have an error saying that you have an inconsistency in the database, and something
-about hibernate and a result set at 2, you probably need to stop and restart your microservise.
+> ![troubleshooting](img/error.png) If you have an inconsistency in the database (something about hibernate and a _resultSet_
+at 2, you can try to restart your microservice. If it does not work, try to recompile everything with the front and restart
+the service.
 
 
 ## Issue with running the docker command 
 
 > ![troubleshooting](img/error.png) If you see a permission issue when running the command docker to check if you properly
-sent the kafka message, you might need to run the command with **sudo**. (the two commands...)
+sent the kafka message, you might need to run the command with **sudo**. (Don't forget to add the sudo on both docker commands).
