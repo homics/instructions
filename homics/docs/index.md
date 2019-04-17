@@ -2,10 +2,6 @@
 
 Homics -> Hands On Micro Service
 
-## Slides
-
-You can find them [here](https://docs.google.com/presentation/d/1Xqexv460A00-F9JdtjZg1JgCN7BdSimDM2Xn7IpFMcI/edit?usp=sharing).
-
 ## Subject
 
 Ingredient:
