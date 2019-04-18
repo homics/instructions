@@ -1,6 +1,6 @@
 # Troubleshooting
 
-## Blank page when accessing the page 
+## Blank page when accessing the website
 
 > ![troubleshooting](img/error.png) If you have a 404 error, your front might not be compiled on your microservice.
 You need to recompile it via the following command: `mvn clean install -P compile-front -pl $MICROSERVICE_NAME`.
