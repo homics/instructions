@@ -37,7 +37,7 @@ A docker file is composed  :
 ## Todo's
 
 // remove we will do it for them
-build the app : mvn clean install -D skip.tests
+build the app : mvn compile -Pcompile-front
 
 Create the docker images.
 docker image build -t homics/gateway:0.0.1 .
