@@ -27,7 +27,7 @@ with the back.
     
         git clone https://github.com/homics/handson.git
         
-    Start your application (if you are using an IDE such as IntelliJ, you can run the application through it) :
+    Start your application via IDE (`MonolithApplication.java`), or with this command line:
     
         mvn spring-boot:run -pl monolith
 
