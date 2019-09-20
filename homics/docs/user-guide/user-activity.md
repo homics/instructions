@@ -105,7 +105,7 @@ In the monolith app, in the `UserActivityService` class, edit the `post()` metho
 
 #### _TODO_ 1.2.2:
 
-Use and modify the `UserActivityService` methods `addLogin()` and `addLogout()` previously used save data in database to instead send it to the new microservice, 
+Modify the `UserActivityService` methods `addLogin()` and `addLogout()` to send data to the new microservice, 
 using the new `post()` method.
 
 **Checklist** :
