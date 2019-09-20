@@ -4,19 +4,19 @@ Previously on HOMicS -> [Exercise 1: User Activity](../user-guide/user-activity.
 
 ## Context
 
-In the previous schema, you might realize that there is a flaw. We don't have any authentication for the micro-service.
+In the previous schema, you might have realized that there is a flaw. We don't have any authentication for the micro-service.
 
-![question](../img/question.png) What happens if you connect directly to the user-activity microservice ?
+![question](../img/question.png) What happens if you connect directly to the user-activity microservice?
 
-You can go directly to [user-activity](http://localhost:9001/user/userActivity). The login page is skipped and the data
+Well you can access directly [user-activity](http://localhost:9001/user/userActivity). The login page is skipped and the data
 is accessible! Oopsy, not great at all.
 
-We could duplicate all the security code in the new microservice. But imagine if we have twenty microservices, it's going
-to be a mess if we need to add the security in each of them. The services won't be loosely coupled. It's where the
-gateway becomes handy.
+We could duplicate all the security code in the new microservice. But it's not a scalable approach, we'd have to add it in all 
+future microservices. And the services will be loosely coupled.
+This is where a **Gateway** becomes handy.
 
 A gateway is a service that provides a single-entry point for certain groups of microservices. Any requests to our
-application will go through the gateway and it will be routing to our different services.
+application will go through the gateway, that will handle routing to our different services.
 
 ## Goal 
 
@@ -27,16 +27,18 @@ authentication and redirect to the **monolith** or the **user-activity** microse
 
 Everything has been implemented in other microservices. You only need to edit the gateway.
 
-## At your keyboard
+## At your keyboards
 
 Checkout the branch: 
         
     git checkout exercise-2
         
-There is a new folder for the gateway microservice. You are not going to start from scratch but you will need
-to implement some part of it.
+There is a new folder for the gateway microservice. You won't have to start from scratch, but you will need
+to implement some parts.
 
-Start the gateway and the two other services:
+Start the gateway and the two other services monolith and user-activity in you IDE.
+<details>
+    <summary>You can also run these commands for the same result:</summary>
 
     # gateway
     mvn spring-boot:run -pl gateway
@@ -44,7 +46,9 @@ Start the gateway and the two other services:
     mvn spring-boot:run -pl monolith
     # user-activity
     mvn spring-boot:run -pl user-activity
-    
+
+</details>
+
 Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.
 
 ### 2 - Gateway 
