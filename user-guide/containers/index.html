@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>exercise 0 - Monolith - HOMicS</title>
+        <title>Exercise 6 : Containers - HOMicS</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -52,12 +52,12 @@
                             <li >
                                 <a href="../../setup/">Setup</a>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exercises <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
-<li class="active">
-    <a href="./">exercise 0 - Monolith</a>
+<li >
+    <a href="../monolith/">exercise 0 - Monolith</a>
 </li>
                                     
 <li >
@@ -95,16 +95,6 @@
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
-                            <li >
-                                <a rel="next" href="../../setup/">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li >
-                                <a rel="prev" href="../user-activity/">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
                     </ul>
                 </div>
             </div>
@@ -113,50 +103,167 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#exercise-0-the-monolith">Exercise 0 : The Monolith</a></li>
-            <li><a href="#fruit-market-place">Fruit Market Place</a></li>
-            <li><a href="#architecture">Architecture</a></li>
-            <li><a href="#steps">Steps:</a></li>
-            <li><a href="#whats-next-exercise-1-user-activity">What's next ? Exercise 1: User Activity</a></li>
+        <li class="main active"><a href="#exercise-6-containers">Exercise 6 : Containers</a></li>
+            <li><a href="#context">Context</a></li>
+            <li><a href="#goal">Goal</a></li>
+            <li><a href="#reminder">Reminder</a></li>
+            <li><a href="#at-your-keyboard">At your keyboard</a></li>
+            <li><a href="#good-to-know">Good to know</a></li>
+            <li><a href="#whats-next-exercise-7-kubernetes">What's next ? Exercise 7: Kubernetes</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="exercise-0-the-monolith">Exercise 0 : The Monolith</h1>
-<h2 id="fruit-market-place">Fruit Market Place</h2>
-<p>Our application is a fruit market place. You can select any items from a list of ten fruits and put them in your cart.
-You can access your cart and pay for your order. Some stats are computed to let you know what is the average prize of 
-your cart. We implemented a tracking service for your user: we are saving the login and logout action of any users.</p>
-<h2 id="architecture">Architecture</h2>
-<p>The monolith is pretty simple. We want to avoid any confusion with a complicated application. The schema below explains
-the monolith architecture and what composed it.</p>
-<p><img alt="monolith" src="../../img/monolith.png" /></p>
-<p>The application is using <strong>SpringBoot</strong> with <strong>Spring Data JPA</strong> and <strong>Spring Security</strong> for the back. The database is 
-a <strong>h2</strong> and the front is implemented in <strong>React</strong>.</p>
-<p>You won't need to interact with the front. It's already implemented for each exercise in this HandsOn. You will only play
-with the back.</p>
-<h2 id="steps">Steps:</h2>
-<ol>
-<li>
-<p>Start the monolith</p>
-<p>To run your monolith, clone the repository via the following command:</p>
-<pre><code>git clone https://github.com/homics/handson.git
+<h1 id="exercise-6-containers">Exercise 6 : Containers</h1>
+<p>Previously on HOMicS -&gt; <a href="../stock/">Exercise 5: Stock</a></p>
+<h2 id="context">Context</h2>
+<p>We split our monolith into several microservices. Now, it's time to deploy this infrastructure.</p>
+<h3 id="about-the-containers">About the Containers</h3>
+<p>A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly
+and reliably from one computing environment to another.</p>
+<p>A Docker container image is a lightweight, standalone, executable package of software that includes everything
+needed to run an application: code, runtime, system tools, system libraries and settings.</p>
+<p>The container allow us to have independent and decoupled environment for each of our microservices.</p>
+<h2 id="goal">Goal</h2>
+<p>Deploy our market place via docker.</p>
+<h2 id="reminder">Reminder</h2>
+<table>
+<thead>
+<tr>
+<th><strong>services</strong></th>
+<th><strong>port</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gateway</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>monolith</td>
+<td>8090</td>
+</tr>
+<tr>
+<td>user</td>
+<td>9001</td>
+</tr>
+<tr>
+<td>stats</td>
+<td>9002</td>
+</tr>
+<tr>
+<td>stock</td>
+<td>9003</td>
+</tr>
+</tbody>
+</table>
+<h2 id="at-your-keyboard">At your keyboard</h2>
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-6
 </code></pre>
-<p>Start your application via IDE (<code>MonolithApplication.java</code>), or with this command line:</p>
-<pre><code>mvn spring-boot:run -pl monolith
+<h3 id="gateways-container">Gateway's container</h3>
+<p>1 - Create your Dockerfile to build the docker image for gateway.</p>
+<p><img alt="info" src="../../img/info.png" /> You can find some information on <a href="https://docs.docker.com/compose/gettingstarted/#step-2-create-a-dockerfile">docker website : step-2-create-a-dockerfile</a>.</p>
+<p><img alt="tip" src="../../img/success.png" /> For each microservice, you can use the following base image to deploy the app : <code>openjdk:8u222-jre</code>.</p>
+<p>2 - Generate the docker image described by your Dockerfile</p>
+<pre><code class="bash">docker build -t {image-name} {dockerfile-folder}
+
+# E.g:
+
+docker build -t &quot;gateway-image&quot; gateway
 </code></pre>
-</li>
-<li>
-<p>Access the application</p>
-<p>Go to <a href="http://localhost:8080">localhost:8080</a> and log with <em>admin/admin</em>. You should be able to navigate on the
-application:</p>
-<p><img alt="homics-gif" src="../../img/homics.gif" /></p>
-<p>To access the <code>h2</code> console, after logging as admin, go to :
-<a href="http://localhost:8080/console">localhost:8080/console</a> and use the credentials: <em>admin/admin</em>.</p>
-<p><img alt="console-gif" src="../../img/console.gif" /></p>
-</li>
-</ol>
-<h2 id="whats-next-exercise-1-user-activity">What's next ? <a href="../user-activity/">Exercise 1: User Activity</a></h2></div>
+
+<p>3 - Run a new container from your image</p>
+<pre><code class="bash">docker run -d --name {container-name} -p {external-port}:{container-port} {image-name}
+
+# E.g:
+
+docker run -d --name gateway-container -p 9000:8080 gateway-image
+
+</code></pre>
+
+<p>In this example, you will launch a new container for your gateway. The port 9000 of your computer is
+redirected to the port 8080 on your container. </p>
+<p>Check the docker's cheatsheet below:</p>
+<pre><code># Available docker's images
+docker images
+
+# Running container's listing
+docker ps
+
+# Remove a docker image
+docker rmi {image-id}
+
+# Remove a docker container
+docker rm {container-id}
+
+# Stop a docker container
+docker stop {container-id/container-name}
+
+# Kill a docker container
+docker kill {container-id/container-name}
+</code></pre>
+
+<p>4 - Verify on <a href="http://localhost:8080">localhost:8080</a> that your gateway is running</p>
+<h3 id="user-activity-and-database">User-activity and Database</h3>
+<p>Unlike gateway, User-activity required a database. Previously, it was an in-memory database
+h2. In real world, we need a persistent database. We already updated all our microservices to
+use a database on port 1521.</p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> Usually, each service comes with its database. It's one of the advantages of microservices.
+Each service can choose a database according to its needs. It allows your team more flexibility for the backup/deployment/upgrade.
+For simplicity, we are deploying a unique database.</p>
+</blockquote>
+<p>1 - Create the database dockerfile </p>
+<p>2 - Create the user-activity dockerfile</p>
+<p>3 - Generate the image and run the containers</p>
+<p>Go on <a href="http://localhost:8080">localhost:8080</a> to access your gateway. 
+Go on <a href="http://localhost:9001/user-activity">localhost:9001/user-activity</a> to access user-activity page.
+Log on gateway and navigate to user-activity tab. <img alt="warning" src="../../img/warning.png" /> 404 Not Found. The page isn't accessible and
+on user-activity, you don't see any new login.</p>
+<p><img alt="question" src="../../img/question.png" /> Why is that ?</p>
+<p>By default, docker's container runs on different networks so they cannot communicate directly with each other.</p>
+<p>For communication among containers, you can either manage routing at the OS level, or you can use an overlay network.
+We are going to use docker-compose to achieve this purpose.</p>
+<h3 id="docker-compose">Docker-compose</h3>
+<p>Compose is a tool for defining and running multi-container Docker applications. It deploys several containers within
+the same network described in a YAML file. In it, we list each application by its name and define how to build its
+container.</p>
+<p>For example, in this compose, we have one application named <code>webapp</code>:</p>
+<pre><code>version: '3'
+services:
+  webapp:
+    image: my-webapp-image
+    ports:
+      - &quot;8080:8080&quot;
+</code></pre>
+
+<p>1 - Complete the docker-compose.yml</p>
+<p>Remember when we were routing our applications via Zuul in the gateway, we set the path for each of our microservices like
+<code>http://localhost:9001/user</code>. In our case, <code>localhost</code> becomes <code>user</code>. </p>
+<p>2 - Update the <code>gateway/application.yml</code>, build the jar: <code>./buildJars gateway</code>, and finally rebuild the docker image.</p>
+<p>3 - Run the docker-compose: <code>docker-compose up</code></p>
+<p>4 - Navigate on <a href="http://localhost:8080">localhost:8080</a>, log in, and verify that user-activity is accessible with the recent activity.</p>
+<h3 id="bonus">Bonus:</h3>
+<p>You can complete the docker-compose to deploy all microservices and kafka with a single command line.</p>
+<p><img alt="warning" src="../../img/warning.png" /> Be aware that this operation is CPU and RAM consuming to run everything.
+Some of you might encounter some difficulties.</p>
+<h2 id="good-to-know">Good to know</h2>
+<p>In a docker-compose, some applications might depend on others. For example, monolith depends on kafka and the database. 
+You can specify that information by adding the keyword <code>depends_on:</code>:</p>
+<pre><code>version: '3'
+services:
+  webapp:
+    image: my-webapp-image
+    ports:
+      - &quot;8080:8080&quot;
+    depends_on:
+      - database
+      - kafka
+</code></pre>
+
+<h2 id="whats-next-exercise-7-kubernetes">What's next ? <a href="../kubernetes/">Exercise 7: Kubernetes</a></h2>
+<p>We are gonna see how to orchestrate everything automatically with Kubernetes.</p></div>
         </div>
 
         <footer class="col-md-12">
