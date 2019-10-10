@@ -209,11 +209,6 @@ It explains why we keep the `table StockOperation`.
 You finish this Hands On in time. We want to thank you for coming and hopefully, you learnt a lot and are happy with the
 content of this Hands On.
 
-## What's next ?
+## What's next ? [Exercise 6: Containers](containers.md)
 
-Come see us at our stand and let us know what you though about the Hands On.
-
-Please your feedback means a lot to us. If you have 5 minutes to spare, could you fill this.
-[survey](https://docs.google.com/forms/d/1VAbfBPXvYej24ciUkATdY9dSuQVxMxfBG3psfe4mQoo/edit)
-
-Thank you. 
+Let's deploy our market place in containers.
