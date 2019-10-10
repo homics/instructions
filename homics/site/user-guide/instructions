@@ -1,0 +1,90 @@
+0) build app
+  $ mvn clean install -D skip.tests
+
+  $ java -jar monolith/target/monolith-0.0.1-SNAPSHOT.jar
+
+
+1) install & start minikube
+
+For macOS :
+  $ brew cask install minikube
+
+For Linux :
+  $ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
+  $ sudo install minikube /usr/local/bin
+
+
+Start and check minikube :
+  $ minikube start (maybe you need to do a "minikube delete")
+  $ minikube status
+
+
+2) build docker image
+
+cat <<EOF>Dockerfile
+FROM openjdk:8-jdk
+
+COPY target/monolith-0.0.1-SNAPSHOT.jar /monolith.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "/monolith.jar"]
+EOF
+
+  $ source <(minikube docker-env)
+  $ docker image build -t homics/monolith:0.0.1 .
+
+
+3) check image
+  $ docker container run -d --name monolith -p 8080:8080 homics/monolith:0.0.1
+  $ docker ps
+  $ docker logs monolith
+  $ docker stop monolith
+  $ docker rm monolith
+
+
+4) install kubectl
+
+For macOS :
+  $ brew install kubernetes-cli
+
+For Linux, follow instructions from here :
+  https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-using-native-package-management
+
+Check minikube conf with kubectl :
+
+  $ kubectl get cs
+  NAME                 STATUS    MESSAGE             ERROR
+  controller-manager   Healthy   ok
+  scheduler            Healthy   ok
+  etcd-0               Healthy   {"health":"true"}
+
+  $ kubectl get nodes -o wide
+  NAME       STATUS   ROLES    AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE              KERNEL-VERSION   CONTAINER-RUNTIME
+  minikube   Ready    master   22m   v1.15.2   10.0.2.15     <none>        Buildroot 2018.05.3   4.15.0           docker://18.9.8
+
+
+5) create and expose a deployment
+  $ kubectl create deployment monolith --image=homics/monolith:0.0.1
+  $ kubectl expose deployment monolith --type=LoadBalancer --port=8080 --name=monolith-lb
+
+
+6) give access and check app
+  $ minikube tunnel &>/dev/null &
+  $ kubectl get service -l app=monolith
+
+  $ kubectl logs -l app=monolith --tail=50
+  $ kubectl exec -it deploy/monolith bash
+
+
+7) test the app
+  $ minikube service monolith-lb
+
+
+Missing for production :
+ * registry
+ * ingress
+ * namespaces
+ * logs management
+ * CI/CD
+ * ...

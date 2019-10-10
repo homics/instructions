@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>exercise 2 - Gateway - HOMicS</title>
+        <title>exercise 6 - Containers - HOMicS</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -64,8 +64,8 @@
     <a href="../user-activity/">exercise 1 - User Activity</a>
 </li>
                                     
-<li class="active">
-    <a href="./">exercise 2 - Gateway</a>
+<li >
+    <a href="../gateway/">exercise 2 - Gateway</a>
 </li>
                                     
 <li >
@@ -80,8 +80,8 @@
     <a href="../stock/">exercise 5 - Stock</a>
 </li>
                                     
-<li >
-    <a href="../containers/">exercise 6 - Containers</a>
+<li class="active">
+    <a href="./">exercise 6 - Containers</a>
 </li>
                                     
 <li >
@@ -104,12 +104,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../user-activity/">
+                                <a rel="next" href="../stock/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../stats/">
+                                <a rel="prev" href="../kubernetes/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -121,123 +121,167 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#exercise-2-gateway">Exercise 2 : Gateway</a></li>
+        <li class="main active"><a href="#exercise-6-containers">Exercise 6 : Containers</a></li>
             <li><a href="#context">Context</a></li>
             <li><a href="#goal">Goal</a></li>
+            <li><a href="#reminder">Reminder</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
-            <li><a href="#list-of-todos">List of TODOs</a></li>
-            <li><a href="#monolith-database">Monolith database</a></li>
-            <li><a href="#results">Results</a></li>
-            <li><a href="#whats-next-exercise-3-stats">What's next ? Exercise 3: Stats</a></li>
+            <li><a href="#good-to-know">Good to know</a></li>
+            <li><a href="#whats-next-exercise-7-kubernetes">What's next ? Exercise 7: Kubernetes</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="exercise-2-gateway">Exercise 2 : Gateway</h1>
-<p>Previously on HOMicS -&gt; <a href="../user-activity/">Exercise 1: User Activity</a></p>
+<h1 id="exercise-6-containers">Exercise 6 : Containers</h1>
+<p>Previously on HOMicS -&gt; <a href="../stock/">Exercise 5: Stock</a></p>
 <h2 id="context">Context</h2>
-<p>In the previous schema, you might realize that there is a flaw. We don't have any authentication for the micro-service.</p>
-<p><img alt="question" src="../../img/question.png" /> What happens if you connect directly to the user-activity microservice ?</p>
-<p>You can go directly to <a href="http://localhost:9001/user/userActivity">user-activity</a>. The login page is skipped and the data
-is accessible! Oopsy, not great at all.</p>
-<p>We could duplicate all the security code in the new microservice. But imagine if we have twenty microservices, it's going
-to be a mess if we need to add the security in each of them. The services won't be loosely coupled. It's where the
-gateway becomes handy.</p>
-<p>A gateway is a service that provides a single-entry point for certain groups of microservices. Any requests to our
-application will go through the gateway and it will be routing to our different services.</p>
+<p>We split our monolith into several microservices. Now, it's time to deploy this infrastructure.</p>
+<h3 id="about-the-containers">About the Containers</h3>
+<p>A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly
+and reliably from one computing environment to another.</p>
+<p>A Docker container image is a lightweight, standalone, executable package of software that includes everything
+needed to run an application: code, runtime, system tools, system libraries and settings.</p>
+<p>The container allow us to have independent and decoupled environment for each of our microservices.</p>
 <h2 id="goal">Goal</h2>
-<p>Create the <strong>Gateway</strong> microservice responsible for all authentication and redirection. It's going to handle the
-authentication and redirect to the <strong>monolith</strong> or the <strong>user-activity</strong> microservice.</p>
-<p><img alt="gateway" src="../../img/gateway.png" /></p>
-<p>Everything has been implemented in other microservices. You only need to edit the gateway.</p>
+<p>Deploy our market place via docker.</p>
+<h2 id="reminder">Reminder</h2>
+<table>
+<thead>
+<tr>
+<th><strong>services</strong></th>
+<th><strong>port</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gateway</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>monolith</td>
+<td>8090</td>
+</tr>
+<tr>
+<td>user</td>
+<td>9001</td>
+</tr>
+<tr>
+<td>stats</td>
+<td>9002</td>
+</tr>
+<tr>
+<td>stock</td>
+<td>9003</td>
+</tr>
+</tbody>
+</table>
 <h2 id="at-your-keyboard">At your keyboard</h2>
 <p>Checkout the branch: </p>
-<pre><code>git checkout exercise-2
+<pre><code>git checkout exercise-6
 </code></pre>
-<p>There is a new folder for the gateway microservice. You are not going to start from scratch but you will need
-to implement some part of it.</p>
-<p>Start the gateway and the two other services:</p>
-<pre><code># gateway
-mvn spring-boot:run -pl gateway
-# monolith
-mvn spring-boot:run -pl monolith
-# user-activity
-mvn spring-boot:run -pl user-activity
-</code></pre>
-<p>Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.</p>
-<h3 id="2-gateway">2 - Gateway</h3>
-<h4 id="todo-21-applicationyaml"><em>TODO</em> 2.1: Application.yaml</h4>
-<p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
-<p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix that is an edge service that provides dynamic
-routing, monitoring, resiliency, security, and more. Spring integrated it in <strong>Spring Cloud</strong>.</p>
-<p>You will need to set it up in your <code>application.yaml</code>.</p>
-<p><img alt="tip" src="../../img/success.png" /> zuul documentation is available <a href="https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html">here</a></p>
-<p>To help you with the configuration in your yml file, here is an example:</p>
-<pre><code>zuul:
-  routes:
-    testservice:
-      path: /test/**
-      url: http://example.com/test/
-</code></pre>
-<hr />
-<h4 id="todo-22-enable-zuul"><em>TODO</em> 2.2: Enable Zuul</h4>
-<p>Checkout the second <em>TODO</em> to enable the Zuul Routing.</p>
-<p><strong>Checklist</strong> :</p>
-<ol>
-<li>
-<p>Since the routing is done and should be working, start your three apps if they aren't already up:</p>
-<pre><code># gateway
-mvn spring-boot:run -pl gateway
-# monolith
-mvn spring-boot:run -pl monolith
-# user-activity
-mvn spring-boot:run -pl user-activity
-</code></pre>
-</li>
-<li>
-<p>Verify that if you log in, you see your articles and all the pages under the same port: 8080.</p>
-</li>
-</ol>
-<p><img alt="question" src="../../img/question.png" /> What happens if you try to pay for a cart? </p>
-<p>It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.</p>
-<hr />
-<h4 id="todo-23-logged-user-information"><em>TODO</em> 2.3: Logged user information</h4>
-<p>Last but not least, you need to add the logged user to the headers so all micro services will be able to retrieve the
-connected user.</p>
-<p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
-<p><strong>Checklist</strong> :</p>
-<ol>
-<li>
-<p>To verify that gateway is well implemented, launch all the applications:</p>
-<pre><code># Run monolith project
-mvn spring-boot:run -pl monolith
+<h3 id="gateways-container">Gateway's container</h3>
+<p>1 - Create your Dockerfile to build the docker image for gateway.</p>
+<p><img alt="info" src="../../img/info.png" /> You can find some information on <a href="https://docs.docker.com/compose/gettingstarted/#step-2-create-a-dockerfile">docker website : step-2-create-a-dockerfile</a>.</p>
+<p><img alt="tip" src="../../img/success.png" /> For each microservice, you can use the following base image to deploy the app : <code>openjdk:8u222-jre</code>.</p>
+<p>2 - Generate the docker image described by your Dockerfile</p>
+<pre><code class="bash">docker build -t {image-name} {dockerfile-folder}
 
-# Run user-activity project
-mvn spring-boot:run -pl user-activity
+# E.g:
 
-# Run Gateway project
-mvn spring-boot:run -pl gateway
+docker build -t &quot;gateway-image&quot; gateway
 </code></pre>
-</li>
-<li>
-<p>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should be on the gateway. After logging, you should be
-directly redirect to the monolith and you can notify that the port is still 8080. You should be able to access as well
-the user-activity microservice on the <em>User Activity micro</em> tab.</p>
-</li>
-</ol>
-<p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, the port for the monolith has been changed to 8090. </p>
-<h2 id="list-of-todos">List of <em>TODOs</em></h2>
-<p>2.1 - file application.yaml for gateway</p>
-<p>2.2 - file com.homics.gateway.GatewayApplication</p>
-<p>2.3 - file com.homics.gateway.config.filter.AddUserFilter</p>
-<h2 id="monolith-database">Monolith database</h2>
-<p>You can access the <strong>monolith</strong> database console via the following <a href="http://localhost:8090/console">url</a>.</p>
-<h2 id="results">Results</h2>
-<p><img alt="gateway-micro" src="../../img/gateway-micro.gif" /></p>
-<p><img alt="info" src="../../img/info.png" /> You can still access the other services directly on each port 8090 and 9001.
-In practice, you will block those ports from the outside via a firewall.</p>
-<p>Well done. Let's continue on to the next step and our new microservices.</p>
-<h2 id="whats-next-exercise-3-stats">What's next ? <a href="../stats/">Exercise 3: Stats</a></h2></div>
+
+<p>3 - Run a new container from your image</p>
+<pre><code class="bash">docker run -d --name {container-name} -p {external-port}:{container-port} {image-name}
+
+# E.g:
+
+docker run -d --name gateway-container -p 9000:8080 gateway-image
+
+</code></pre>
+
+<p>In this example, you will launch a new container for your gateway. The port 9000 of your computer is
+redirected to the port 8080 on your container. </p>
+<p>Check the docker's cheatsheet below:</p>
+<pre><code># Available docker's images
+docker images
+
+# Running container's listing
+docker ps
+
+# Remove a docker image
+docker rmi {image-id}
+
+# Remove a docker container
+docker rm {container-id}
+
+# Stop a docker container
+docker stop {container-id/container-name}
+
+# Kill a docker container
+docker kill {container-id/container-name}
+</code></pre>
+
+<p>4 - Verify on <a href="http://localhost:8080">localhost:8080</a> that your gateway is running</p>
+<h3 id="user-activity-and-database">User-activity and Database</h3>
+<p>Unlike gateway, User-activity required a database. Previously, it was an in-memory database
+h2. In real world, we need a persistent database. We already updated all our microservices to
+use a database on port 1521.</p>
+<blockquote>
+<p><img alt="info" src="../../img/info.png" /> Usually, each service comes with its database. It's one of the advantages of microservices.
+Each service can choose a database according to its needs. It allows your team more flexibility for the backup/deployment/upgrade.
+For simplicity, we are deploying a unique database.</p>
+</blockquote>
+<p>1 - Create the database dockerfile </p>
+<p>2 - Create the user-activity dockerfile</p>
+<p>3 - Generate the image and run the containers</p>
+<p>Go on <a href="http://localhost:8080">localhost:8080</a> to access your gateway. 
+Go on <a href="http://localhost:9001/user-activity">localhost:9001/user-activity</a> to access user-activity page.
+Log on gateway and navigate to user-activity tab. <img alt="warning" src="../../img/warning.png" /> 404 Not Found. The page isn't accessible and
+on user-activity, you don't see any new login.</p>
+<p><img alt="question" src="../../img/question.png" /> Why is that ?</p>
+<p>By default, docker's container runs on different networks so they cannot communicate directly with each other.</p>
+<p>For communication among containers, you can either manage routing at the OS level, or you can use an overlay network.
+We are going to use docker-compose to achieve this purpose.</p>
+<h3 id="docker-compose">Docker-compose</h3>
+<p>Compose is a tool for defining and running multi-container Docker applications. It deploys several containers within
+the same network described in a YAML file. In it, we list each application by its name and define how to build its
+container.</p>
+<p>For example, in this compose, we have one application named <code>webapp</code>:</p>
+<pre><code>version: '3'
+services:
+  webapp:
+    image: my-webapp-image
+    ports:
+      - &quot;8080:8080&quot;
+</code></pre>
+
+<p>1 - Complete the docker-compose.yml</p>
+<p>Remember when we were routing our applications via Zuul in the gateway, we set the path for each of our microservices like
+<code>http://localhost:9001/user</code>. In our case, <code>localhost</code> becomes <code>user</code>. </p>
+<p>2 - Update the <code>gateway/application.yml</code>, build the jar: <code>./buildJars gateway</code>, and finally rebuild the docker image.</p>
+<p>3 - Run the docker-compose: <code>docker-compose up</code></p>
+<p>4 - Navigate on <a href="http://localhost:8080">localhost:8080</a>, log in, and verify that user-activity is accessible with the recent activity.</p>
+<h3 id="bonus">Bonus:</h3>
+<p>You can complete the docker-compose to deploy all microservices and kafka with a single command line.</p>
+<p><img alt="warning" src="../../img/warning.png" /> Be aware that this operation is CPU and RAM consuming to run everything.
+Some of you might encounter some difficulties.</p>
+<h2 id="good-to-know">Good to know</h2>
+<p>In a docker-compose, some applications might depend on others. For example, monolith depends on kafka and the database. 
+You can specify that information by adding the keyword <code>depends_on:</code>:</p>
+<pre><code>version: '3'
+services:
+  webapp:
+    image: my-webapp-image
+    ports:
+      - &quot;8080:8080&quot;
+    depends_on:
+      - database
+      - kafka
+</code></pre>
+
+<h2 id="whats-next-exercise-7-kubernetes">What's next ? <a href="../kubernetes/">Exercise 7: Kubernetes</a></h2>
+<p>We are gonna see how to orchestrate everything automatically with Kubernetes.</p></div>
         </div>
 
         <footer class="col-md-12">

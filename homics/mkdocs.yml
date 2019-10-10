@@ -10,5 +10,7 @@ nav:
       - 'exercise 3 - Stats': user-guide/stats.md
       - 'exercise 4 - Stats with Kafka': user-guide/kafka.md
       - 'exercise 5 - Stock': user-guide/stock.md
+      - 'exercise 6 - Containers': user-guide/containers.md
+      - 'exercise 7 - Kubernetes': user-guide/kubernetes.md
   - Troubleshooting: troubleshooting.md
   - About: about.md
