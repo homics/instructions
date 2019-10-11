@@ -137,11 +137,12 @@
 <p>Previously on HOMicS -&gt; <a href="../containers/">Exercise 6: Containers</a></p>
 <h2 id="context">Context</h2>
 <p>We saw on the previous exercises how to run our applications using containers and docker.</p>
-<p>Maybe you noticed the <code>crash</code> button on user-activity tab. Surprisingly, this button will crash your application. It's 
+<p>Maybe you noticed the <code>Crash</code> button on user-activity tab. Surprisingly, this button will crash your application. It's 
 our way to mock production crashes like OutOfMemory, StackOverflow, hardware failures, etc ... When it happens, you need
 to manually reboot your container. In production, this is not acceptable.</p>
 <p>Let's discover how Kubernetes can automatize this process.</p>
 <h3 id="about-kubernetes">About Kubernetes</h3>
+<p><img alt="kubernetes" src="../../img/kubernetes.svg" /></p>
 <p>Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized
 applications. Kubernetes provides you with a framework to run distributed systems resiliently. We are not going to explain every
 concept behind it but we will introduce some key notions before starting the exercise. <a href="https://kubernetes.io/docs/concepts/">Kubernetes documentation</a>
@@ -156,7 +157,10 @@ of replicas. A service defines a logical set of Pods and a policy by which to ac
 <p>Minikube is a tool that runs a single-node Kubernetes cluster in a virtual machine on your personal computer.</p>
 <p>To set it up, go back to <a href="../../setup/">Setup</a>.</p>
 <p>CheatSheet :</p>
-<pre><code># Get the state of your pods
+<pre><code># Minikube start (or stop)
+minikube start
+
+# Get the state of your pods
 kubectl get pod
 
 # Get the state of your deployments
