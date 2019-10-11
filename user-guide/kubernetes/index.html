@@ -271,7 +271,7 @@ increased to one. You pod is restarting automatically. In few seconds, you shoul
 <p>Your application keeps evolving through time and you often need to update it. Unfortunately, you don't want to call your
 client and tell him that you need to shutdown the app for few seconds/minutes.</p>
 <p>Kube manages rolling updates very efficiently. It creates a new pod, install the new version, and then move the traffic
-from the old pod to the new one. No downtime, great. Let's roll user's app with its version 2.0.0.</p>
+from the old pod to the new one, to finally kill the old one. No downtime, great. Let's roll user's app with its version 2.0.0.</p>
 <p>1 - Open the user-activity tab and click on <code>version</code> button. It prints the version of your app every second. </p>
 <p>2 - Run <code>kubectl set image deployments/user-deployment user=homics/user-activity:2.0.0</code></p>
 <p>And the version should change from 1.0.0 to 2.0.0 on the user-activity page but you realize that there are some lines
@@ -287,7 +287,7 @@ won't allow access on the pod before the condition is met. </p>
 <p>While crashing your application, you realize that we had some downtime. When we introduce the term of replica, we define
 them as the key for resilience and availability. Right now, User pod isn't available if one pod crashes. We are going to
 increase the number of replica to 2.</p>
-<p>1 - Increase the number of replica to 2</p>
+<p>1 - Increase the number of replica to 2 in your deployment.yml</p>
 <p>2 - Crash your application and reload the page</p>
 <p>You realize that the service is always available. </p>
 <h3 id="bonus-deploy-our-market-place">Bonus: Deploy our market place</h3>
@@ -299,7 +299,7 @@ you need to relink kubectl : brew link --overwrite kubernetes-cli</p>
 <h2 id="good-to-know">Good to know</h2>
 <p>// todo </p>
 <h2 id="whats-next">What's next ?</h2>
-<p>Come see us at our stand and let us know what you though about the Hands On.</p>
+<p>Come see us after hand and let us know what you though about the Hands On.</p>
 <p>Thank you. </p></div>
         </div>
 
