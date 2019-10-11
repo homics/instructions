@@ -34,3 +34,11 @@ For **Docker-compose**, it's [here](https://docs.docker.com/compose/install/).
 You can set it up on windows via this [link](https://curl.haxx.se/download.html).
 
 It's available on macOs and Linux by default.
+
+
+## Kubernetes
+
+To install minikube, select your OS and follow the instructions on [how to install minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/).
+
+For MacOs users, don’t forget to authorize virtualbox to enable its kernel extension on your computer via System Preferences → Security & Privacy → General, 
+then restart the installation.

@@ -181,7 +181,8 @@ needed to run an application: code, runtime, system tools, system libraries and 
 </code></pre>
 <h3 id="gateways-container">Gateway's container</h3>
 <p>1 - Create your Dockerfile to build the docker image for gateway.</p>
-<p><img alt="info" src="../../img/info.png" /> You can find some information on <a href="https://docs.docker.com/compose/gettingstarted/#step-2-create-a-dockerfile">docker website : step-2-create-a-dockerfile</a>.</p>
+<p><img alt="info" src="../../img/info.png" /> You can find all the information you need on docker website with this two links <a href="https://docs.docker.com/compose/gettingstarted/#step-2-create-a-dockerfile">step-2-create-a-dockerfile</a>
+and <a href="https://docs.docker.com/engine/reference/builder/">build-an-image</a>.</p>
 <p><img alt="tip" src="../../img/success.png" /> For each microservice, you can use the following base image to deploy the app : <code>openjdk:8u222-jre</code>.</p>
 <p>2 - Generate the docker image described by your Dockerfile</p>
 <pre><code class="bash">docker build -t {image-name} {dockerfile-folder}
@@ -203,7 +204,10 @@ docker run -d --name gateway-container -p 9000:8080 gateway-image
 <p>In this example, you will launch a new container for your gateway. The port 9000 of your computer is
 redirected to the port 8080 on your container. </p>
 <p>Check the docker's cheatsheet below:</p>
-<pre><code># Available docker's images
+<pre><code># Pull images from Hub
+docker pull {image-with-version}
+
+# Available docker's images
 docker images
 
 # Running container's listing
@@ -232,7 +236,15 @@ use a database on port 1521.</p>
 Each service can choose a database according to its needs. It allows your team more flexibility for the backup/deployment/upgrade.
 For simplicity, we are deploying a unique database.</p>
 </blockquote>
-<p>1 - Create the database dockerfile </p>
+<p>1 - Run the containers for the database.</p>
+<p>The image already exists on a hub. You only need to run it with the following command:</p>
+<pre><code># Pull the image from the hub:
+docker pull oscarfonts/h2:1.4.197
+
+# Run the container:
+docker run -d -p 1521:1521 -p 81:81 -v /tmp/data/homics-data:/opt/h2-data --name=homics-database oscarfonts/h2
+</code></pre>
+
 <p>2 - Create the user-activity dockerfile</p>
 <p>3 - Generate the image and run the containers</p>
 <p>Go on <a href="http://localhost:8080">localhost:8080</a> to access your gateway. 

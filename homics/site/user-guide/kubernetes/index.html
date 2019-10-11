@@ -123,14 +123,9 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#exercise-7-kubernetes">Exercise 7: Kubernetes</a></li>
             <li><a href="#context">Context</a></li>
-            <li><a href="#setup">Setup</a></li>
+            <li><a href="#minikube">Minikube</a></li>
             <li><a href="#goal">Goal</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
-            <li><a href="#docker-commands">Docker commands :</a></li>
-            <li><a href="#kube">Kube :</a></li>
-            <li><a href="#get-logs">Get logs</a></li>
-            <li><a href="#rolling-update">Rolling update</a></li>
-            <li><a href="#db">DB</a></li>
             <li><a href="#trouble-shooting">Trouble shooting :</a></li>
             <li><a href="#good-to-know">Good to know</a></li>
             <li><a href="#whats-next">What's next ?</a></li>
@@ -142,72 +137,169 @@
 <p>Previously on HOMicS -&gt; <a href="../containers/">Exercise 6: Containers</a></p>
 <h2 id="context">Context</h2>
 <p>We saw on the previous exercises how to run our applications using containers and docker.</p>
-<p>Maybe you noticed the <code>crash</code> button on user-activity tab. Surprisingly, this button will crash your application. It's 
-our way to mock production crashes like OutOfMemory, StackOverflow, etc ... When it happens, you need to manually reboot
-your container. In production, this is not acceptable.</p>
+<p>Maybe you noticed the <code>Crash</code> button on user-activity tab. Surprisingly, this button will crash your application. It's 
+our way to mock production crashes like OutOfMemory, StackOverflow, hardware failures, etc ... When it happens, you need
+to manually reboot your container. In production, this is not acceptable.</p>
 <p>Let's discover how Kubernetes can automatize this process.</p>
-<h3 id="about-kube">About Kube</h3>
-<p>// todo</p>
-<h2 id="setup">Setup</h2>
-<p>--&gt; present minikube</p>
-<p>For macOS :
-  $ brew cask install minikube
-  Install virtual box</p>
-<p>// todo</p>
+<h3 id="about-kubernetes">About Kubernetes</h3>
+<p><img alt="kubernetes" src="../../img/kubernetes.svg" /></p>
+<p>Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized
+applications. Kubernetes provides you with a framework to run distributed systems resiliently. We are not going to explain every
+concept behind it but we will introduce some key notions before starting the exercise. <a href="https://kubernetes.io/docs/concepts/">Kubernetes documentation</a>
+is very well designed and will probably answer most of your questions.</p>
+<p>First of all, a <code>pod</code> is the most basic unit in kubernetes. It can encapsulate one or more containers that are tightly coupled and that share
+resources. In our case, one pod corresponds to one container, meaning one single instance of an application. We can have several pods of the same application
+that are called <code>replicas</code>. There are the key of resilience and availability. </p>
+<p>Kube manages on which machines the pod and its replicas are running. Those machines (VM or physical) are named <code>Nodes</code>.</p>
+<p>Kube provides two other objects, <code>Deployment</code> and <code>Service</code>. Deployment describes a desire state of a cluster like the number
+of replicas. A service defines a logical set of Pods and a policy by which to access them.</p>
+<h2 id="minikube">Minikube</h2>
+<p>Minikube is a tool that runs a single-node Kubernetes cluster in a virtual machine on your personal computer.</p>
+<p>To set it up, go back to <a href="../../setup/">Setup</a>.</p>
+<p>CheatSheet :</p>
+<pre><code># Minikube start (or stop)
+minikube start
+
+# Get the state of your pods
+kubectl get pod
+
+# Get the state of your deployments
+kubectl get deploy
+
+# Get the state of your services
+kubectl get service
+
+# Apply a deployment or a service
+kubectl apply -f file.yml
+
+# Delete a deployment
+kubectl delete deploy {deployment-name}
+
+# Delete a service
+kubectl delete service {service-name}
+
+# Describe an object
+kubectl describe service {service-name}
+
+# Get the logs
+kubectl logs {pod-name}
+
+# Minikube launch the service page
+minikube service {service-name}
+</code></pre>
+
 <h2 id="goal">Goal</h2>
-<p>Run our market place using kube.</p>
+<p>Automatize the deployment of our market place using Kubernetes.</p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
 <p>Checkout the branch: </p>
 <pre><code>git checkout exercise-7
 </code></pre>
-<p>1) le crah redemare le pod tout seul
-2) Rolling update
-3) pas d'update si la version ne passe pas les tests de vie</p>
-<p><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-macos">Install and Set Up kubectl - Kubernetes</a></p>
-<p>Install kubectl (via brew)</p>
-<p>Install virtual box -&gt; brew cask install virtualbox
-For Mac, don’t forget to authorize 
-To install and/or use virtualbox you may need to enable its kernel extension in:
-  System Preferences → Security &amp; Privacy → Generalbrew
-then restart the installation.</p>
-<p>Install Kube and minikube
-<a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Install Minikube - Kubernetes</a>
-brew cask install minikube</p>
-<h2 id="docker-commands">Docker commands :</h2>
-<ol>
-<li>mvn clean install spring-boot:repackage -Pcompile-front -pl "gateway"</li>
-<li>docker build -t "handson/gateway:0.0.1-SNAPSHOT" "gateway"</li>
-<li>docker run -d --rm --name "gateway" -p 8080:8080 "handson/gateway:0.0.1-SNAPSHOT"</li>
-<li>docker stop gateway</li>
-</ol>
-<h2 id="kube">Kube :</h2>
-<ol>
-<li>minikube start</li>
-<li>eval $(minikube docker-env)</li>
-<li>docker build -t "handson/gateway:0.0.1-SNAPSHOT" "gateway"</li>
-</ol>
-<p>We need those two lines to set the docker images for minikube.</p>
-<ol>
-<li>kubectl apply -f deployment.yaml</li>
-<li>kubectl apply -f service.yaml</li>
-<li>minikube service gateway</li>
-</ol>
-<p>You can verify that everything is up by using <code>kubectl get deploy</code> or <code>pod</code> or <code>service</code>.</p>
-<h2 id="get-logs">Get logs</h2>
-<p>First get the pod name with : kubectl get pods
-then get the logs : kubectl logs $POD_NAME</p>
-<h2 id="rolling-update">Rolling update</h2>
-<p>kubectl set image deployments/user-deployment user=handson/user-activity:0.0.2-SNAPSHOT</p>
-<h2 id="db">DB</h2>
-<p>dans database : kubectl create -f volume.yaml
-kubectl get persistentvolumes</p>
+<p>All the docker's images are available on docker hub under the following names:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Services</strong></th>
+<th><strong>Docker image name</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gateway</td>
+<td>homics/gateway:1.0.0</td>
+</tr>
+<tr>
+<td>monolith</td>
+<td>homics/monolith:1.0.0</td>
+</tr>
+<tr>
+<td>user</td>
+<td>homics/user-activity:1.0.0</td>
+</tr>
+<tr>
+<td>stats</td>
+<td>homics/stats:1.0.0</td>
+</tr>
+<tr>
+<td>stock</td>
+<td>homics/stock:1.0.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gateway">Gateway</h3>
+<p>1 - Create a deployment.yml file for gateway and run <code>kubectl apply -f deployment.yml</code></p>
+<p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment">Writing a deployment</a>.</p>
+<p>If you run <code>kubectl get deploy</code> and <code>kubectl get pod</code>, you should get something similar to:</p>
+<pre><code>&gt; kubectl get deploy
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+gateway-deployment     1/1     1            1           30s
+
+&gt; kubectl get pod
+NAME                                    READY   STATUS    RESTARTS   AGE
+gateway-deployment-7895c9c479-bdztx     1/1     Running   0          30s
+</code></pre>
+
+<p>Above, we see that you have one deployment running, that is up to date with one pod available.
+This pod is in the state Ready and Running with no restart. The pod has been created 30 seconds ago.</p>
+<p>Unfortunately, at this step, you can't access your gateway from your browser. To access your pod from the outside, we need to
+define a service.</p>
+<p>2 - Create a service.yml file for gateway and run <code>kubectl apply -f service.yml</code></p>
+<p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">Writing a service</a>.</p>
+<p>A service is defined by its type. By default, it is <code>ClusterIp</code> which means your pod is accessible only in your cluster.
+In some parts of our application (the front), we might need to expose our service to the outside world. For this case, you
+can specify a different type such as <code>NodePort</code> or <code>LoadBalancer</code>. In our case, we will use NodePort.</p>
+<pre><code>spec:
+  type: NodePort
+  ports:
+    ...
+</code></pre>
+
+<p>Run <code>kubectl get service</code> to see your newly created services</p>
+<p>Run <code>minikube service gateway</code> to access your gateway. </p>
+<h3 id="user-and-database">User and Database</h3>
+<p>1 - Create a deployment and service for User and the database. </p>
+<p>2 - Crash you application by accessing User-Activity tab and clicking on the button. </p>
+<p>You realize that the page is not accessible anymore and when you run <code>kubectl get pod</code>, you can see:</p>
+<pre><code>NAME                                    READY   STATUS    RESTARTS   AGE
+gateway-deployment-7895c9c479-bdztx     1/1     Running   0          5m31s
+homics-db-deployment-7bbf5fc44b-zggs4   1/1     Running   0          3m15s
+user-deployment-7889589595-pzkv5        0/1     Running   1          3m10s
+</code></pre>
+
+<p>Your user-pod is running but the number ready is 0/1. Your pod isn't accessible and you can see that the number of restarts
+increased to one. You pod is restarting automatically. In few seconds, you should see again your activity's page. </p>
+<h3 id="rolling-update-for-user">Rolling Update for User</h3>
+<p>Your application keeps evolving through time and you often need to update it. Unfortunately, you don't want to call your
+client and tell him that you need to shutdown the app for few seconds/minutes.</p>
+<p>Kube manages rolling updates very efficiently. It creates a new pod, install the new version, and then move the traffic
+from the old pod to the new one, to finally kill the old one. No downtime, great. Let's roll user's app with its version 2.0.0.</p>
+<p>1 - Open the user-activity tab and click on <code>version</code> button. It prints the version of your app every second. </p>
+<p>2 - Run <code>kubectl set image deployments/user-deployment user=homics/user-activity:2.0.0</code></p>
+<p>And the version should change from 1.0.0 to 2.0.0 on the user-activity page but you realize that there are some lines
+<code>Error calling the server</code>.</p>
+<p><img alt="question" src="../../img/question.png" /> What happens ?</p>
+<p>Kube does not know when a pod is actually ready. The traffic is directed to the new pod even so the spring app is still
+starting. Kube defines the notion of <code>readiness</code> in a deployment file. You can specify when an app is ready and Kube 
+won't allow access on the pod before the condition is met. </p>
+<p><img alt="info" src="../../img/info.png" /> You can check <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes">How to define readiness probes</a>.</p>
+<p>In our case, our pod is ready when we can access <code>/user/internal/version</code> on port 9001 of our application.</p>
+<p>3 - Set back the image to 1.0.0 and see that you don't have any error.</p>
+<h3 id="replicas-and-crashes">Replicas and crashes</h3>
+<p>While crashing your application, you realize that we had some downtime. When we introduce the term of replica, we define
+them as the key for resilience and availability. Right now, User pod isn't available if one pod crashes. We are going to
+increase the number of replica to 2.</p>
+<p>1 - Increase the number of replica to 2 in your deployment.yml</p>
+<p>2 - Crash your application and reload the page</p>
+<p>You realize that the service is always available. </p>
+<h3 id="bonus-deploy-our-market-place">Bonus: Deploy our market place</h3>
+<p>Since you finish all the different steps of this last exercise, you can keep going by deploying all our microservices into
+minikube. Start with monolith and kafka. Add stats and stock.</p>
 <h2 id="trouble-shooting">Trouble shooting :</h2>
-<p>If you enconter the error : invalid object doesn't have additional properties
+<p>If you encounter the error : invalid object doesn't have additional properties
 you need to relink kubectl : brew link --overwrite kubernetes-cli</p>
 <h2 id="good-to-know">Good to know</h2>
 <p>// todo </p>
 <h2 id="whats-next">What's next ?</h2>
-<p>Come see us at our stand and let us know what you though about the Hands On.</p>
+<p>Come see us after hand and let us know what you though about the Hands On.</p>
 <p>Thank you. </p></div>
         </div>
 

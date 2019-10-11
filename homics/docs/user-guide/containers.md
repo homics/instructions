@@ -41,7 +41,8 @@ Checkout the branch:
 
 1 - Create your Dockerfile to build the docker image for gateway.
 
-![info](../img/info.png) You can find some information on [docker website : step-2-create-a-dockerfile](https://docs.docker.com/compose/gettingstarted/#step-2-create-a-dockerfile).
+![info](../img/info.png) You can find all the information you need on docker website with this two links [step-2-create-a-dockerfile](https://docs.docker.com/compose/gettingstarted/#step-2-create-a-dockerfile)
+and [build-an-image](https://docs.docker.com/engine/reference/builder/).
 
 ![tip](../img/success.png) For each microservice, you can use the following base image to deploy the app : `openjdk:8u222-jre`.
 
@@ -72,6 +73,9 @@ redirected to the port 8080 on your container.
 Check the docker's cheatsheet below:
 
 ```
+# Pull images from Hub
+docker pull {image-with-version}
+
 # Available docker's images
 docker images
 
@@ -103,7 +107,17 @@ use a database on port 1521.
 Each service can choose a database according to its needs. It allows your team more flexibility for the backup/deployment/upgrade.
 For simplicity, we are deploying a unique database.
 
-1 - Create the database dockerfile 
+1 - Run the containers for the database.
+
+The image already exists on a hub. You only need to run it with the following command:
+
+```
+# Pull the image from the hub:
+docker pull oscarfonts/h2:1.4.197
+
+# Run the container:
+docker run -d -p 1521:1521 -p 81:81 -v /tmp/data/homics-data:/opt/h2-data --name=homics-database oscarfonts/h2
+``` 
 
 2 - Create the user-activity dockerfile
 
