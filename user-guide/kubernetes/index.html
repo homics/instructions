@@ -224,20 +224,21 @@ minikube service {service-name}
 <h3 id="gateway">Gateway</h3>
 <p>1 - Create a deployment.yml file for gateway and run <code>kubectl apply -f deployment.yml</code></p>
 <p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment">Writing a deployment</a>.</p>
-<p>If you run <code>kubectl get pod</code> and <code>kubectl get deploy</code>, you should find something similar to:</p>
-<pre><code>&gt; kubectl get pod
-NAME                                    READY   STATUS    RESTARTS   AGE
-gateway-deployment-7895c9c479-bdztx     1/1     Running   0          30s
-
-&gt; kubectl get deploy
+<p>If you run <code>kubectl get deploy</code> and <code>kubectl get pod</code>, you should get something similar to:</p>
+<pre><code>&gt; kubectl get deploy
 NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
 gateway-deployment     1/1     1            1           30s
+
+&gt; kubectl get pod
+NAME                                    READY   STATUS    RESTARTS   AGE
+gateway-deployment-7895c9c479-bdztx     1/1     Running   0          30s
 </code></pre>
 
-<p>It means that you have one deployment running that is up to date with one pod available.
-This pod is in the state ready and running with no restarts. It has been up for 30 seconds.</p>
-<p>Unfortunately, at this step, you can acces your gateway from your browser. If you remember earlier, to know how to access
-a pod, we need to define a service.</p>
+<p>You understand that you have one deployment running, that is up to date with one pod available.
+This pod is in the state Ready and Running with no restart. The pod has been created 30 seconds ago.</p>
+<p>Unfortunately, at this step, you can't access your gateway from your browser. To know how to access a pod, we need to
+define a service.</p>
+<hr />
 <p>2 - Create a service.yml file for gateway and run <code>kubectl apply -f service.yml</code></p>
 <p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment">Writing a service</a>.</p>
 <p>A service depends on a type. By default, it is <code>ClusterIp</code> which means your pod is accessible only in your cluster.
