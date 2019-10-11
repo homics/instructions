@@ -238,15 +238,21 @@ NAME                                    READY   STATUS    RESTARTS   AGE
 gateway-deployment-7895c9c479-bdztx     1/1     Running   0          30s
 </code></pre>
 
-<p>You understand that you have one deployment running, that is up to date with one pod available.
+<p>Above, we see that you have one deployment running, that is up to date with one pod available.
 This pod is in the state Ready and Running with no restart. The pod has been created 30 seconds ago.</p>
-<p>Unfortunately, at this step, you can't access your gateway from your browser. To know how to access a pod, we need to
+<p>Unfortunately, at this step, you can't access your gateway from your browser. To access your pod from the outside, we need to
 define a service.</p>
 <p>2 - Create a service.yml file for gateway and run <code>kubectl apply -f service.yml</code></p>
-<p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment">Writing a service</a>.</p>
-<p>A service depends on a type. By default, it is <code>ClusterIp</code> which means your pod is accessible only in your cluster.
+<p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">Writing a service</a>.</p>
+<p>A service is defined by its type. By default, it is <code>ClusterIp</code> which means your pod is accessible only in your cluster.
 In some parts of our application (the front), we might need to expose our service to the outside world. For this case, you
 can specify a different type such as <code>NodePort</code> or <code>LoadBalancer</code>. In our case, we will use NodePort.</p>
+<pre><code>spec:
+  type: NodePort
+  ports:
+    ...
+</code></pre>
+
 <p>Run <code>kubectl get service</code> to see your newly created services</p>
 <p>Run <code>minikube service gateway</code> to access your gateway. </p>
 <h3 id="user-and-database">User and Database</h3>
