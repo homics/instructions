@@ -38,7 +38,7 @@ to implement some parts.
 
 Start the gateway and the two other services monolith and user-activity in you IDE.
 <details>
-    <summary>You can also run these commands for the same result:</summary>
+    <summary>Or with these commands (click to unfold):</summary>
 
     # gateway
     mvn spring-boot:run -pl gateway
@@ -49,7 +49,8 @@ Start the gateway and the two other services monolith and user-activity in you I
 
 </details>
 
-Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.
+Browse the different pages. You'll realize that all pages return a 404 error.
+That's because there's no **routing** in our application.
 
 ### 2 - Gateway 
 
@@ -57,8 +58,8 @@ Navigate on the different pages and you realize that all pages return a 404. The
 
 There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.
 
-We are using [ZUUL](https://github.com/Netflix/zuul) developed by Netflix that is an edge service that provides dynamic
-routing, monitoring, resiliency, security, and more. Spring integrated it in **Spring Cloud**.
+We are using [ZUUL](https://github.com/Netflix/zuul) developed by Netflix. It's an edge service that provides dynamic
+routing, monitoring, resiliency, security, among other things. Spring integrated it in **Spring Cloud**.
 
 You will need to set it up in your `application.yaml`.
 
@@ -80,7 +81,7 @@ Checkout the second _TODO_ to enable the Zuul Routing.
 
 **Checklist** :
     
-1. Since the routing is done and should be working, start your three apps if they aren't already up:
+1. Since the routing is done and should be working, start your three apps, if they aren't already up:
     
         # gateway
         mvn spring-boot:run -pl gateway
@@ -89,9 +90,9 @@ Checkout the second _TODO_ to enable the Zuul Routing.
         # user-activity
         mvn spring-boot:run -pl user-activity
        
-2. Verify that if you log in, you see your articles and all the pages under the same port: 8080.
+2. Check that when login in, you see your articles as well as all other pages under the same port: 8080.
 
-![question](../img/question.png) What happens if you try to pay for a cart? 
+![question](../img/question.png) What happens if you try to checkout a shopping cart? 
 
 It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.
 
@@ -106,7 +107,7 @@ Open `AddUserFilter` and implement the `run` method so it adds the username into
 
 **Checklist** :
         
-1. To verify that gateway is well implemented, launch all the applications:
+1. To check that the gateway is well implemented, launch all the applications:
    
         # Run monolith project
         mvn spring-boot:run -pl monolith
@@ -117,8 +118,8 @@ Open `AddUserFilter` and implement the `run` method so it adds the username into
         # Run Gateway project
         mvn spring-boot:run -pl gateway
    
-2. Access the [HOMicS MarketPlace](http://localhost:8080/login). You should be on the gateway. After logging, you should be
-directly redirect to the monolith and you can notify that the port is still 8080. You should be able to access as well
+2. Access the [HOMicS MarketPlace](http://localhost:8080/login). You should arrive on the gateway. After login in, you should be
+directly redirected to the monolith. You can note that the port is still 8080. You should also be able to access 
 the user-activity microservice on the _User Activity micro_ tab.
 
 ![tip](../img/success.png) Since the **Gateway** is running on port 8080, the port for the monolith has been changed to 8090. 
@@ -142,6 +143,6 @@ You can access the **monolith** database console via the following [url](http://
 ![info](../img/info.png) You can still access the other services directly on each port 8090 and 9001.
 In practice, you will block those ports from the outside via a firewall.
 
-Well done. Let's continue on to the next step and our new microservices.
+Well done! Let's continue on to the next step, with a new microservices.
 
 ## What's next ? [Exercise 3: Stats](../user-guide/stats.md)
