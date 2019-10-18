@@ -1,6 +1,6 @@
 # Exercise 1: Our First μ-service: User Activity
 
-Previously on HOMicS -> [Exercise 0: Monolith](../user-guide/monolith.md)
+Previously on HOMicS -> [Exercise 0: Monolith](monolith.md)
 
 ## Context
 
@@ -35,7 +35,7 @@ to implement some of the API.
 
 ### 1.1 - User Activity
 
-#### _TODO_ 1.1.1: Save a user's activity
+**[todo 1]** - Save a user's activity
 
 In `UserActivityApiController`, register any activity sent via the new API `/user/api/activity`.
 
@@ -57,12 +57,8 @@ In `UserActivityApiController`, register any activity sent via the new API `/use
         curl -d '{"username":"Jean Bonbeurre", "activityType":"LOGIN", "activityDate":"2019-04-18T15:00:00.000Z"}' -H "content-type: application/json" http://localhost:8080/user/api/activity
     
 3. Check on the [localhost:8080/user/userActivity](http://localhost:8080/user/userActivity) that you can see the new activity that you just sent.
-
-------
   
-#### _TODO_ 1.1.2: Problem with ports
-
-Start the monolith
+**[todo 2]** - Start the monolith
 
     mvn spring-boot:run -pl monolith
 
@@ -97,15 +93,9 @@ You can see the table for the user activities but it's empty. Weird right, since
 
 ### 1.2 - Monolith
 
-#### _TODO_ 1.2.1: 
+**[todo 3]** - In the monolith app, in the `UserActivityService` class, edit the `post()` method to call the microservice using `restTemplate`.
 
-In the monolith app, in the `UserActivityService` class, edit the `post()` method to call the microservice using `restTemplate`.
-
-------
-
-#### _TODO_ 1.2.2:
-
-Modify the `UserActivityService` methods `addLogin()` and `addLogout()` to send data to the new microservice, 
+**[todo 4]** - Modify the `UserActivityService` methods `addLogin()` and `addLogout()` to send data to the new microservice, 
 using the new `post()` method.
 
 **Checklist** :
@@ -120,9 +110,7 @@ using the new `post()` method.
 2. Log on the [monolith](http://localhost:8080/mono/login). Navigate to the _User Activity Micro_ tab and you
    should see the same table than before with your activities.
 
-------
-
-#### _TODO_ 1.2.3: Clean the monolith
+**[todo 5]** - Clean up
 
 As a final step, remove any code related to the user activity in the monolith.
 
@@ -132,15 +120,13 @@ Great, you just created your first microservice and connected it to your monolit
 
 ## List of _TODOs_ locations
 
-1.1.1 - file com.homics.useractivity.controller.UserActivityApiController
-
-1.1.2 - file application.yaml for user-activity
-
-1.2.(1/2/3) - file com.homics.monolith.service.UserActivityService
-
-1.2.3 - below
-* file com.homics.monolith.controller.UserActivityInternalController
-* file com.homics.monolith.model.UserActivity
+| **Todo** | **File(s)**                           |
+|----------|---------------------------------------|
+| 1 | com.homics.useractivity.controller.UserActivityApiController |
+| 2 | application.yaml for user-activity |
+| 3 | com.homics.monolith.service.UserActivityService |
+| 4 | com.homics.monolith.service.UserActivityService |
+| 5 | com.homics.monolith.service.UserActivityService / com.homics.monolith.model.UserActivity / com.homics.monolith.controller.UserActivityInternalController |
 
 ## Database
 
@@ -162,4 +148,4 @@ authentication on the new microservice, but we could.
 
 Let's see in the next exercise how to centralize the authentication and to have a single entry point in our application.
 
-## What's next ? [Exercise 2: Gateway](../user-guide/gateway.md)
+## What's next ? [Exercise 2: Gateway](gateway.md)

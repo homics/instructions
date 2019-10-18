@@ -152,44 +152,60 @@ A scheduled task fetches this table and sends its content to the microservice. <
 <p>Checkout the branch</p>
 <pre><code>git checkout exercise-3
 </code></pre>
-<p>Start the gateway and the two services stats and user-activity:</p>
+<p>Start the gateway and the two services stats and user-activity  via your IDE. 
+<details>
+    <summary>Or unfold for command lines</summary></p>
 <pre><code># gateway
 mvn spring-boot:run -pl gateway
-# stats
-mvn spring-boot:run -pl stats
+# monolith
+mvn spring-boot:run -pl monolith
 # user-activity
 mvn spring-boot:run -pl user-activity
 </code></pre>
+</details>
+
 <h3 id="3-monolith">3 - Monolith</h3>
-<h4 id="todo-31-statsservice"><em>TODO</em> 3.1: StatsService</h4>
-<p>You need to save an <code>orderPayMessage</code> in the database.</p>
-<hr />
-<h4 id="todo-32-statstask"><em>TODO</em> 3.2: StatsTask</h4>
-<p>Every 10 seconds, the statsService should send the stats. You can use the following annotation:</p>
+<p><strong>[todo 1]</strong> - You need to save an <code>orderPayMessage</code> in the database.</p>
+<p><strong>[todo 2]</strong> - Every 10 seconds, the statsService should send the stats. You can use the following annotation:</p>
 <pre><code>@Scheduled(fixedRate = 10000)
 </code></pre>
 <p><img alt="info" src="../../img/info.png" /> For more information, visit this <a href="https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/annotation/Scheduled.html">link</a>.</p>
-<hr />
-<h4 id="todo-33-statsservice"><em>TODO</em> 3.3: StatsService</h4>
-<p>The last implementation on your part is to complete the two methods <code>sendStats</code> and <code>sendStat</code>.</p>
+<p><strong>[todo 3]</strong> - The last implementation on your part is to complete the two methods <code>sendStats</code> and <code>sendStat</code>.</p>
 <p>The <code>sendStats()</code> fetches all orderStats in database, then sends them to the microservice using the <code>restTemplate</code>.
 You already used <code>restTemplate</code> in exercise 1. If you are lost, check it out again.</p>
 <p>This request will be a <em>POST</em> action on the API : <code>http://localhost:9002/stats/api/orders</code></p>
 <p>For the payload, use the class OrderPayedDto.</p>
 <p>A response status <code>HttpStatus.OK</code> means the microservice received the information. Then, we remove it from the
 database.</p>
-<hr />
-<h4 id="todo-34-clean"><em>TODO</em> 3.4: Clean</h4>
+<p><strong>[todo 4]</strong> - Clean</p>
 <p>Remove the code related to stats that is not required anymore in the monolith.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
-<p>3.1 - file com.homics.monolith.service.StatsService</p>
-<p>3.2 - file com.homics.monolith.task.StatsTask</p>
-<p>3.3 - file com.homics.monolith.service.StatsService</p>
-<p>3.4 - </p>
-<ul>
-<li>file com.homics.monolith.service.OrderService</li>
-<li>file com.homics.monolith.controller.dto.OrderStatsDto</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Todo</strong></th>
+<th><strong>File(s)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>com.homics.monolith.service.StatsService</td>
+</tr>
+<tr>
+<td>2</td>
+<td>com.homics.monolith.task.StatsTask</td>
+</tr>
+<tr>
+<td>3</td>
+<td>com.homics.monolith.service.StatsService</td>
+</tr>
+<tr>
+<td>4</td>
+<td>com.homics.monolith.service.OrderService / com.homics.monolith.controller.dto.OrderStatsDto</td>
+</tr>
+</tbody>
+</table>
 <h2 id="database">Database</h2>
 <p>You can access the database console via the following <a href="http://localhost:9002/console">url</a>.</p>
 <h2 id="verification-and-results">Verification and results</h2>

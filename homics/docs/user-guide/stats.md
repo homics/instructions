@@ -1,6 +1,6 @@
 # Exercise 3 : Stats
 
-Previously on HOMicS -> [Exercise 2: Gateway](../user-guide/gateway.md)
+Previously on HOMicS -> [Exercise 2: Gateway](gateway.md)
 
 ## Context
 
@@ -32,36 +32,30 @@ Checkout the branch
 
     git checkout exercise-3
 
-Start the gateway and the two services stats and user-activity:
+Start the gateway and the two services stats and user-activity  via your IDE. 
+<details>
+    <summary>Or unfold for command lines</summary>
 
     # gateway
     mvn spring-boot:run -pl gateway
-    # stats
-    mvn spring-boot:run -pl stats
+    # monolith
+    mvn spring-boot:run -pl monolith
     # user-activity
     mvn spring-boot:run -pl user-activity
 
+</details>
+
 ### 3 - Monolith
 
-#### _TODO_ 3.1: StatsService
-    
-You need to save an `orderPayMessage` in the database.
+**[todo 1]** - You need to save an `orderPayMessage` in the database.
 
-------
-
-#### _TODO_ 3.2: StatsTask
-
-Every 10 seconds, the statsService should send the stats. You can use the following annotation:
+**[todo 2]** - Every 10 seconds, the statsService should send the stats. You can use the following annotation:
         
     @Scheduled(fixedRate = 10000)
     
 ![info](../img/info.png) For more information, visit this [link](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/annotation/Scheduled.html).
 
-------
-
-#### _TODO_ 3.3: StatsService
-
-The last implementation on your part is to complete the two methods `sendStats` and `sendStat`.
+**[todo 3]** - The last implementation on your part is to complete the two methods `sendStats` and `sendStat`.
 
 The `sendStats()` fetches all orderStats in database, then sends them to the microservice using the `restTemplate`.
 You already used `restTemplate` in exercise 1. If you are lost, check it out again.
@@ -73,24 +67,18 @@ For the payload, use the class OrderPayedDto.
 A response status `HttpStatus.OK` means the microservice received the information. Then, we remove it from the
 database.
 
-------
-
-#### _TODO_ 3.4: Clean
+**[todo 4]** - Clean
 
 Remove the code related to stats that is not required anymore in the monolith.
 
 ## List of _TODOs_
 
-3.1 - file com.homics.monolith.service.StatsService
-
-3.2 - file com.homics.monolith.task.StatsTask
-
-3.3 - file com.homics.monolith.service.StatsService
-
-3.4 - 
-
-* file com.homics.monolith.service.OrderService
-* file com.homics.monolith.controller.dto.OrderStatsDto
+| **Todo** | **File(s)**                           |
+|----------|---------------------------------------|
+| 1 | com.homics.monolith.service.StatsService |
+| 2 | com.homics.monolith.task.StatsTask |
+| 3 | com.homics.monolith.service.StatsService |
+| 4 | com.homics.monolith.service.OrderService / com.homics.monolith.controller.dto.OrderStatsDto |
 
 ## Database
 
@@ -129,4 +117,4 @@ Great. It works like a charm.
 
 But let's see an other way of doing this.
 
-## What's next ? [Exercise 4: Stats with Kafka](../user-guide/kafka.md)
+## What's next ? [Exercise 4: Stats with Kafka](kafka.md)

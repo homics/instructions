@@ -1,6 +1,6 @@
 # Exercise 4 : Stats with Kafka
 
-Previously on HOMicS -> [Exercise 3: Stats](../user-guide/stats.md)
+Previously on HOMicS -> [Exercise 3: Stats](stats.md)
 
 ## Context
 
@@ -40,6 +40,18 @@ It's the stats microservice which consumes the message.
 
 ![stats-kafka](../img/stats-kafka.png)
 
+## At your keyboard
+
+Checkout the branch: 
+        
+    git checkout exercise-4
+
+This exercise is split in two parts.
+
+1. You will edit the **Monolith** to send a message to kafka when an order is payed.
+
+2. You will consume the messages in the **Stats** microservice.
+
 ## Setup
 
 1. Before implementing anything, for this exercise, we need to have a running instance of kafka. The easiest way is to launch
@@ -63,21 +75,9 @@ it via docker. We can then easily restart or reset it. You will find a docker-co
         cd commons-messaging
         docker-compose stop
 
-## At your keyboard
-
-Checkout the branch: 
-        
-    git checkout exercise-4
-
-This exercise is split in two parts.
-
-1. You will edit the **Monolith** to send a message to kafka when an order is payed.
-
-2. You will consume the messages in the **Stats** microservice.
-
 ### 4.1 - Monolith
 
-#### _TODO_ 4.1.1: Send a kafka message
+**[todo 1]** - Send a kafka message
 
 Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.
 
@@ -107,28 +107,24 @@ kafkaTemplate.send(message);
 
 ### 4.2 - Stats
 
-#### _TODO_ 4.2.1:
-
-In the microservice, retrieve the message with kafka :
+**[todo 2]** - In the microservice, retrieve the message with kafka :
 
 ```
-@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = "statsMessageFactory")
-public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
+@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = STATS_MESSAGE_FACTORY)
+public void onStatsMessage(@Payload OrderPayedMessage impactStockMessage) {
         ...
 }
 ```
 
-------
-
-#### _TODO_ 4.2.2: 
-
-Save this message into the database.
+**[todo 3]** - Save this message into the database.
 
 ## List of _TODOs_
 
-4.1.1 - file com.homics.monolith.service.StatsService
-
-4.2.(1/2) - file com.homics.stats.service.OrderStatsService
+| **Todo** | **File(s)**                           |
+|----------|---------------------------------------|
+| 1 | com.homics.monolith.service.StatsService |
+| 2 | com.homics.stats.service.OrderStatsService |
+| 3 | com.homics.stats.service.OrderStatsService |
 
 ## Verification and results
 
@@ -155,10 +151,10 @@ mvn spring-boot:run -pl stats
 ````
 
 Navigate to the _Stats Micro_ tab. You should see the same page than before with the stats from the previous two orders.
-All the stats should be retrieved. If you don't see them, refresh few times to let the monolith discuss with the microservice 
+All the stats should be retrieved. If you don't see them, refresh few times to let the monolith discuss with the microservice .
 
 It's exactly the same actions than exercise 3.
 
 ![stats](../img/stats-micro.gif)
 
-## What's next ? [Exercise 5: Stock](../user-guide/stock.md)
+## What's next ? [Exercise 5: Stock](stock.md)

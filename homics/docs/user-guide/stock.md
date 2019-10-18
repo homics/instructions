@@ -1,6 +1,6 @@
 # Exercise 5 : Stock
 
-Previously on HOMicS -> [Exercise 4: Stats with Kafka](../user-guide/kafka.md)
+Previously on HOMicS -> [Exercise 4: Stats with Kafka](kafka.md)
 
 ## Context
 
@@ -68,7 +68,6 @@ Then, we listen to the microservice event.
 
 * Close the transaction
 
-
 ![question](../img/question.png) What happens if the result of the microservice is "not enough stock" ?
 
 We save the order as cancelled.
@@ -106,86 +105,68 @@ acknowledgement.
 
 ### 5.1 - Monolith
 
-#### _TODO_ 5.1.1: com.homics.monolith.model.Article
+**[todo 1]** - Remove the stock column in the Article entity.
 
-Remove the stock column in the Article entity.
+**[todo 2]** - Remove the stock validation and call the StockService.
 
------
+**[todo 3]** - Implement the method to send a kafka message to the **Stock** microservice
 
-#### _TODO_ 5.1.2: com.homics.monolith.service.OrderService
+**Checklist** 
+1. Verify that you sent a kafka message
 
-Remove the stock validation and call the StockService.
+    You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
+    to run the following command:
 
------
+        docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STOCK --from-beginning
 
-#### _TODO_ 5.1.3: com.homics.monolith.service.StockService
-
-Implement the method to send a kafka message to the **Stock** microservice
+    You should see the message you sent to the stock microservice.  
 
 ### 5.2 - Stock
 
-#### _TODO_ 5.2.1: com.homics.stock.service.ImpactStockConsumer
+**[todo 4]** - Consume the message and call the stock service.
 
-Consume the message and call the stock service.
+**[todo 5]** - Verify that the operation wasn't already process to keep an idempotent process.
 
------
+**[todo 6]** - Notify by calling the right method to acknowledge the changes on stock.
 
-#### _TODO_ 5.2.2: com.homics.stock.service.StockService
+**[todo 7]** - Notify by sending a message to kafka that stock could NOT be modified.
 
-Verify that the operation wasn't already process to keep an idempotent process.
+**[todo 8]** - Save the operation as processed so it won't be process several times.
 
------
+**[todo 9]** - Notify by sending a message to kafka that stock was modified successfully.
 
-#### _TODO_ 5.2.3: com.homics.stock.service.StockService
+**Checklist** 
+1. Verify that you sent a kafka message
 
-Notify by calling the right method to acknowledge the changes on stock.
+    You can verify the creation of your messages by creating a consumer via command line on your docker. To do so, you need
+    to run the following command:
 
------
+        docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STOCK --from-beginning
 
-#### _TODO_ 5.2.4: com.homics.stock.service.StockService
-
-Notify by sending a message to kafka that stock could NOT be modified.
-
------
-
-#### _TODO_ 5.2.5: com.homics.stock.service.StockService
-
-Save the operation as processed so it won't be process several times.
-
------
-
-#### _TODO_ 5.2.6: com.homics.stock.service.StockAcknowledgmentProducer
-
-Notify by sending a message to kafka that stock was modified successfully.
+    You should see the messages you sent for acknowledgement and stock's modification. 
 
 ### 5.3 - Monolith
 
-#### _TODO_ 5.3.1: com.homics.monolith.service.OrderService
-
-Depending on the message sent by **Stock** for acknowledgement, set the status for the order (_PAYED_
+**[todo 10]** - Depending on the message sent by **Stock** for acknowledgement, set the status for the order (_PAYED_
 or _CANCEL_)
 
------
-
-#### _TODO_ 5.3.2: com.homics.monolith.service.OrderService
-
-In case of success, update the stats and notify the stats microservice.
+**[todo 11]** - In case of success, update the stats and notify the stats microservice.
 
 ## List of _TODOs_
 
-5.1.1 - file com.homics.monolith.model.Article
-
-5.1.2 - file com.homics.monolith.service.OrderService
-
-5.1.3 - file com.homics.monolith.service.StockService
-
-5.2.1 - file com.homics.stock.service.ImpactStockConsumer
-
-5.2.(2/3/4/5) - file com.homics.stock.service.StockService
-
-5.2.6 - file com.homics.stock.service.StockAcknowledgmentProducer
-
-5.3.(1/2) - file com.homics.monolith.service.OrderService
+| **Todo** | **File(s)**                           |
+|----------|---------------------------------------|
+| 1 | com.homics.monolith.model.Article              |
+| 2 | com.homics.monolith.service.OrderService       |
+| 3 | com.homics.monolith.service.StockService |
+| 4 | com.homics.stock.service.ImpactStockConsumer |
+| 5 | com.homics.stock.service.StockService |
+| 6 | com.homics.stock.service.StockService |
+| 7 | com.homics.stock.service.StockService |
+| 8 | com.homics.stock.service.StockService |
+| 9 | com.homics.stock.service.StockAcknowledgmentProducer |
+| 10 | com.homics.stock.service.OrderService |
+| 11 | com.homics.monolith.service.OrderService |
 
 ## Good to know
 
@@ -203,11 +184,6 @@ In our case, the same message can be read multiple times and will give the same 
 the second message only updates the data since the orderId is unique.
 
 It explains why we keep the `table StockOperation`.
-
-## Congratulations
-
-You finish this Hands On in time. We want to thank you for coming and hopefully, you learnt a lot and are happy with the
-content of this Hands On.
 
 ## What's next ? [Exercise 6: Containers](containers.md)
 

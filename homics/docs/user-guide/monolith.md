@@ -43,4 +43,4 @@ with the back.
     
     ![console-gif](../img/console.gif)
     
-## What's next ? [Exercise 1: User Activity](../user-guide/user-activity.md)
+## What's next ? [Exercise 1: User Activity](user-activity.md)
