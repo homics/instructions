@@ -156,7 +156,7 @@ will call this microservice via API to notify of a successful user login or logo
 <p>There is a new folder for the user-activity microservice. You are not going to start from scratch but you will need
 to implement some of the API.</p>
 <h3 id="11-user-activity">1.1 - User Activity</h3>
-<h4 id="todo-111-save-a-users-activity"><em>TODO</em> 1.1.1: Save a user's activity</h4>
+<p><strong>[todo 1]</strong> - Save a user's activity</p>
 <p>In <code>UserActivityApiController</code>, register any activity sent via the new API <code>/user/api/activity</code>.</p>
 <p><img alt="info" src="../../img/info.png" /> You will need to use the <code>@PostMapping</code> with the <code>@RequestBody</code> annotations to extract the right DTO.</p>
 <p><img alt="warning" src="../../img/warning.png" /> The <code>@RequestMapping</code> annotation on the class already specifies the URI <code>/user/api</code>.</p>
@@ -178,9 +178,7 @@ since the monolith is the one providing those pages but it isn't up.</p>
 <p>Check on the <a href="http://localhost:8080/user/userActivity">localhost:8080/user/userActivity</a> that you can see the new activity that you just sent.</p>
 </li>
 </ol>
-<hr />
-<h4 id="todo-112-problem-with-ports"><em>TODO</em> 1.1.2: Problem with ports</h4>
-<p>Start the monolith</p>
+<p><strong>[todo 2]</strong> - Start the monolith</p>
 <pre><code>mvn spring-boot:run -pl monolith
 </code></pre>
 <p><img alt="error" src="../../img/error.png" /> You realize that you have the following error:</p>
@@ -214,11 +212,8 @@ You can see the table for the user activities but it's empty. Weird right, since
 <p><img alt="question" src="../../img/question.png" /> How does the monolith 'talk' with the User microservice?</p>
 </blockquote>
 <h3 id="12-monolith">1.2 - Monolith</h3>
-<h4 id="todo-121"><em>TODO</em> 1.2.1:</h4>
-<p>In the monolith app, in the <code>UserActivityService</code> class, edit the <code>post()</code> method to call the microservice using <code>restTemplate</code>.</p>
-<hr />
-<h4 id="todo-122"><em>TODO</em> 1.2.2:</h4>
-<p>Modify the <code>UserActivityService</code> methods <code>addLogin()</code> and <code>addLogout()</code> to send data to the new microservice, 
+<p><strong>[todo 3]</strong> - In the monolith app, in the <code>UserActivityService</code> class, edit the <code>post()</code> method to call the microservice using <code>restTemplate</code>.</p>
+<p><strong>[todo 4]</strong> - Modify the <code>UserActivityService</code> methods <code>addLogin()</code> and <code>addLogout()</code> to send data to the new microservice, 
 using the new <code>post()</code> method.</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
@@ -235,18 +230,41 @@ mvn spring-boot:run -pl user-activity
    should see the same table than before with your activities.</p>
 </li>
 </ol>
-<hr />
-<h4 id="todo-123-clean-the-monolith"><em>TODO</em> 1.2.3: Clean the monolith</h4>
+<p><strong>[todo 5]</strong> - Clean up</p>
 <p>As a final step, remove any code related to the user activity in the monolith.</p>
 <p><img alt="info" src="../../img/info.png" /> We took care of the front for you.</p>
 <p>Great, you just created your first microservice and connected it to your monolith. Not too bad.</p>
 <h2 id="list-of-todos-locations">List of <em>TODOs</em> locations</h2>
-<p>1.1.1 - file com.homics.useractivity.controller.UserActivityApiController</p>
-<p>1.1.2 - file application.yaml for user-activity</p>
-<p>1.2.(1/2/3) - file com.homics.monolith.service.UserActivityService</p>
-<p>1.2.3 - below
-* file com.homics.monolith.controller.UserActivityInternalController
-* file com.homics.monolith.model.UserActivity</p>
+<table>
+<thead>
+<tr>
+<th><strong>Todo</strong></th>
+<th><strong>File</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>com.homics.useractivity.controller.UserActivityApiController</td>
+</tr>
+<tr>
+<td>2</td>
+<td>application.yaml for user-activity</td>
+</tr>
+<tr>
+<td>3</td>
+<td>com.homics.monolith.service.UserActivityService</td>
+</tr>
+<tr>
+<td>4</td>
+<td>com.homics.monolith.service.UserActivityService</td>
+</tr>
+<tr>
+<td>5</td>
+<td>com.homics.monolith.service.UserActivityService / com.homics.monolith.model.UserActivity / com.homics.monolith.controller.UserActivityInternalController</td>
+</tr>
+</tbody>
+</table>
 <h2 id="database">Database</h2>
 <p>You can access the database console via the following <a href="http://localhost:9001/console">url</a>.</p>
 <h2 id="results">Results</h2>
