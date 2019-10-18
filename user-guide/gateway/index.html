@@ -171,7 +171,7 @@ mvn spring-boot:run -pl user-activity
 <p>Browse the different pages. You'll realize that all pages return a 404 error.
 That's because there's no <strong>routing</strong> in our application.</p>
 <h3 id="2-gateway">2 - Gateway</h3>
-<h4 id="todo-21-applicationyaml"><em>TODO</em> 2.1: Application.yaml</h4>
+<p><strong>[todo 1]</strong> - Application.yaml</p>
 <p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
 <p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix. It's an edge service that provides dynamic
 routing, monitoring, resiliency, security, among other things. Spring integrated it in <strong>Spring Cloud</strong>.</p>
@@ -184,9 +184,8 @@ routing, monitoring, resiliency, security, among other things. Spring integrated
       path: /test/**
       url: http://example.com/test/
 </code></pre>
-<hr />
-<h4 id="todo-22-enable-zuul"><em>TODO</em> 2.2: Enable Zuul</h4>
-<p>Checkout the second <em>TODO</em> to enable the Zuul Routing.</p>
+<p><strong>[todo 2]</strong> - Enable Zuul</p>
+<p>Checkout the second <em>todo</em> to enable the Zuul Routing.</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>
@@ -205,8 +204,7 @@ mvn spring-boot:run -pl user-activity
 </ol>
 <p><img alt="question" src="../../img/question.png" /> What happens if you try to checkout a shopping cart? </p>
 <p>It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.</p>
-<hr />
-<h4 id="todo-23-logged-user-information"><em>TODO</em> 2.3: Logged user information</h4>
+<p><strong>[todo 3]</strong> - Logged user information</p>
 <p>Last but not least, you need to add the logged user to the headers so all micro services will be able to retrieve the
 connected user.</p>
 <p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
@@ -232,9 +230,28 @@ the user-activity microservice on the <em>User Activity micro</em> tab.</p>
 </ol>
 <p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, the port for the monolith has been changed to 8090. </p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
-<p>2.1 - file application.yaml for gateway</p>
-<p>2.2 - file com.homics.gateway.GatewayApplication</p>
-<p>2.3 - file com.homics.gateway.config.filter.AddUserFilter</p>
+<table>
+<thead>
+<tr>
+<th><strong>Todo</strong></th>
+<th><strong>File(s)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>application.yaml for gateway</td>
+</tr>
+<tr>
+<td>2</td>
+<td>com.homics.gateway.GatewayApplication</td>
+</tr>
+<tr>
+<td>3</td>
+<td>com.homics.gateway.config.filter.AddUserFilter</td>
+</tr>
+</tbody>
+</table>
 <h2 id="monolith-database">Monolith database</h2>
 <p>You can access the <strong>monolith</strong> database console via the following <a href="http://localhost:8090/console">url</a>.</p>
 <h2 id="results">Results</h2>
