@@ -125,6 +125,9 @@
             <li><a href="#context">Context</a></li>
             <li><a href="#goal">Goal</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
+        <li class="main "><a href="#gateway">gateway</a></li>
+        <li class="main "><a href="#monolith">monolith</a></li>
+        <li class="main "><a href="#user-activity">user-activity</a></li>
             <li><a href="#list-of-todos">List of TODOs</a></li>
             <li><a href="#monolith-database">Monolith database</a></li>
             <li><a href="#results">Results</a></li>
@@ -211,22 +214,23 @@ connected user.</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>
-<p>To check that the gateway is well implemented, launch all the applications:</p>
-<pre><code># Run monolith project
-mvn spring-boot:run -pl monolith
-
-# Run user-activity project
-mvn spring-boot:run -pl user-activity
-
-# Run Gateway project
-mvn spring-boot:run -pl gateway
-</code></pre>
+<p>To check that the gateway is well implemented, launch all the applications with your IDE
+<details>
+    <summary>Or with these commands (click to unfold):</summary></p>
+<h1 id="gateway">gateway</h1>
+<p>mvn spring-boot:run -pl gateway</p>
+<h1 id="monolith">monolith</h1>
+<p>mvn spring-boot:run -pl monolith</p>
+<h1 id="user-activity">user-activity</h1>
+<p>mvn spring-boot:run -pl user-activity</p>
 </li>
-<li>
-<p>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should arrive on the gateway. After login in, you should be
+</ol>
+</details>
+
+<ol>
+<li>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should arrive on the gateway. After login in, you should be
 directly redirected to the monolith. You can note that the port is still 8080. You should also be able to access 
-the user-activity microservice on the <em>User Activity micro</em> tab.</p>
-</li>
+the user-activity microservice on the <em>User Activity micro</em> tab.</li>
 </ol>
 <p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, the port for the monolith has been changed to 8090. </p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
