@@ -210,23 +210,23 @@ connected user.</p>
 <p>Open <code>AddUserFilter</code> and implement the <code>run</code> method so it adds the username into the request context.</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
-<li>To check that the gateway is well implemented, launch all the applications with your IDE or via commands below.</li>
-</ol>
-<details>
-    <summary>Click to unfold commands</summary>
+<li>
+<p>To check that the gateway is well implemented, launch all the applications:</p>
+<pre><code># Run monolith project
+mvn spring-boot:run -pl monolith
 
-    `mvn spring-boot:run -pl gateway`
+# Run user-activity project
+mvn spring-boot:run -pl user-activity
 
-    `mvn spring-boot:run -pl monolith`
-
-    `mvn spring-boot:run -pl user-activity`
-
-</details>
-
-<ol>
-<li>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should arrive on the gateway. After login in, you should be
+# Run Gateway project
+mvn spring-boot:run -pl gateway
+</code></pre>
+</li>
+<li>
+<p>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should arrive on the gateway. After login in, you should be
 directly redirected to the monolith. You can note that the port is still 8080. You should also be able to access 
-the user-activity microservice on the <em>User Activity micro</em> tab.</li>
+the user-activity microservice on the <em>User Activity micro</em> tab.</p>
+</li>
 </ol>
 <p><img alt="tip" src="../../img/success.png" /> Since the <strong>Gateway</strong> is running on port 8080, the port for the monolith has been changed to 8090. </p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
