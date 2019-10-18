@@ -136,15 +136,15 @@
 <h1 id="exercise-2-gateway">Exercise 2 : Gateway</h1>
 <p>Previously on HOMicS -&gt; <a href="../user-activity/">Exercise 1: User Activity</a></p>
 <h2 id="context">Context</h2>
-<p>In the previous schema, you might realize that there is a flaw. We don't have any authentication for the micro-service.</p>
-<p><img alt="question" src="../../img/question.png" /> What happens if you connect directly to the user-activity microservice ?</p>
-<p>You can go directly to <a href="http://localhost:9001/user/userActivity">user-activity</a>. The login page is skipped and the data
+<p>In the previous schema, you might have realized that there is a flaw. We don't have any authentication for the micro-service.</p>
+<p><img alt="question" src="../../img/question.png" /> What happens if you connect directly to the user-activity microservice?</p>
+<p>Well you can access directly <a href="http://localhost:9001/user/userActivity">user-activity</a>. The login page is skipped and the data
 is accessible! Oopsy, not great at all.</p>
-<p>We could duplicate all the security code in the new microservice. But imagine if we have twenty microservices, it's going
-to be a mess if we need to add the security in each of them. The services won't be loosely coupled. It's where the
-gateway becomes handy.</p>
+<p>We could duplicate all the security code in the new microservice. But it's not a scalable approach, we'd have to add it in all 
+future microservices. And the services will be loosely coupled.
+This is where a <strong>Gateway</strong> becomes handy.</p>
 <p>A gateway is a service that provides a single-entry point for certain groups of microservices. Any requests to our
-application will go through the gateway and it will be routing to our different services.</p>
+application will go through the gateway, that will handle routing to our different services.</p>
 <h2 id="goal">Goal</h2>
 <p>Create the <strong>Gateway</strong> microservice responsible for all authentication and redirection. It's going to handle the
 authentication and redirect to the <strong>monolith</strong> or the <strong>user-activity</strong> microservice.</p>
@@ -154,9 +154,11 @@ authentication and redirect to the <strong>monolith</strong> or the <strong>user
 <p>Checkout the branch: </p>
 <pre><code>git checkout exercise-2
 </code></pre>
-<p>There is a new folder for the gateway microservice. You are not going to start from scratch but you will need
-to implement some part of it.</p>
-<p>Start the gateway and the two other services:</p>
+<p>There is a new folder for the gateway microservice. You won't have to start from scratch, but you will need
+to implement some parts.</p>
+<p>Start the gateway and the two other services monolith and user-activity in you IDE.
+<details>
+    <summary>Or with these commands (click to unfold):</summary></p>
 <pre><code># gateway
 mvn spring-boot:run -pl gateway
 # monolith
@@ -164,12 +166,15 @@ mvn spring-boot:run -pl monolith
 # user-activity
 mvn spring-boot:run -pl user-activity
 </code></pre>
-<p>Navigate on the different pages and you realize that all pages return a 404. There is no routing in our application.</p>
+</details>
+
+<p>Browse the different pages. You'll realize that all pages return a 404 error.
+That's because there's no <strong>routing</strong> in our application.</p>
 <h3 id="2-gateway">2 - Gateway</h3>
 <h4 id="todo-21-applicationyaml"><em>TODO</em> 2.1: Application.yaml</h4>
 <p>There won't be any database for the gateway since it's not holding any data. It's going to be running on port 8080.</p>
-<p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix that is an edge service that provides dynamic
-routing, monitoring, resiliency, security, and more. Spring integrated it in <strong>Spring Cloud</strong>.</p>
+<p>We are using <a href="https://github.com/Netflix/zuul">ZUUL</a> developed by Netflix. It's an edge service that provides dynamic
+routing, monitoring, resiliency, security, among other things. Spring integrated it in <strong>Spring Cloud</strong>.</p>
 <p>You will need to set it up in your <code>application.yaml</code>.</p>
 <p><img alt="tip" src="../../img/success.png" /> zuul documentation is available <a href="https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html">here</a></p>
 <p>To help you with the configuration in your yml file, here is an example:</p>
@@ -185,7 +190,7 @@ routing, monitoring, resiliency, security, and more. Spring integrated it in <st
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>
-<p>Since the routing is done and should be working, start your three apps if they aren't already up:</p>
+<p>Since the routing is done and should be working, start your three apps, if they aren't already up:</p>
 <pre><code># gateway
 mvn spring-boot:run -pl gateway
 # monolith
@@ -195,10 +200,10 @@ mvn spring-boot:run -pl user-activity
 </code></pre>
 </li>
 <li>
-<p>Verify that if you log in, you see your articles and all the pages under the same port: 8080.</p>
+<p>Check that when login in, you see your articles as well as all other pages under the same port: 8080.</p>
 </li>
 </ol>
-<p><img alt="question" src="../../img/question.png" /> What happens if you try to pay for a cart? </p>
+<p><img alt="question" src="../../img/question.png" /> What happens if you try to checkout a shopping cart? </p>
 <p>It doesn't work because the monolith doesn't know your user. Let's add it to our context in the next step.</p>
 <hr />
 <h4 id="todo-23-logged-user-information"><em>TODO</em> 2.3: Logged user information</h4>
@@ -208,7 +213,7 @@ connected user.</p>
 <p><strong>Checklist</strong> :</p>
 <ol>
 <li>
-<p>To verify that gateway is well implemented, launch all the applications:</p>
+<p>To check that the gateway is well implemented, launch all the applications:</p>
 <pre><code># Run monolith project
 mvn spring-boot:run -pl monolith
 
@@ -220,8 +225,8 @@ mvn spring-boot:run -pl gateway
 </code></pre>
 </li>
 <li>
-<p>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should be on the gateway. After logging, you should be
-directly redirect to the monolith and you can notify that the port is still 8080. You should be able to access as well
+<p>Access the <a href="http://localhost:8080/login">HOMicS MarketPlace</a>. You should arrive on the gateway. After login in, you should be
+directly redirected to the monolith. You can note that the port is still 8080. You should also be able to access 
 the user-activity microservice on the <em>User Activity micro</em> tab.</p>
 </li>
 </ol>
@@ -236,7 +241,7 @@ the user-activity microservice on the <em>User Activity micro</em> tab.</p>
 <p><img alt="gateway-micro" src="../../img/gateway-micro.gif" /></p>
 <p><img alt="info" src="../../img/info.png" /> You can still access the other services directly on each port 8090 and 9001.
 In practice, you will block those ports from the outside via a firewall.</p>
-<p>Well done. Let's continue on to the next step and our new microservices.</p>
+<p>Well done! Let's continue on to the next step, with a new microservices.</p>
 <h2 id="whats-next-exercise-3-stats">What's next ? <a href="../stats/">Exercise 3: Stats</a></h2></div>
         </div>
 

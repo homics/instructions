@@ -125,8 +125,8 @@
             <li><a href="#context">Context</a></li>
             <li><a href="#a-word-on-kafka">A word on KAFKA</a></li>
             <li><a href="#goal">Goal</a></li>
-            <li><a href="#setup">Setup</a></li>
             <li><a href="#at-your-keyboard">At your keyboard</a></li>
+            <li><a href="#setup">Setup</a></li>
             <li><a href="#list-of-todos">List of TODOs</a></li>
             <li><a href="#verification-and-results">Verification and results</a></li>
             <li><a href="#whats-next-exercise-5-stock">What's next ? Exercise 5: Stock</a></li>
@@ -163,6 +163,19 @@
 <p>It's very convenient: our monolith doesn't have to battle with acknowledgment anymore.</p>
 <p>It's the stats microservice which consumes the message.</p>
 <p><img alt="stats-kafka" src="../../img/stats-kafka.png" /></p>
+<h2 id="at-your-keyboard">At your keyboard</h2>
+<p>Checkout the branch: </p>
+<pre><code>git checkout exercise-4
+</code></pre>
+<p>This exercise is split in two parts.</p>
+<ol>
+<li>
+<p>You will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
+</li>
+<li>
+<p>You will consume the messages in the <strong>Stats</strong> microservice.</p>
+</li>
+</ol>
 <h2 id="setup">Setup</h2>
 <ol>
 <li>
@@ -185,21 +198,8 @@ docker-compose stop
 </code></pre>
 </li>
 </ol>
-<h2 id="at-your-keyboard">At your keyboard</h2>
-<p>Checkout the branch: </p>
-<pre><code>git checkout exercise-4
-</code></pre>
-<p>This exercise is split in two parts.</p>
-<ol>
-<li>
-<p>You will edit the <strong>Monolith</strong> to send a message to kafka when an order is payed.</p>
-</li>
-<li>
-<p>You will consume the messages in the <strong>Stats</strong> microservice.</p>
-</li>
-</ol>
 <h3 id="41-monolith">4.1 - Monolith</h3>
-<h4 id="todo-411-send-a-kafka-message"><em>TODO</em> 4.1.1: Send a kafka message</h4>
+<p>1 - Send a kafka message</p>
 <p>Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.</p>
 <p>To send a message with kafka :</p>
 <pre><code>private KafkaTemplate&lt;String, OrderPayedMessage&gt; kafkaTemplate;
@@ -224,20 +224,37 @@ to run the following command:</p>
 </li>
 </ol>
 <h3 id="42-stats">4.2 - Stats</h3>
-<h4 id="todo-421"><em>TODO</em> 4.2.1:</h4>
-<p>In the microservice, retrieve the message with kafka :</p>
-<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = &quot;statsMessageFactory&quot;)
+<p>2 - In the microservice, retrieve the message with kafka :</p>
+<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = IMPACT_STATS_MESSAGE_FACTORY)
 public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
         ...
 }
 </code></pre>
 
-<hr />
-<h4 id="todo-422"><em>TODO</em> 4.2.2:</h4>
-<p>Save this message into the database.</p>
+<p>3 - Save this message into the database.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
-<p>4.1.1 - file com.homics.monolith.service.StatsService</p>
-<p>4.2.(1/2) - file com.homics.stats.service.OrderStatsService</p>
+<table>
+<thead>
+<tr>
+<th><strong>Todo</strong></th>
+<th><strong>File</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>com.homics.monolith.service.StatsService</td>
+</tr>
+<tr>
+<td>2</td>
+<td>com.homics.stats.service.OrderStatsService</td>
+</tr>
+<tr>
+<td>3</td>
+<td>com.homics.stats.service.OrderStatsService</td>
+</tr>
+</tbody>
+</table>
 <h2 id="verification-and-results">Verification and results</h2>
 <p>To verify that <strong>stats</strong> is well implemented, launch the gateway, and the monolith applications:</p>
 <pre><code class="bash"># Run gateway project
