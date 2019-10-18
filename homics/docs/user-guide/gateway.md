@@ -27,7 +27,7 @@ authentication and redirect to the **monolith** or the **user-activity** microse
 
 Everything has been implemented in other microservices. You only need to edit the gateway.
 
-## At your keyboards
+## At your keyboard
 
 Checkout the branch: 
         
