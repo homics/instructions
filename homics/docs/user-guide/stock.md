@@ -20,7 +20,7 @@ Before the migration when we pay an order, we were executing the following steps
 
 * Check the stock
 
-* Impact the stock
+* Increase or decrease the stock
 
 * Update the order status
 
@@ -28,11 +28,11 @@ Before the migration when we pay an order, we were executing the following steps
 
 ### Extract it into a microservice
 
-If we extract the stock service in a microservice like we did before, the steps become :
+If we extract the stock service in a microservice like we did before, the steps would become:
 
 * Open transaction
 
-* Ask the micro service to impact the stock
+* Ask the micro service to update the stock
 
 * Wait for the response
 
@@ -40,13 +40,13 @@ If we extract the stock service in a microservice like we did before, the steps 
 
 * Close the transaction
 
-With this plan, you can see in step 3 that the monolith is waiting for the microservice response.
+In this new plan, you can see in the 3rd step that the monolith is waiting for the microservice to respond.
 
 ![warning](../img/warning.png) It's pretty bad! 
 
-Imagine that the call to impact stock times out... 
+Imagine that the call to change the stock times out... 
 
-Your payment method is going to wait the whole time and so is your user.
+Your payment method is going to wait this whole time, and so is your user.
 
 ![tip](../img/success.png) We need to change to asynchronous.
 
@@ -54,13 +54,13 @@ Your payment method is going to wait the whole time and so is your user.
 
 * Open transaction
 
-* Ask the micro service to impact the stock
+* Ask the micro service to update the stock
 
 * Close the transaction
 
 Then, we listen to the microservice event.
 
-* The microservice call the monolith when the stock is impacted
+* The microservice call the monolith when the stock has to be updated
 
 * Open transaction
 
@@ -81,11 +81,11 @@ The workflow becomes:
 
 * An ImpactStockMessage is send to kafka
  
-* The stock micro-service verifies and then impacts the article stock
+* The stock micro-service verifies and then updates the article's stock
 
 * A StockAcknowledgmentMessage is send with a status succeed or not
 
-* The monolith consumes the message and change the order status accordingly
+* The monolith consumes the message and changes the order status accordingly
 
 ![stock](../img/stock.png)
 
