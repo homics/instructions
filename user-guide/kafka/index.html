@@ -199,7 +199,7 @@ docker-compose stop
 </li>
 </ol>
 <h3 id="41-monolith">4.1 - Monolith</h3>
-<p>1 - Send a kafka message</p>
+<p>[todo 1] - Send a kafka message</p>
 <p>Switch the API calls in the monolith to send an OrderPayedMessages message to kafka.</p>
 <p>To send a message with kafka :</p>
 <pre><code>private KafkaTemplate&lt;String, OrderPayedMessage&gt; kafkaTemplate;
@@ -224,14 +224,14 @@ to run the following command:</p>
 </li>
 </ol>
 <h3 id="42-stats">4.2 - Stats</h3>
-<p>2 - In the microservice, retrieve the message with kafka :</p>
-<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = IMPACT_STATS_MESSAGE_FACTORY)
-public void onImpactStockMessage(@Payload OrderPayedMessage impactStockMessage) {
+<p>[todo 2] - In the microservice, retrieve the message with kafka :</p>
+<pre><code>@KafkaListener(topics = TOPIC_STATS, groupId = GROUP_ID, containerFactory = STATS_MESSAGE_FACTORY)
+public void onStatsMessage(@Payload OrderPayedMessage impactStockMessage) {
         ...
 }
 </code></pre>
 
-<p>3 - Save this message into the database.</p>
+<p>[todo 3] - Save this message into the database.</p>
 <h2 id="list-of-todos">List of <em>TODOs</em></h2>
 <table>
 <thead>
