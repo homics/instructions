@@ -152,16 +152,16 @@ A scheduled task fetches this table and sends its content to the microservice. <
 <p>Checkout the branch</p>
 <pre><code>git checkout exercise-3
 </code></pre>
+<p>Start the gateway and the two services stats and user-activity. 
 <details>
-    <summary>Start the gateway and the two services stats and user-activity. (Unfold for command lines)</summary>
-
-    # gateway
-    mvn spring-boot:run -pl gateway
-    # monolith
-    mvn spring-boot:run -pl monolith
-    # user-activity
-    mvn spring-boot:run -pl user-activity
-
+    <summary>(Unfold for command lines)</summary></p>
+<pre><code># gateway
+mvn spring-boot:run -pl gateway
+# monolith
+mvn spring-boot:run -pl monolith
+# user-activity
+mvn spring-boot:run -pl user-activity
+</code></pre>
 </details>
 
 <h3 id="3-monolith">3 - Monolith</h3>
