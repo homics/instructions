@@ -1,4 +1,4 @@
-# Welcome to the Hands On: L'Atelier des Chefs: du monolith aux microservices.
+# Welcome to the Cooking masterclass: monolith to microservice recipe
 
 You can find the instructions [here](https://homics.github.io/instructions/).
 
