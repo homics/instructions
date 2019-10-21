@@ -28,7 +28,7 @@ Keep in mind, adding kafka comes with a cost. It's a library with a learning cur
 
 ## Goal 
 
-We will change the exercise 3 but this time using kafka. No need for table and crawler anymore.
+We will change what was done in exercise 3, but this time using kafka. No need for table and crawler anymore.
 
 When an order is payed, an event is sent.
  

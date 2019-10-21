@@ -39,13 +39,14 @@ subjects:
 - How do you split a monolith
 - How do you communicate between microservices ? (HTTP, events, etc ...)
 - Transaction with microservices
-- Resilience in micro-service (peak load, network latency, outage ...)
+- How to deploy microservices : containers and kubernetes
    
-This HandsOn is the work of three developers:
+This HandsOn is the work of four developers:
 
 - Nicolas Favier [**@Takima**](https://www.takima.fr/)
 - Eric Ndouakulu Kiaku Mbuta [**@Mirakl**](https://www.mirakl.com/)
 - Benjamin Yvernault [**@Takima**](https://www.takima.fr/)
+- Artus de Benque [**@Mirakl**](https://www.mirakl.com/)
 
 You can find all the code on [Homics Github](https://github.com/homics).
 

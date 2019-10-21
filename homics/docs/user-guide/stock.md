@@ -112,6 +112,7 @@ acknowledgement.
 **[todo 3]** - Implement the method to send a kafka message to the **Stock** microservice
 
 **Checklist** 
+
 1. Verify that you sent a kafka message
 
     You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
@@ -135,7 +136,8 @@ acknowledgement.
 
 **[todo 9]** - Notify by sending a message to kafka that stock was modified successfully.
 
-**Checklist** 
+**Checklist**
+ 
 1. Verify that you sent a kafka message
 
     You can verify the creation of your messages by creating a consumer via command line on your docker. To do so, you need
