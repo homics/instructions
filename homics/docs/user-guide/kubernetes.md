@@ -17,24 +17,26 @@ Let's discover how Kubernetes can automatize this process.
 ![kubernetes](../img/kubernetes.svg)
 
 Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized
-applications. Kubernetes provides you with a framework to run distributed systems resiliently. We are not going to explain every
-concept behind it but we will introduce some key notions before starting the exercise. [Kubernetes documentation](https://kubernetes.io/docs/concepts/)
-is very well designed and will probably answer most of your questions.
+applications. 
+Kubernetes provides you with a framework to run distributed systems resiliently. We're not going to explain every
+concepts behind it but we will introduce some key notions before starting the exercise. 
+The [Kubernetes documentation](https://kubernetes.io/docs/concepts/) is very well designed and will probably answer most of your questions.
 
-First of all, a `pod` is the most basic unit in kubernetes. It can encapsulate one or more containers that are tightly coupled and that share
-resources. In our case, one pod corresponds to one container, meaning one single instance of an application. We can have several pods of the same application
-that are called `replicas`. There are the key of resilience and availability. 
+First of all, a `pod` is the most basic unit in kubernetes. It can encapsulate one or more containerized app that are tightly coupled and that share
+resources, as well as volumes. In our case, one pod corresponds to one container, meaning one single instance of an application.
+We can have multiple pods with the same content, we call them `replicas`. They are the key to resilience and availability. 
 
-Kube manages on which machines the pod and its replicas are running. Those machines (VM or physical) are named `Nodes`.
+Kube decides on which machines the pod and its replicas are running. Those machines (VM or physical) are named `Nodes`.
 
-Kube provides two other objects, `Deployment` and `Service`. Deployment describes a desire state of a cluster like the number
-of replicas. A service defines a logical set of Pods and a policy by which to access them.
+Kube provides two other resources: `Deployment` and `Service`.
+- **Deployments** describe a desired state for a cluster, among other things the number of replicas
+- a **Service** defines a logical set of Pods and a policy by which to access them
 
 ## Minikube
 
 Minikube is a tool that runs a single-node Kubernetes cluster in a virtual machine on your personal computer.
 
-To set it up, go back to [Setup](../setup.md).
+To set it up, go to [Setup](../setup.md).
 
 CheatSheet :
 
@@ -72,7 +74,7 @@ minikube service {service-name}
 
 ## Goal 
 
-Automatize the deployment of our market place using Kubernetes.
+Automatize the deployment of our marketplace app using Kubernetes.
 
 ## At your keyboard
 
@@ -80,7 +82,7 @@ Checkout the branch:
         
     git checkout exercise-7
 
-All the docker's images are available on docker hub under the following names:
+All the docker's images are already available on docker hub under the following names:
 
 | **Services** | **Docker image name** |
 |--------------|-----------------------|
@@ -111,8 +113,8 @@ gateway-deployment-7895c9c479-bdztx     1/1     Running   0          30s
 Above, we see that you have one deployment running, that is up to date with one pod available.
 This pod is in the state Ready and Running with no restart. The pod has been created 30 seconds ago.
 
-Unfortunately, at this step, you can't access your gateway from your browser. To access your pod from the outside, we need to
-define a service.
+Unfortunately, at this point, you can't access your gateway from your browser. To access your pod from the outside, we need to
+define a **service**.
 
 2 - Create a service.yml file for gateway and run `kubectl apply -f service.yml`
 
@@ -148,16 +150,18 @@ homics-db-deployment-7bbf5fc44b-zggs4   1/1     Running   0          3m15s
 user-deployment-7889589595-pzkv5        0/1     Running   1          3m10s
 ```
 
-Your user-pod is running but the number ready is 0/1. Your pod isn't accessible and you can see that the number of restarts
-increased to one. You pod is restarting automatically. In few seconds, you should see again your activity's page. 
+Your user-pod is running but the number `ready` is 0/1. Your pod isn't accessible and you can see that the number of restarts
+increased to one. You pod is restarting automatically. In few seconds, you should see once again the activity page. 
 
 ### Rolling Update for User
 
-Your application keeps evolving through time and you often need to update it. Unfortunately, you don't want to call your
-client and tell him that you need to shutdown the app for few seconds/minutes.
+Your application keeps evolving with time, and it needs to be updated regularly. Unfortunately, you can't afford telling your
+customer that his app will be shutdown for few seconds/minutes at every update.
 
 Kube manages rolling updates very efficiently. It creates a new pod, install the new version, and then move the traffic
-from the old pod to the new one, to finally kill the old one. No downtime, great. Let's roll user's app with its version 2.0.0.
+from the old pod to the new one, to finally kill the old one. No downtime! great.
+
+Let's roll user's app with its version 2.0.0.
 
 1 - Open the user-activity tab and click on `version` button. It prints the version of your app every second. 
 
@@ -201,10 +205,13 @@ you need to relink kubectl : brew link --overwrite kubernetes-cli
 
 ## Good to know
 
-// todo 
+ - a next step would be to use auto-scalling ([documented here](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)), 
+ that would allow your app to handle high loads like a champ, and cut hosting cost on slow days
+ - Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a micro-service rich environment.
+ - Many also use [Istio](https://istio.io/docs/concepts/what-is-istio/) additionally, a service mesh that lets you manage and route your traffic, add security and more!
 
 ## What's next ?
 
-Come see us after hand and let us know what you though about the Hands On.
+It's all done! Come and see us afterwards and let us know what you thought of this Hands-On.
 
 Thank you. 
