@@ -171,20 +171,22 @@ And the version should change from 1.0.0 to 2.0.0 on the user-activity page. You
 
 ![question](../img/question.png) What happened?
 
-Kube does not know when a pod is actually ready. The traffic is directed to the new pod even so the spring app is still
-starting. Kube defines the notion of `readiness` in a deployment file. You can specify when an app is ready and Kube 
+Kube does not know when a pod is actually ready. The traffic is directed to the new pod even though the spring app is still
+starting.
+
+Kube defines the notion of `readiness` in a deployment file. You can specify when an app is ready and Kube 
 won't allow access on the pod before the condition is met. 
 
 ![info](../img/info.png) You can check [How to define readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
 
 In our case, our pod is ready when we can access `/user/internal/version` on port 9001 of our application.
 
-3 - Set back the image to 1.0.0 and see that you don't have any error.
+3 - Set back the image to 1.0.0 and check that you don't have any error in the `/user/versions` page.
 
 ### Replicas and crashes
 
-When you crashed your application, you might have realized that there was some downtime. When we introduced the notion of replicas earlier, we defined
-them as the key to resilience and availability. Right now, the User pod isn't available if one pod crashes.
+When you crashed your application, you might have realized that there was some downtime: the user page wasn't available for a few seconds.
+When we introduced the notion of replicas earlier, we defined them as the key to resilience and availability. Right now, the User pod isn't available if one pod crashes.
 
 To fix this we are going to increase the number of replica to 2.
 
@@ -207,7 +209,7 @@ you need to relink kubectl : `brew link --overwrite kubernetes-cli`
 
  - a next step would be to use auto-scalling ([documented here](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)), 
  that would allow your app to handle high loads like a champ, and cut hosting cost on slow days
- - Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a micro-service rich environment.
+ - Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a microservice rich environment.
  - Many also use [Istio](https://istio.io/docs/concepts/what-is-istio/) additionally, a service mesh that lets you manage and route your traffic, add security and more!
 
 ## What's next ?
