@@ -6,13 +6,13 @@ Homics -> Hands On Micro Service
 
 Ingredient:
 
--  A fucking big monolith
+-  A huge monolith
 -  A heterogeneous stress on the application
 -  An exponential entropy
 
 The usual recipe :
 
--   Take the way pasted monolith
+-   Take the old monolith
 -   Cut it equally in height parts
 -   Heat it at 200 transactions per seconds
 -   Remove your performant microservices from the oven
