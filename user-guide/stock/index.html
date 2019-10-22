@@ -251,15 +251,17 @@ acknowledgement.</p>
 <p><strong>[todo 1]</strong> - Remove the stock column in the Article entity.</p>
 <p><strong>[todo 2]</strong> - Remove the stock validation and call the StockService.</p>
 <p><strong>[todo 3]</strong> - Implement the method to send a kafka message to the <strong>Stock</strong> microservice</p>
-<p><strong>Checklist</strong> 
-1. Verify that you sent a kafka message</p>
-<pre><code>You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
-to run the following command:
-
-    docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STOCK --from-beginning
-
-You should see the message you sent to the stock microservice.
+<p><strong>Checklist</strong> </p>
+<ol>
+<li>
+<p>Verify that you sent a kafka message</p>
+<p>You can verify the creation of your message by creating a consumer via command line on your docker. To do so, you need
+to run the following command:</p>
+<pre><code>docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STOCK --from-beginning
 </code></pre>
+<p>You should see the message you sent to the stock microservice.  </p>
+</li>
+</ol>
 <h3 id="52-stock">5.2 - Stock</h3>
 <p><strong>[todo 4]</strong> - Consume the message and call the stock service.</p>
 <p><strong>[todo 5]</strong> - Verify that the operation wasn't already process to keep an idempotent process.</p>
@@ -267,15 +269,17 @@ You should see the message you sent to the stock microservice.
 <p><strong>[todo 7]</strong> - Notify by sending a message to kafka that stock could NOT be modified.</p>
 <p><strong>[todo 8]</strong> - Save the operation as processed so it won't be process several times.</p>
 <p><strong>[todo 9]</strong> - Notify by sending a message to kafka that stock was modified successfully.</p>
-<p><strong>Checklist</strong> 
-1. Verify that you sent a kafka message</p>
-<pre><code>You can verify the creation of your messages by creating a consumer via command line on your docker. To do so, you need
-to run the following command:
-
-    docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STOCK --from-beginning
-
-You should see the messages you sent for acknowledgement and stock's modification.
+<p><strong>Checklist</strong></p>
+<ol>
+<li>
+<p>Verify that you sent a kafka message</p>
+<p>You can verify the creation of your messages by creating a consumer via command line on your docker. To do so, you need
+to run the following command:</p>
+<pre><code>docker exec $(docker ps | awk '$2 == "wurstmeister/kafka:1.0.0"' | awk '{print $1}') kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic STOCK --from-beginning
 </code></pre>
+<p>You should see the messages you sent for acknowledgement and stock's modification. </p>
+</li>
+</ol>
 <h3 id="53-monolith">5.3 - Monolith</h3>
 <p><strong>[todo 10]</strong> - Depending on the message sent by <strong>Stock</strong> for acknowledgement, set the status for the order (<em>PAYED</em>
 or <em>CANCEL</em>)</p>
