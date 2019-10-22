@@ -19,7 +19,7 @@ Let's discover how Kubernetes can automatize this process.
 Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized
 applications. 
 Kubernetes provides you with a framework to run distributed systems resiliently. We're not going to explain every
-concepts behind it but we will introduce some key notions before starting the exercise. 
+concept behind it but we will introduce some key notions before starting the exercise. 
 The [Kubernetes documentation](https://kubernetes.io/docs/concepts/) is very well designed and will probably answer most of your questions.
 
 First of all, a `pod` is the most basic unit in kubernetes. It can encapsulate one or more containerized app that are tightly coupled and that share

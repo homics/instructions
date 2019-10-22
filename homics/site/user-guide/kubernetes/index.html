@@ -144,18 +144,20 @@ to manually reboot your container. In production, this is not acceptable.</p>
 <h3 id="about-kubernetes">About Kubernetes</h3>
 <p><img alt="kubernetes" src="../../img/kubernetes.svg" /></p>
 <p>Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized
-applications. Kubernetes provides you with a framework to run distributed systems resiliently. We are not going to explain every
-concept behind it but we will introduce some key notions before starting the exercise. <a href="https://kubernetes.io/docs/concepts/">Kubernetes documentation</a>
-is very well designed and will probably answer most of your questions.</p>
-<p>First of all, a <code>pod</code> is the most basic unit in kubernetes. It can encapsulate one or more containers that are tightly coupled and that share
-resources. In our case, one pod corresponds to one container, meaning one single instance of an application. We can have several pods of the same application
-that are called <code>replicas</code>. There are the key of resilience and availability. </p>
-<p>Kube manages on which machines the pod and its replicas are running. Those machines (VM or physical) are named <code>Nodes</code>.</p>
-<p>Kube provides two other objects, <code>Deployment</code> and <code>Service</code>. Deployment describes a desire state of a cluster like the number
-of replicas. A service defines a logical set of Pods and a policy by which to access them.</p>
+applications. 
+Kubernetes provides you with a framework to run distributed systems resiliently. We're not going to explain every
+concept behind it but we will introduce some key notions before starting the exercise. 
+The <a href="https://kubernetes.io/docs/concepts/">Kubernetes documentation</a> is very well designed and will probably answer most of your questions.</p>
+<p>First of all, a <code>pod</code> is the most basic unit in kubernetes. It can encapsulate one or more containerized app that are tightly coupled and that share
+resources, as well as volumes. In our case, one pod corresponds to one container, meaning one single instance of an application.
+We can have multiple pods with the same content, we call them <code>replicas</code>. They are the key to resilience and availability. </p>
+<p>Kube decides on which machines the pod and its replicas are running. Those machines (VM or physical) are named <code>Nodes</code>.</p>
+<p>Kube provides two other resources: <code>Deployment</code> and <code>Service</code>.
+- <strong>Deployments</strong> describe a desired state for a cluster, among other things the number of replicas
+- a <strong>Service</strong> defines a logical set of Pods and a policy by which to access them</p>
 <h2 id="minikube">Minikube</h2>
 <p>Minikube is a tool that runs a single-node Kubernetes cluster in a virtual machine on your personal computer.</p>
-<p>To set it up, go back to <a href="../../setup/">Setup</a>.</p>
+<p>To set it up, go to <a href="../../setup/">Setup</a>.</p>
 <p>CheatSheet :</p>
 <pre><code># Minikube start (or stop)
 minikube start
@@ -189,12 +191,12 @@ minikube service {service-name}
 </code></pre>
 
 <h2 id="goal">Goal</h2>
-<p>Automatize the deployment of our market place using Kubernetes.</p>
+<p>Automatize the deployment of our marketplace app using Kubernetes.</p>
 <h2 id="at-your-keyboard">At your keyboard</h2>
 <p>Checkout the branch: </p>
 <pre><code>git checkout exercise-7
 </code></pre>
-<p>All the docker's images are available on docker hub under the following names:</p>
+<p>All the docker's images are already available on docker hub under the following names:</p>
 <table>
 <thead>
 <tr>
@@ -240,8 +242,8 @@ gateway-deployment-7895c9c479-bdztx     1/1     Running   0          30s
 
 <p>Above, we see that you have one deployment running, that is up to date with one pod available.
 This pod is in the state Ready and Running with no restart. The pod has been created 30 seconds ago.</p>
-<p>Unfortunately, at this step, you can't access your gateway from your browser. To access your pod from the outside, we need to
-define a service.</p>
+<p>Unfortunately, at this point, you can't access your gateway from your browser. To access your pod from the outside, we need to
+define a <strong>service</strong>.</p>
 <p>2 - Create a service.yml file for gateway and run <code>kubectl apply -f service.yml</code></p>
 <p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">Writing a service</a>.</p>
 <p>A service is defined by its type. By default, it is <code>ClusterIp</code> which means your pod is accessible only in your cluster.
@@ -265,13 +267,14 @@ homics-db-deployment-7bbf5fc44b-zggs4   1/1     Running   0          3m15s
 user-deployment-7889589595-pzkv5        0/1     Running   1          3m10s
 </code></pre>
 
-<p>Your user-pod is running but the number ready is 0/1. Your pod isn't accessible and you can see that the number of restarts
-increased to one. You pod is restarting automatically. In few seconds, you should see again your activity's page. </p>
+<p>Your user-pod is running but the number <code>ready</code> is 0/1. Your pod isn't accessible and you can see that the number of restarts
+increased to one. You pod is restarting automatically. In few seconds, you should see once again the activity page. </p>
 <h3 id="rolling-update-for-user">Rolling Update for User</h3>
-<p>Your application keeps evolving through time and you often need to update it. Unfortunately, you don't want to call your
-client and tell him that you need to shutdown the app for few seconds/minutes.</p>
+<p>Your application keeps evolving with time, and it needs to be updated regularly. Unfortunately, you can't afford telling your
+customer that his app will be shutdown for few seconds/minutes at every update.</p>
 <p>Kube manages rolling updates very efficiently. It creates a new pod, install the new version, and then move the traffic
-from the old pod to the new one, to finally kill the old one. No downtime, great. Let's roll user's app with its version 2.0.0.</p>
+from the old pod to the new one, to finally kill the old one. No downtime! great.</p>
+<p>Let's roll user's app with its version 2.0.0.</p>
 <p>1 - Open the user-activity tab and click on <code>version</code> button. It prints the version of your app every second. </p>
 <p>2 - Run <code>kubectl set image deployments/user-deployment user=homics/user-activity:2.0.0</code></p>
 <p>And the version should change from 1.0.0 to 2.0.0 on the user-activity page but you realize that there are some lines
@@ -297,9 +300,14 @@ minikube. Start with monolith and kafka. Add stats and stock.</p>
 <p>If you encounter the error : invalid object doesn't have additional properties
 you need to relink kubectl : brew link --overwrite kubernetes-cli</p>
 <h2 id="good-to-know">Good to know</h2>
-<p>// todo </p>
+<ul>
+<li>a next step would be to use auto-scalling (<a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">documented here</a>), 
+ that would allow your app to handle high loads like a champ, and cut hosting cost on slow days</li>
+<li>Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a micro-service rich environment.</li>
+<li>Many also use <a href="https://istio.io/docs/concepts/what-is-istio/">Istio</a> additionally, a service mesh that lets you manage and route your traffic, add security and more!</li>
+</ul>
 <h2 id="whats-next">What's next ?</h2>
-<p>Come see us after hand and let us know what you though about the Hands On.</p>
+<p>It's all done! Come and see us afterwards and let us know what you thought of this Hands-On.</p>
 <p>Thank you. </p></div>
         </div>
 

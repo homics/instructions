@@ -64,7 +64,7 @@ it via docker. We can then easily restart or reset it. You will find a docker-co
 
 2. Run kafka
     
-    In `/tools/docker/kafka/`, the docker-compose file will launch an instance of **zookeeper** and **kafka**.
+    In `{HOMICS_GIT_LOCAL_FOLDER}/commons-messaging/`, the docker-compose file will launch an instance of **zookeeper** and **kafka**.
     To start kafka simply run :
 
         cd commons-messaging
