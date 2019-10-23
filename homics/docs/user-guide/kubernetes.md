@@ -94,7 +94,7 @@ All the docker's images are already available on docker hub under the following 
 
 ### Gateway
 
-1 - Create a deployment.yml file for gateway and run `kubectl apply -f deployment.yml`
+1 - Fill the deployment.yaml file for gateway and run `kubectl apply -f deployment.yaml`
 
 ![info](../img/info.png) You can find everything you need on Kubernetes documentation [Writing a deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment).
 
@@ -116,7 +116,7 @@ This pod is in the state Ready and Running with no restart. The pod has been cre
 Unfortunately, at this point, you can't access your gateway from your browser. To access your pod from the outside, we need to
 define a **service**.
 
-2 - Create a service.yml file for gateway and run `kubectl apply -f service.yml`
+2 - Fill in the service.yaml file for gateway and run `kubectl apply -f service.yaml`
 
 ![info](../img/info.png) You can find everything you need on Kubernetes documentation [Writing a service](https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service).
 
@@ -133,15 +133,15 @@ spec:
 
 Run `kubectl get service` to see your newly created services
 
-Run `minikube service gateway` to access your gateway. 
+Run `minikube service gateway` to get the URL of the newly exposed Service for gateway. 
 
 ### User and Database
 
-1 - Create a deployment and service for User and the database. 
+1 - Create a deployment and service for User, you can also check the database files that are already done. 
 
 2 - Crash you application by accessing User-Activity tab and clicking on the button. 
 
-You realize that the page is not accessible anymore and when you run `kubectl get pod`, you can see:
+You'll realize that the page is not accessible anymore and when you run `kubectl get pod`, you can see:
 
 ```
 NAME                                    READY   STATUS    RESTARTS   AGE
@@ -167,32 +167,34 @@ Let's roll user's app with its version 2.0.0.
 
 2 - Run `kubectl set image deployments/user-deployment user=homics/user-activity:2.0.0`
 
-And the version should change from 1.0.0 to 2.0.0 on the user-activity page but you realize that there are some lines
-`Error calling the server`.
+And the version should change from 1.0.0 to 2.0.0 on the user-activity page. You also might have some lines `Error calling the server`.
 
-![question](../img/question.png) What happens ?
+![question](../img/question.png) What happened?
 
-Kube does not know when a pod is actually ready. The traffic is directed to the new pod even so the spring app is still
-starting. Kube defines the notion of `readiness` in a deployment file. You can specify when an app is ready and Kube 
+Kube does not know when a pod is actually ready. The traffic is directed to the new pod even though the spring app is still
+starting.
+
+Kube defines the notion of `readiness` in a deployment file. You can specify when an app is ready and Kube 
 won't allow access on the pod before the condition is met. 
 
 ![info](../img/info.png) You can check [How to define readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
 
 In our case, our pod is ready when we can access `/user/internal/version` on port 9001 of our application.
 
-3 - Set back the image to 1.0.0 and see that you don't have any error.
+3 - Set back the image to 1.0.0 and check that you don't have any error in the `/user/versions` page.
 
 ### Replicas and crashes
 
-While crashing your application, you realize that we had some downtime. When we introduce the term of replica, we define
-them as the key for resilience and availability. Right now, User pod isn't available if one pod crashes. We are going to
-increase the number of replica to 2.
+When you crashed your application, you might have realized that there was some downtime: the user page wasn't available for a few seconds.
+When we introduced the notion of replicas earlier, we defined them as the key to resilience and availability. Right now, the User pod isn't available if one pod crashes.
 
-1 - Increase the number of replica to 2 in your deployment.yml
+To fix this we are going to increase the number of replica to 2.
+
+1 - Increase the number of replica to 2 in the deployment.yaml
 
 2 - Crash your application and reload the page
 
-You realize that the service is always available. 
+You can now witness in awe the absence of downtime during the updating of your microservice. 
 
 ### Bonus: Deploy our market place
 
@@ -201,17 +203,17 @@ minikube. Start with monolith and kafka. Add stats and stock.
 
 ## Trouble shooting :
 If you encounter the error : invalid object doesn't have additional properties
-you need to relink kubectl : brew link --overwrite kubernetes-cli
+you need to relink kubectl : `brew link --overwrite kubernetes-cli`
 
 ## Good to know
 
  - a next step would be to use auto-scalling ([documented here](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)), 
  that would allow your app to handle high loads like a champ, and cut hosting cost on slow days
- - Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a micro-service rich environment.
+ - Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a microservice rich environment.
  - Many also use [Istio](https://istio.io/docs/concepts/what-is-istio/) additionally, a service mesh that lets you manage and route your traffic, add security and more!
 
 ## What's next ?
 
 It's all done! Come and see us afterwards and let us know what you thought of this Hands-On.
 
-Thank you. 
+Thank you for your time.
