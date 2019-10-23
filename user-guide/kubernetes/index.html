@@ -228,7 +228,7 @@ minikube service {service-name}
 </tbody>
 </table>
 <h3 id="gateway">Gateway</h3>
-<p>1 - Create a deployment.yml file for gateway and run <code>kubectl apply -f deployment.yml</code></p>
+<p>1 - Fill the deployment.yaml file for gateway and run <code>kubectl apply -f deployment.yaml</code></p>
 <p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment">Writing a deployment</a>.</p>
 <p>If you run <code>kubectl get deploy</code> and <code>kubectl get pod</code>, you should get something similar to:</p>
 <pre><code>&gt; kubectl get deploy
@@ -244,7 +244,7 @@ gateway-deployment-7895c9c479-bdztx     1/1     Running   0          30s
 This pod is in the state Ready and Running with no restart. The pod has been created 30 seconds ago.</p>
 <p>Unfortunately, at this point, you can't access your gateway from your browser. To access your pod from the outside, we need to
 define a <strong>service</strong>.</p>
-<p>2 - Create a service.yml file for gateway and run <code>kubectl apply -f service.yml</code></p>
+<p>2 - Fill in the service.yaml file for gateway and run <code>kubectl apply -f service.yaml</code></p>
 <p><img alt="info" src="../../img/info.png" /> You can find everything you need on Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service">Writing a service</a>.</p>
 <p>A service is defined by its type. By default, it is <code>ClusterIp</code> which means your pod is accessible only in your cluster.
 In some parts of our application (the front), we might need to expose our service to the outside world. For this case, you
@@ -256,11 +256,11 @@ can specify a different type such as <code>NodePort</code> or <code>LoadBalancer
 </code></pre>
 
 <p>Run <code>kubectl get service</code> to see your newly created services</p>
-<p>Run <code>minikube service gateway</code> to access your gateway. </p>
+<p>Run <code>minikube service gateway</code> to get the URL of the newly exposed Service for gateway. </p>
 <h3 id="user-and-database">User and Database</h3>
-<p>1 - Create a deployment and service for User and the database. </p>
+<p>1 - Create a deployment and service for User, you can also check the database files that are already done. </p>
 <p>2 - Crash you application by accessing User-Activity tab and clicking on the button. </p>
-<p>You realize that the page is not accessible anymore and when you run <code>kubectl get pod</code>, you can see:</p>
+<p>You'll realize that the page is not accessible anymore and when you run <code>kubectl get pod</code>, you can see:</p>
 <pre><code>NAME                                    READY   STATUS    RESTARTS   AGE
 gateway-deployment-7895c9c479-bdztx     1/1     Running   0          5m31s
 homics-db-deployment-7bbf5fc44b-zggs4   1/1     Running   0          3m15s
@@ -277,38 +277,38 @@ from the old pod to the new one, to finally kill the old one. No downtime! great
 <p>Let's roll user's app with its version 2.0.0.</p>
 <p>1 - Open the user-activity tab and click on <code>version</code> button. It prints the version of your app every second. </p>
 <p>2 - Run <code>kubectl set image deployments/user-deployment user=homics/user-activity:2.0.0</code></p>
-<p>And the version should change from 1.0.0 to 2.0.0 on the user-activity page but you realize that there are some lines
-<code>Error calling the server</code>.</p>
-<p><img alt="question" src="../../img/question.png" /> What happens ?</p>
-<p>Kube does not know when a pod is actually ready. The traffic is directed to the new pod even so the spring app is still
-starting. Kube defines the notion of <code>readiness</code> in a deployment file. You can specify when an app is ready and Kube 
+<p>And the version should change from 1.0.0 to 2.0.0 on the user-activity page. You also might have some lines <code>Error calling the server</code>.</p>
+<p><img alt="question" src="../../img/question.png" /> What happened?</p>
+<p>Kube does not know when a pod is actually ready. The traffic is directed to the new pod even though the spring app is still
+starting.</p>
+<p>Kube defines the notion of <code>readiness</code> in a deployment file. You can specify when an app is ready and Kube 
 won't allow access on the pod before the condition is met. </p>
 <p><img alt="info" src="../../img/info.png" /> You can check <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes">How to define readiness probes</a>.</p>
 <p>In our case, our pod is ready when we can access <code>/user/internal/version</code> on port 9001 of our application.</p>
-<p>3 - Set back the image to 1.0.0 and see that you don't have any error.</p>
+<p>3 - Set back the image to 1.0.0 and check that you don't have any error in the <code>/user/versions</code> page.</p>
 <h3 id="replicas-and-crashes">Replicas and crashes</h3>
-<p>While crashing your application, you realize that we had some downtime. When we introduce the term of replica, we define
-them as the key for resilience and availability. Right now, User pod isn't available if one pod crashes. We are going to
-increase the number of replica to 2.</p>
-<p>1 - Increase the number of replica to 2 in your deployment.yml</p>
+<p>When you crashed your application, you might have realized that there was some downtime: the user page wasn't available for a few seconds.
+When we introduced the notion of replicas earlier, we defined them as the key to resilience and availability. Right now, the User pod isn't available if one pod crashes.</p>
+<p>To fix this we are going to increase the number of replica to 2.</p>
+<p>1 - Increase the number of replica to 2 in the deployment.yaml</p>
 <p>2 - Crash your application and reload the page</p>
-<p>You realize that the service is always available. </p>
+<p>You can now witness in awe the absence of downtime during the updating of your microservice. </p>
 <h3 id="bonus-deploy-our-market-place">Bonus: Deploy our market place</h3>
 <p>Since you finish all the different steps of this last exercise, you can keep going by deploying all our microservices into
 minikube. Start with monolith and kafka. Add stats and stock.</p>
 <h2 id="trouble-shooting">Trouble shooting :</h2>
 <p>If you encounter the error : invalid object doesn't have additional properties
-you need to relink kubectl : brew link --overwrite kubernetes-cli</p>
+you need to relink kubectl : <code>brew link --overwrite kubernetes-cli</code></p>
 <h2 id="good-to-know">Good to know</h2>
 <ul>
 <li>a next step would be to use auto-scalling (<a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">documented here</a>), 
  that would allow your app to handle high loads like a champ, and cut hosting cost on slow days</li>
-<li>Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a micro-service rich environment.</li>
+<li>Kube can be used to create local development environment fast, which greatly hepls when on-boarding new devs in a microservice rich environment.</li>
 <li>Many also use <a href="https://istio.io/docs/concepts/what-is-istio/">Istio</a> additionally, a service mesh that lets you manage and route your traffic, add security and more!</li>
 </ul>
 <h2 id="whats-next">What's next ?</h2>
 <p>It's all done! Come and see us afterwards and let us know what you thought of this Hands-On.</p>
-<p>Thank you. </p></div>
+<p>Thank you for your time.</p></div>
         </div>
 
         <footer class="col-md-12">
