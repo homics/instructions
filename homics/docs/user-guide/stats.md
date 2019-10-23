@@ -82,7 +82,8 @@ Remove the code related to stats that is not required anymore in the monolith.
 
 ## Database
 
-You can access the database console via the following [url](http://localhost:9002/console).
+You can access the stats microservice database console via the [console](http://localhost:9002/console), 
+and the inputs you need can be found in the `application.yml` of the stats module, under 'datasource'.
 
 ## Verification and results
 
